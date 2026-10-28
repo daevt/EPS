@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="26.0.0" type="device">
+  <diagram id="AD-P3" name="AD_P3">
+    <mxGraphModel dx="1000" dy="1730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1000" pageHeight="1730" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="AD-P3-title" value="P3 — Execute and Confirm Refund" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontStyle=1;fontFamily=Helvetica;fontSize=16;fontColor=#222222;" parent="1" vertex="1">
+          <mxGeometry x="30" y="20" width="940" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-subtitle" value="UML activity • Academic mock escrow • VND • One full outcome" style="text;html=1;align=left;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" vertex="1">
+          <mxGeometry x="30" y="60" width="940" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-lane-1" value="EPS" style="swimlane;html=1;whiteSpace=wrap;startSize=40;horizontal=1;container=1;collapsible=0;recursiveResize=0;pointerEvents=0;fillColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#b3b3b3;fontFamily=Helvetica;fontSize=14;fontStyle=1;fontColor=#222222;" parent="1" vertex="1">
+          <mxGeometry x="30" y="100" width="640" height="1470" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-lane-2" value="Original Bank / Gateway mock" style="swimlane;html=1;whiteSpace=wrap;startSize=40;horizontal=1;container=1;collapsible=0;recursiveResize=0;pointerEvents=0;fillColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#b3b3b3;fontFamily=Helvetica;fontSize=14;fontStyle=1;fontColor=#222222;" parent="1" vertex="1">
+          <mxGeometry x="670" y="100" width="300" height="1470" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-start" value="" style="ellipse;html=1;aspect=fixed;fillColor=#222222;strokeColor=#222222;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="150.0" y="100.0" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-read" value="Read saved Refund intent&#10;and full reservation" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="40.0" y="200.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-eligible" value="Refund execution eligible?" style="rhombus;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="40.0" y="320.0" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-deny" value="Reject invalid instruction;&#10;no provider call" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#f5f5f5;strokeColor=#666666;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="350.0" y="330.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-deny_end" value="" style="ellipse;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#222222;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="450.0" y="480.0" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-deny_end-core" value="" style="ellipse;html=1;aspect=fixed;fillColor=#222222;strokeColor=#222222;" parent="AD-P3-deny_end" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-dispatch" value="Send full-VND Refund;&#10;keep REFUND_PENDING" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="40.0" y="460.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-provider" value="Return to original source;&#10;return correlated result" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-2" vertex="1">
+          <mxGeometry x="40.0" y="590.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-valid" value="Refund result matched?" style="rhombus;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="40.0" y="710.0" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-invalid" value="Keep unresolved;&#10;flag mismatch; A5 query" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#f5f5f5;strokeColor=#666666;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="350.0" y="720.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-invalid_end" value="" style="ellipse;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#222222;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="450.0" y="870.0" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-invalid_end-core" value="" style="ellipse;html=1;aspect=fixed;fillColor=#222222;strokeColor=#222222;" parent="AD-P3-invalid_end" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-outcome" value="Authoritative refund result?" style="rhombus;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="40.0" y="840.0" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-success" value="Commit REFUNDED once;&#10;consume reservation; audit" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="40.0" y="980.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-end" value="" style="ellipse;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#222222;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="140.0" y="1130.0" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-end-core" value="" style="ellipse;html=1;aspect=fixed;fillColor=#222222;strokeColor=#222222;" parent="AD-P3-end" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-failed" value="FAILED: no money moved;&#10;keep REFUND_PENDING lock" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#f5f5f5;strokeColor=#666666;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="350.0" y="980.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-failed_end" value="" style="ellipse;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#222222;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="450.0" y="1130.0" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-failed_end-core" value="" style="ellipse;html=1;aspect=fixed;fillColor=#222222;strokeColor=#222222;" parent="AD-P3-failed_end" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-uncertain" value="Keep REFUND_PENDING;&#10;A5 query only;&#10;no new money instruction" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fillColor=#f5f5f5;strokeColor=#666666;fontFamily=Helvetica;fontSize=14;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="350.0" y="1240.0" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-uncertain_end" value="" style="ellipse;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#222222;strokeWidth=2;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-lane-1" vertex="1">
+          <mxGeometry x="450.0" y="1390.0" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-uncertain_end-core" value="" style="ellipse;html=1;aspect=fixed;fillColor=#222222;strokeColor=#222222;" parent="AD-P3-uncertain_end" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-edge-01" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-start" target="AD-P3-read">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-02" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-read" target="AD-P3-eligible">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-03" value="[no]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-eligible" target="AD-P3-deny">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-04" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-deny" target="AD-P3-deny_end">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-05" value="[yes]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-eligible" target="AD-P3-dispatch">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-06" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-dispatch" target="AD-P3-provider">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points">
+              <mxPoint x="190" y="660" />
+              <mxPoint x="830" y="660" />
+            </Array>
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-07" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-provider" target="AD-P3-valid">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points">
+              <mxPoint x="830" y="780" />
+              <mxPoint x="190" y="780" />
+            </Array>
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-08" value="[no]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-valid" target="AD-P3-invalid">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-09" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-invalid" target="AD-P3-invalid_end">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-10" value="[yes]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-valid" target="AD-P3-outcome">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-11" value="[SUCCEEDED]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-outcome" target="AD-P3-success">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-success" target="AD-P3-end">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-13" value="[FAILED]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-outcome" target="AD-P3-failed">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points">
+              <mxPoint x="190.0" y="1070.0" />
+              <mxPoint x="500" y="1070" />
+            </Array>
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-failed" target="AD-P3-failed_end">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-15" value="[uncertain]" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-outcome" target="AD-P3-uncertain">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points">
+              <mxPoint x="190.0" y="1070.0" />
+              <mxPoint x="650.0" y="1070.0" />
+              <mxPoint x="650.0" y="1380.0" />
+            </Array>
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-edge-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;endSize=8;strokeColor=#444444;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" edge="1" source="AD-P3-uncertain" target="AD-P3-uncertain_end">
+          <mxGeometry relative="1" as="geometry" x="-0.4" y="0">
+            <Array as="points" />
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AD-P3-legend" value="Legend" style="rounded=0;html=1;container=1;verticalAlign=top;align=left;spacing=8;fillColor=#ffffff;strokeColor=#b3b3b3;fontStyle=1;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" vertex="1">
+          <mxGeometry x="30" y="1590" width="540" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-legend-action" value="" style="rounded=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="AD-P3-legend" vertex="1">
+          <mxGeometry x="10" y="30" width="20" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-legend-label-action" value="Action / saved outcome" style="text;html=1;align=left;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-legend" vertex="1">
+          <mxGeometry x="40" y="25" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-legend-decision" value="" style="rounded=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="AD-P3-legend" vertex="1">
+          <mxGeometry x="10" y="50" width="20" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-legend-label-decision" value="Decision with guards" style="text;html=1;align=left;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-legend" vertex="1">
+          <mxGeometry x="40" y="45" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-legend-exception" value="" style="rounded=0;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="AD-P3-legend" vertex="1">
+          <mxGeometry x="10" y="70" width="20" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-legend-label-exception" value="Rejected / unresolved / blocked" style="text;html=1;align=left;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="AD-P3-legend" vertex="1">
+          <mxGeometry x="40" y="65" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AD-P3-footer" value="Activity final ends this interaction.&#10;A pending escrow has no final money outcome." style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=#222222;" parent="1" vertex="1">
+          <mxGeometry x="590" y="1600" width="380" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

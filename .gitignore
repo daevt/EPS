@@ -1,0 +1,23 @@
+# Local recovery archives and redundant delivery bundles
+/_archive/
+/EPS_Report_Source_and_Diagrams.zip
+
+# LaTeX build intermediates (keep final PDFs)
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Renderer and Python caches
+/analysis/.render-cache/
+__pycache__/
+*.py[cod]
+
+# Local credentials and settings
+.env
+.env.*
+!.env.example
+

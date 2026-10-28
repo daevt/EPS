@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "backup": "C:\\Users\\lenovo\\Documents\\EPS\\checkpoint\\before-selective-restore_2026-10-28_130640",
+  "backup_file_count": 834,
+  "restored_recorded_count": 597,
+  "active_native_counts": {
+    "overview": 7,
+    "activity": 22,
+    "sequence": 58
+  }
+}

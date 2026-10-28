@@ -1,0 +1,1767 @@
+{
+  "documentType": "EPS Analysis support controls",
+  "version": "1.0",
+  "language": "en",
+  "status": "Authored analysis specification; no implementation, load-test, security-test or regulatory-compliance result is claimed.",
+  "sourceBasis": [
+    {
+      "file": "Escrow_Payment_system-Group-1 (1).pdf",
+      "section": "2.4.1 Project Scope Estimation",
+      "pdfPages": "9-10",
+      "printedPages": "12-13"
+    },
+    {
+      "file": "Example_Report_Structure_Guide.md",
+      "purpose": "Keep Analysis sequence 3.1 overview, 3.2 use case details, 3.3 activities, 3.4 sequences and 3.5 non-functional requirements."
+    },
+    {
+      "file": "User-approved MVP plan",
+      "purpose": "Resolve academic MVP defaults and scope without rewriting Introduction or Planning."
+    }
+  ],
+  "scope": {
+    "system": "Escrow Payment System (EPS)",
+    "currency": "VND",
+    "funds": "Academic simulation only",
+    "transactionTypes": [
+      "GOODS",
+      "SERVICES"
+    ],
+    "fundingMethods": [
+      "BANK",
+      "GATEWAY"
+    ],
+    "participantCount": "One Buyer and one distinct Seller",
+    "paymentRule": "One full successful funding and exactly one full terminal payout at most.",
+    "outOfScope": [
+      "Real money or production financial custody",
+      "Multi-currency, FX and actual cross-border operation",
+      "Milestones, partial or split payments and multiple beneficiaries",
+      "Automatic or timeout-based release",
+      "Real logistics/KYC providers or external arbitration",
+      "AI moderation",
+      "Commercial subscriptions or fees",
+      "Dispute appeals or a second dispute for the same escrow"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "FR01",
+      "title": "Account registration and authentication",
+      "description": "Guests register a user account and enrol MFA; Buyer, Seller and pre-provisioned Admin users sign in with password and a second factor, and can log out.",
+      "useCases": [
+        "U1",
+        "U2",
+        "U3"
+      ],
+      "acceptanceCriteria": [
+        "Registration does not provision an Admin or Merchant client.",
+        "A user session is issued only after both factors succeed; logout invalidates the session."
+      ]
+    },
+    {
+      "id": "FR02",
+      "title": "Escrow agreement lifecycle",
+      "description": "Buyer or an authorised Merchant creates a one-buyer/one-seller VND escrow; Seller accepts or rejects the captured terms before funding.",
+      "useCases": [
+        "B1",
+        "B1.API",
+        "B2",
+        "S1"
+      ],
+      "acceptanceCriteria": [
+        "The two participant identities are distinct and valid.",
+        "Terms and the creation-time policy snapshot become immutable on Seller acceptance.",
+        "Buyer can cancel only when no funding operation is pending and no money has been received."
+      ]
+    },
+    {
+      "id": "FR03",
+      "title": "Funding through two mock methods",
+      "description": "Buyer initiates the full agreed amount through either Partner Bank mock or Payment Gateway mock after Seller acceptance.",
+      "useCases": [
+        "B3",
+        "P1"
+      ],
+      "acceptanceCriteria": [
+        "Initiation creates FUNDING_PENDING, not HELD.",
+        "Only an authenticated, matched provider receipt for the full VND amount creates HELD.",
+        "Confirmed failure with no money received returns to AWAITING_FUNDING; unknown results remain pending."
+      ]
+    },
+    {
+      "id": "FR04",
+      "title": "Held balance and transaction tracking",
+      "description": "EPS records simulated segregated held funds and lets authorised participants track escrow, operation, proposal and dispute states.",
+      "useCases": [
+        "U4",
+        "P1",
+        "U4.API"
+      ],
+      "acceptanceCriteria": [
+        "One successful full funding receipt is recorded per escrow.",
+        "A held amount is never represented as released or refunded until the corresponding provider success is confirmed.",
+        "The escrow detail distinguishes lifecycle state from attempt result and pending proposal/dispute."
+      ]
+    },
+    {
+      "id": "FR05",
+      "title": "Delivery and Buyer-approved full release",
+      "description": "Seller records delivery/service completion; Buyer explicitly accepts and requests full release subject to the escrow policy snapshot.",
+      "useCases": [
+        "S2",
+        "B4",
+        "P2"
+      ],
+      "acceptanceCriteria": [
+        "Seller completion alone does not release funds.",
+        "Ordinary Buyer release requires DELIVERED, policy evidence satisfaction, no pending refund proposal and no open dispute.",
+        "The full amount is released once through Partner Bank mock to the agreed Seller destination."
+      ]
+    },
+    {
+      "id": "FR06",
+      "title": "Consensual full refund",
+      "description": "A participant may propose a full refund; only the counterpart may approve or reject, and the proposer may withdraw while pending.",
+      "useCases": [
+        "U7",
+        "U8",
+        "P3"
+      ],
+      "acceptanceCriteria": [
+        "A pending proposal blocks new Seller delivery recording and Buyer release without changing HELD/DELIVERED; rejection/withdrawal restores otherwise eligible actions without reverting an existing delivery record.",
+        "Counterpart approval atomically sets APPROVED and REFUND_PENDING.",
+        "Confirmed full refund goes to the original funding source."
+      ]
+    },
+    {
+      "id": "FR07",
+      "title": "Dispute evidence and Admin resolution",
+      "description": "Either participant opens a dispute while money remains held and no payout has been accepted; participants submit evidence until an Admin records a final full-release or full-refund decision.",
+      "useCases": [
+        "U5",
+        "U6",
+        "A1",
+        "P2",
+        "P3"
+      ],
+      "acceptanceCriteria": [
+        "Opening the single dispute invalidates a pending refund proposal.",
+        "Admin records a reason and exactly one payout direction.",
+        "The decision resolves the dispute and starts a pending payout; there is no appeal or second dispute in the MVP."
+      ]
+    },
+    {
+      "id": "FR08",
+      "title": "Versioned evidence policy",
+      "description": "Admin configures whether delivery evidence is required per transaction type; new escrows capture a policy snapshot.",
+      "useCases": [
+        "A2",
+        "B1",
+        "S2",
+        "B4"
+      ],
+      "acceptanceCriteria": [
+        "Default GOODS evidence is optional and SERVICES evidence is required.",
+        "The configurable value is an evidence-required boolean per transaction type.",
+        "Changes affect only future escrows and cannot introduce automatic release, deadlines or milestones."
+      ]
+    },
+    {
+      "id": "FR09",
+      "title": "Basic administrative analytics",
+      "description": "Admin views counts and full VND amounts by lifecycle state and transaction type, with a clear simulated-data label.",
+      "useCases": [
+        "A3"
+      ],
+      "acceptanceCriteria": [
+        "Dashboard figures reconcile with the authorised escrow records used by the view.",
+        "A pending transfer is not counted as a completed release/refund.",
+        "There are no invented revenue, FX or real-bank balance measures."
+      ]
+    },
+    {
+      "id": "FR10",
+      "title": "Read-only audit inspection",
+      "description": "EPS records attributable lifecycle, policy, dispute and transfer events; Admin can inspect the audit trail.",
+      "useCases": [
+        "A4"
+      ],
+      "acceptanceCriteria": [
+        "Events identify actor/service, escrow or operation, event, time, result and correlation reference.",
+        "Read access does not permit update or deletion of audit events.",
+        "Password, MFA secret, access token and full client secret are excluded."
+      ]
+    },
+    {
+      "id": "FR11",
+      "title": "Asynchronous payment integration and reconciliation",
+      "description": "EPS authenticates and matches Bank/Gateway confirmations; Admin queries pending operations and retries only provider-confirmed failed attempts where no money moved.",
+      "useCases": [
+        "P1",
+        "P2",
+        "P3",
+        "A5"
+      ],
+      "acceptanceCriteria": [
+        "Duplicate or delayed messages do not duplicate funding or payout.",
+        "Timeouts and unknown results remain pending with query-only reconciliation.",
+        "Confirmed failed payouts retain RELEASE_PENDING/REFUND_PENDING and the original payout decision for a controlled same-direction retry.",
+        "Admin cannot manually mark an operation successful."
+      ]
+    },
+    {
+      "id": "FR12",
+      "title": "Restricted Merchant create/query API",
+      "description": "A pre-provisioned OAuth client bound to one Seller creates escrows for that Seller and queries only escrows owned by that client.",
+      "useCases": [
+        "B1.API",
+        "U4.API"
+      ],
+      "acceptanceCriteria": [
+        "Merchant client identity, owner and Seller binding are derived from trusted client configuration.",
+        "Merchant creates and queries only; it cannot fund, accept delivery, propose/approve refunds, open disputes or resolve them.",
+        "API creation follows the same terms, policy, validation and duplicate-submission rules as UI creation; pending states are queryable."
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "BR01",
+      "title": "Academic scope",
+      "rule": "All money is simulated. One escrow has exactly one Buyer, one different Seller, one positive whole-VND amount and one terminal money outcome. GOODS and SERVICES are in scope; partial, milestone, multi-party, FX, cross-border and real-money settlement are excluded.",
+      "requirements": [
+        "FR02",
+        "FR03",
+        "FR04",
+        "FR05",
+        "FR06"
+      ]
+    },
+    {
+      "id": "BR02",
+      "title": "Participant roles",
+      "rule": "Buyer and Seller are roles in a specific escrow. A user may have different roles in different escrows, but cannot be both participants in the same escrow.",
+      "requirements": [
+        "FR02"
+      ]
+    },
+    {
+      "id": "BR03",
+      "title": "Identity channels",
+      "rule": "User login requires MFA. Admin and Merchant clients are pre-provisioned. Merchant OAuth authentication does not create a user session or grant participant/Admin privileges.",
+      "requirements": [
+        "FR01",
+        "FR12"
+      ]
+    },
+    {
+      "id": "BR04",
+      "title": "Complete agreement",
+      "rule": "Creation captures Buyer, Seller, GOODS/SERVICES, amount VND, delivery/work description, acceptance criteria and evidence-policy snapshot. Merchant creation must use its bound Seller.",
+      "requirements": [
+        "FR02",
+        "FR08",
+        "FR12"
+      ]
+    },
+    {
+      "id": "BR05",
+      "title": "Immutable accepted terms",
+      "rule": "Seller must accept before funding. Accepted terms cannot be edited. Corrections require an eligible pre-funding cancellation and a new escrow.",
+      "requirements": [
+        "FR02",
+        "FR03"
+      ]
+    },
+    {
+      "id": "BR06",
+      "title": "Creation-time policy",
+      "rule": "Capture the current evidence-required setting when creating the escrow. Defaults are GOODS=false and SERVICES=true. Admin changes apply only to escrows created afterwards.",
+      "requirements": [
+        "FR08"
+      ]
+    },
+    {
+      "id": "BR07",
+      "title": "Single full funding attempt at a time",
+      "rule": "Only the Buyer may initiate funding, only from AWAITING_FUNDING, for the exact full amount, using BANK or GATEWAY. A new attempt is prohibited while any previous funding result is unknown.",
+      "requirements": [
+        "FR03"
+      ]
+    },
+    {
+      "id": "BR08",
+      "title": "Receipt establishes held funds",
+      "rule": "A provider-authenticated matched success receipt, including escrow/operation reference, expected amount and VND currency, is required for HELD. User clicks, redirects, screenshots and Admin declarations are insufficient.",
+      "requirements": [
+        "FR03",
+        "FR04",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR09",
+      "title": "Simulated fund separation",
+      "rule": "Funding success records the full simulated held balance attributable to the escrow. A pending payout reserves that balance and does not imply money has already reached the beneficiary.",
+      "requirements": [
+        "FR04"
+      ]
+    },
+    {
+      "id": "BR10",
+      "title": "Seller completion",
+      "rule": "Only the Seller records delivery/work completion for a funded escrow, with no OPEN dispute, no PENDING refund proposal and no accepted payout. A pending refund proposal freezes new Seller delivery recording as an MVP workflow guard as well as freezing Buyer release; rejection or withdrawal restores otherwise eligible actions without reverting previously recorded delivery. GOODS requires delivery information and any snapshot-required evidence; SERVICES requires the work product and any snapshot-required evidence. Seller completion does not itself release money.",
+      "requirements": [
+        "FR05",
+        "FR08"
+      ]
+    },
+    {
+      "id": "BR11",
+      "title": "Ordinary release",
+      "rule": "Buyer release requires DELIVERED, explicit Buyer acceptance, satisfied evidence policy, no pending refund proposal, no OPEN dispute and no previously accepted payout. Automatic/time-based release is excluded.",
+      "requirements": [
+        "FR05"
+      ]
+    },
+    {
+      "id": "BR12",
+      "title": "Pending refund proposal",
+      "rule": "Either participant may propose full refund only while the lifecycle is HELD or DELIVERED, with no OPEN dispute, no other pending proposal and no accepted payout. The proposal records its proposer and freezes both new Seller delivery recording and ordinary Buyer release as an MVP workflow guard; the underlying HELD/DELIVERED lifecycle does not change.",
+      "requirements": [
+        "FR06"
+      ]
+    },
+    {
+      "id": "BR13",
+      "title": "Refund responses",
+      "rule": "Only the counterpart may approve/reject a pending proposal. Only the proposer may withdraw it before approval. Approval and transition to REFUND_PENDING are one atomic decision. Rejection/withdrawal restores otherwise eligible Seller delivery recording and Buyer release, subject to all other guards, without reverting any previously saved delivery record.",
+      "requirements": [
+        "FR06"
+      ]
+    },
+    {
+      "id": "BR14",
+      "title": "Opening one dispute",
+      "rule": "Either participant can open the single dispute while lifecycle is HELD/DELIVERED and no payout has been accepted. Set dispute OPEN and any pending proposal INVALIDATED atomically. No second dispute or appeal is in scope.",
+      "requirements": [
+        "FR07"
+      ]
+    },
+    {
+      "id": "BR15",
+      "title": "Evidence window",
+      "rule": "Only the escrow participants may submit dispute evidence, only while the dispute is OPEN and before its final Admin decision. Preserve evidence attribution and order; a decided case accepts no additional submissions.",
+      "requirements": [
+        "FR07"
+      ]
+    },
+    {
+      "id": "BR16",
+      "title": "Reasoned Admin decision",
+      "rule": "An authorised Admin records a reason and chooses full RELEASE or full REFUND exactly once for an OPEN dispute. This is a separately authorised branch that does not require Buyer acceptance or delivery. Save RESOLVED and the payout decision atomically.",
+      "requirements": [
+        "FR07"
+      ]
+    },
+    {
+      "id": "BR17",
+      "title": "First valid atomic gate wins",
+      "rule": "Eligibility is checked and changed atomically. Concurrent release, refund approval and dispute opening cannot all succeed. Recheck lifecycle, proposal, dispute, actor and accepted-payout conditions at commit; stale requests fail without changing money state.",
+      "requirements": [
+        "FR05",
+        "FR06",
+        "FR07",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR18",
+      "title": "Unknown means pending",
+      "rule": "A timeout, unavailable provider or ambiguous result retains FUNDING_PENDING, RELEASE_PENDING or REFUND_PENDING. Query the same provider operation; never infer success/failure or issue a new money operation from elapsed time.",
+      "requirements": [
+        "FR03",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR19",
+      "title": "Confirmed-failure retry",
+      "rule": "Retry is allowed only after the provider confirms the preceding attempt failed and moved no money. Funding returns to AWAITING_FUNDING. Failed payouts retain their pending lifecycle and immutable direction/beneficiary; A5 may create a new attempt for that same decision. Unknown attempts are query-only.",
+      "requirements": [
+        "FR03",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR20",
+      "title": "One terminal money outcome",
+      "rule": "Only confirmed payout success produces RELEASED or REFUNDED. Neither terminal state can transition to the other or back to held. After an accepted payout, no new dispute, refund proposal or opposite-direction payout is allowed, including after a failed payout attempt.",
+      "requirements": [
+        "FR05",
+        "FR06",
+        "FR07",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR21",
+      "title": "Matched idempotent integration",
+      "rule": "Authenticate provider messages, match provider/escrow/operation/attempt/amount/currency, and process a confirmation once. Exact duplicates return the recorded result. Stale messages cannot overwrite a newer attempt; inconsistent or mismatched messages are rejected/logged and require reconciliation.",
+      "requirements": [
+        "FR03",
+        "FR10",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR22",
+      "title": "Payout destinations",
+      "rule": "Full release is executed through Partner Bank mock to the Seller destination captured by the agreement. Full refund returns through the original funding provider to the original funding source. No destination substitution or split payment is in scope.",
+      "requirements": [
+        "FR05",
+        "FR06",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR23",
+      "title": "Safe pre-funding cancellation",
+      "rule": "Buyer cancellation is permitted from AWAITING_SELLER or AWAITING_FUNDING only if there is no active/unknown funding attempt and no received money. Seller rejection from AWAITING_SELLER also results in CANCELLED. FUNDING_PENDING cannot be cancelled.",
+      "requirements": [
+        "FR02",
+        "FR03"
+      ]
+    },
+    {
+      "id": "BR24",
+      "title": "Merchant ownership and limited authority",
+      "rule": "A Merchant may create and query only its own escrows for its bound Seller. Never trust request-supplied merchant ownership or Seller binding. Merchant cannot act as Buyer, Seller or Admin, including when it knows a valid escrow reference.",
+      "requirements": [
+        "FR12"
+      ]
+    },
+    {
+      "id": "BR25",
+      "title": "Attributable read-only audit",
+      "rule": "Record successful and rejected money/state decisions, authentication/access denials, policy changes, dispute actions and provider reconciliations with stable correlation references and without authentication secrets. Admin audit access is read-only.",
+      "requirements": [
+        "FR01",
+        "FR10",
+        "FR11"
+      ]
+    },
+    {
+      "id": "BR26",
+      "title": "Honest dashboard",
+      "rule": "Counts/amounts come from recorded states, identify their observation time and simulated nature, and separate pending amounts from completed outcomes.",
+      "requirements": [
+        "FR09"
+      ]
+    },
+    {
+      "id": "BR27",
+      "title": "Provider selection",
+      "rule": "BANK and GATEWAY are alternative funding methods. Partner Bank is the release provider; the original funding provider executes refunds. The supported mock identity and operation reference remain attached to each attempt.",
+      "requirements": [
+        "FR03",
+        "FR05",
+        "FR06",
+        "FR11"
+      ]
+    }
+  ],
+  "stateDefinitions": [
+    {
+      "state": "AWAITING_SELLER",
+      "meaning": "Agreement created and awaiting Seller acceptance/rejection.",
+      "allowedBehavior": "No funding or payout is allowed."
+    },
+    {
+      "state": "AWAITING_FUNDING",
+      "meaning": "Seller has accepted; no money is held and no funding result is unknown.",
+      "allowedBehavior": "Buyer may start a full funding attempt or safely cancel."
+    },
+    {
+      "state": "FUNDING_PENDING",
+      "meaning": "A full funding attempt is active or its result is unknown.",
+      "allowedBehavior": "No cancellation, duplicate funding attempt, delivery or payout is allowed."
+    },
+    {
+      "state": "HELD",
+      "meaning": "The full agreed amount has been confirmed received and is simulated as held.",
+      "allowedBehavior": "Seller can complete delivery; participants can initiate an eligible refund or the single dispute."
+    },
+    {
+      "state": "DELIVERED",
+      "meaning": "Seller completion has been recorded while the full amount remains held.",
+      "allowedBehavior": "Buyer may accept/request release subject to all guards; eligible refund/dispute remains possible."
+    },
+    {
+      "state": "RELEASE_PENDING",
+      "meaning": "One full-release decision is accepted; execution is pending, unknown or confirmed failed awaiting controlled retry.",
+      "allowedBehavior": "Direction and Seller destination are locked; no opposite payout or new dispute."
+    },
+    {
+      "state": "REFUND_PENDING",
+      "meaning": "One full-refund decision is accepted; execution is pending, unknown or confirmed failed awaiting controlled retry.",
+      "allowedBehavior": "Direction and original source are locked; no opposite payout or new dispute."
+    },
+    {
+      "state": "RELEASED",
+      "meaning": "The provider confirmed the one full release.",
+      "allowedBehavior": "Terminal successful money outcome."
+    },
+    {
+      "state": "REFUNDED",
+      "meaning": "The provider confirmed the one full refund.",
+      "allowedBehavior": "Terminal successful money outcome."
+    },
+    {
+      "state": "CANCELLED",
+      "meaning": "The unfunded agreement was rejected or safely cancelled.",
+      "allowedBehavior": "Terminal non-money outcome; no funding or payout can start."
+    }
+  ],
+  "orthogonalStates": {
+    "refundProposal": {
+      "states": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "WITHDRAWN",
+        "INVALIDATED"
+      ],
+      "absence": "No proposal is represented by absence of an active proposal, not an escrow lifecycle state.",
+      "transitions": [
+        {
+          "from": "NONE",
+          "trigger": "U7: propose",
+          "guard": "Participant; lifecycle HELD/DELIVERED; no OPEN dispute, accepted payout or other PENDING proposal.",
+          "to": "PENDING"
+        },
+        {
+          "from": "PENDING",
+          "trigger": "U7: withdraw",
+          "guard": "Requester is the proposer; proposal not yet approved; no concurrent decision already committed.",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "PENDING",
+          "trigger": "U8: reject",
+          "guard": "Requester is the counterpart; no concurrent decision already committed.",
+          "to": "REJECTED"
+        },
+        {
+          "from": "PENDING",
+          "trigger": "U8: approve",
+          "guard": "Requester is the counterpart; no OPEN dispute or accepted payout; commit with lifecycle REFUND_PENDING.",
+          "to": "APPROVED"
+        },
+        {
+          "from": "PENDING",
+          "trigger": "U5: open dispute",
+          "guard": "Participant; lifecycle HELD/DELIVERED; no prior dispute or accepted payout; commit with dispute OPEN.",
+          "to": "INVALIDATED"
+        }
+      ],
+      "reproposal": "A new proposal may be created after REJECTED/WITHDRAWN when all normal guards hold; never after an accepted payout or an OPEN/RESOLVED dispute."
+    },
+    "dispute": {
+      "states": [
+        "NONE",
+        "OPEN",
+        "RESOLVED"
+      ],
+      "transitions": [
+        {
+          "from": "NONE",
+          "trigger": "U5: open dispute",
+          "guard": "Participant; lifecycle HELD/DELIVERED; no accepted payout; invalidate any pending proposal atomically.",
+          "to": "OPEN"
+        },
+        {
+          "from": "OPEN",
+          "trigger": "A1: decide full release or refund",
+          "guard": "Authorised Admin; reason and one final direction recorded; commit with matching pending payout lifecycle.",
+          "to": "RESOLVED"
+        }
+      ],
+      "evidence": "Participant evidence is accepted only while OPEN and before the final Admin decision. No appeal/reopening is included."
+    },
+    "transferAttempt": {
+      "states": [
+        "PENDING",
+        "UNKNOWN",
+        "FAILED",
+        "SUCCEEDED"
+      ],
+      "meaning": "Attempt result is separate from escrow lifecycle. UNKNOWN is query-only. FAILED requires provider-confirmed no-money movement. Failed payout attempts leave the escrow in its pending lifecycle and do not unlock the payout direction.",
+      "idempotency": "Retain a logical operation reference and an attempt reference. Repeated unknown-operation submissions must not create a new attempt. A controlled retry after confirmed failure gets its own attempt correlated to the same immutable decision."
+    }
+  },
+  "transitions": [
+    {
+      "from": "NONE",
+      "trigger": "B1 / B1.API: create escrow",
+      "guard": "Authenticated Buyer or authorised bound-Seller Merchant; complete valid distinct participants, full VND amount, terms and policy snapshot.",
+      "to": "AWAITING_SELLER"
+    },
+    {
+      "from": "AWAITING_SELLER",
+      "trigger": "S1: accept terms",
+      "guard": "Acting Seller is the escrow Seller; no previous acceptance/cancellation; accepted terms are saved immutably.",
+      "to": "AWAITING_FUNDING"
+    },
+    {
+      "from": "AWAITING_SELLER",
+      "trigger": "S1: reject terms",
+      "guard": "Acting Seller is the escrow Seller; no money operation has started.",
+      "to": "CANCELLED"
+    },
+    {
+      "from": "AWAITING_SELLER",
+      "trigger": "B2: cancel escrow",
+      "guard": "Acting Buyer is the escrow Buyer; no active/unknown funding and no received money.",
+      "to": "CANCELLED"
+    },
+    {
+      "from": "AWAITING_FUNDING",
+      "trigger": "B2: cancel escrow",
+      "guard": "Acting Buyer is the escrow Buyer; all previous attempts, if any, are provider-confirmed failed with no money moved; no active/unknown attempt.",
+      "to": "CANCELLED"
+    },
+    {
+      "from": "AWAITING_FUNDING",
+      "trigger": "B3: initiate full funding",
+      "guard": "Acting Buyer; Seller accepted; exact full amount and VND; supported BANK/GATEWAY; no active/unknown attempt.",
+      "to": "FUNDING_PENDING"
+    },
+    {
+      "from": "FUNDING_PENDING",
+      "trigger": "P1 / A5: confirm funding success",
+      "guard": "Authenticated matched current provider receipt confirms the exact full amount received once.",
+      "to": "HELD"
+    },
+    {
+      "from": "FUNDING_PENDING",
+      "trigger": "P1 / A5: confirm funding failure",
+      "guard": "Provider explicitly confirms the current attempt failed and no money was received.",
+      "to": "AWAITING_FUNDING"
+    },
+    {
+      "from": "FUNDING_PENDING",
+      "trigger": "P1 / A5: timeout or unknown funding result",
+      "guard": "No authoritative success or no-money failure confirmation exists; preserve attempt and query only.",
+      "to": "FUNDING_PENDING"
+    },
+    {
+      "from": "HELD",
+      "trigger": "S2: record delivery/work completion",
+      "guard": "Acting Seller; complete type-appropriate delivery/work information and snapshot-required evidence; no OPEN dispute, PENDING refund proposal or accepted payout. A rejected or withdrawn proposal restores eligibility without reverting any earlier delivery record.",
+      "to": "DELIVERED"
+    },
+    {
+      "from": "DELIVERED",
+      "trigger": "B4: accept delivery and request full release",
+      "guard": "Acting Buyer; explicit acceptance; snapshot evidence satisfied; no pending refund proposal, OPEN dispute or accepted payout; atomically reserve full release.",
+      "to": "RELEASE_PENDING"
+    },
+    {
+      "from": "HELD",
+      "trigger": "U8: counterpart approves full refund",
+      "guard": "Valid PENDING proposal; acting user is the counterpart; no OPEN dispute or accepted payout; atomically mark proposal APPROVED and reserve full refund.",
+      "to": "REFUND_PENDING"
+    },
+    {
+      "from": "DELIVERED",
+      "trigger": "U8: counterpart approves full refund",
+      "guard": "Valid PENDING proposal; acting user is the counterpart; no OPEN dispute or accepted payout; atomically mark proposal APPROVED and reserve full refund.",
+      "to": "REFUND_PENDING"
+    },
+    {
+      "from": "HELD",
+      "trigger": "A1: decide full release",
+      "guard": "Authorised Admin; single OPEN dispute; reason recorded; no accepted payout; atomically set dispute RESOLVED, save RELEASE decision and reserve full release.",
+      "to": "RELEASE_PENDING"
+    },
+    {
+      "from": "DELIVERED",
+      "trigger": "A1: decide full release",
+      "guard": "Authorised Admin; single OPEN dispute; reason recorded; no accepted payout; atomically set dispute RESOLVED, save RELEASE decision and reserve full release.",
+      "to": "RELEASE_PENDING"
+    },
+    {
+      "from": "HELD",
+      "trigger": "A1: decide full refund",
+      "guard": "Authorised Admin; single OPEN dispute; reason recorded; no accepted payout; atomically set dispute RESOLVED, save REFUND decision and reserve full refund.",
+      "to": "REFUND_PENDING"
+    },
+    {
+      "from": "DELIVERED",
+      "trigger": "A1: decide full refund",
+      "guard": "Authorised Admin; single OPEN dispute; reason recorded; no accepted payout; atomically set dispute RESOLVED, save REFUND decision and reserve full refund.",
+      "to": "REFUND_PENDING"
+    },
+    {
+      "from": "RELEASE_PENDING",
+      "trigger": "P2 / A5: confirm full release success",
+      "guard": "Authenticated matched current Partner Bank receipt confirms full release to the locked Seller destination; no previous terminal money result.",
+      "to": "RELEASED"
+    },
+    {
+      "from": "REFUND_PENDING",
+      "trigger": "P3 / A5: confirm full refund success",
+      "guard": "Authenticated matched current original-provider receipt confirms full refund to the locked original source; no previous terminal money result.",
+      "to": "REFUNDED"
+    },
+    {
+      "from": "RELEASE_PENDING",
+      "trigger": "P2 / A5: unknown or confirmed failed release",
+      "guard": "Unknown => preserve same attempt and query only. Confirmed failed with no money moved => record attempt FAILED, preserve RELEASE decision and permit A5 same-direction retry.",
+      "to": "RELEASE_PENDING"
+    },
+    {
+      "from": "REFUND_PENDING",
+      "trigger": "P3 / A5: unknown or confirmed failed refund",
+      "guard": "Unknown => preserve same attempt and query only. Confirmed failed with no money moved => record attempt FAILED, preserve REFUND decision and permit A5 same-direction retry.",
+      "to": "REFUND_PENDING"
+    }
+  ],
+  "invariants": [
+    "Only confirmed provider receipt creates HELD; only confirmed provider payout creates RELEASED/REFUNDED.",
+    "RELEASED, REFUNDED and CANCELLED have no outgoing business transitions.",
+    "The proposal/dispute dimensions are displayed separately from the canonical lifecycle.",
+    "A PENDING refund proposal freezes new Seller delivery recording and ordinary Buyer release. Rejection/withdrawal removes this workflow freeze without reverting previously recorded delivery.",
+    "Opening a dispute invalidates a pending refund proposal atomically; a decided dispute cannot reopen.",
+    "After acceptance of a payout decision, its direction, full amount and destination are immutable, even if an attempt later fails.",
+    "At most one provider money operation for an escrow may have an unresolved result; duplicates do not create another operation.",
+    "Any state/action pair not listed in the permitted transitions or orthogonal rules is rejected with no money-state mutation."
+  ],
+  "nfr": [
+    {
+      "group": "Performance",
+      "requirements": [
+        {
+          "id": "NFR-P01",
+          "requirement": "Internal create/query response-time target.",
+          "acceptance": "Proposed, not measured: p95 <= 2 seconds for internal escrow create/query under 20 concurrent sessions and 1,000 simulated escrows. Exclude human interaction and external-provider wait; report the create and query samples and percentiles separately.",
+          "verification": "Run a documented demo workload with valid authorised requests, 20 sessions and a seeded set of 1,000 mock escrows; calculate p95 from recorded request durations. Do not claim a pass before running the workload.",
+          "useCases": [
+            "B1",
+            "B1.API",
+            "U4",
+            "U4.API"
+          ]
+        },
+        {
+          "id": "NFR-P02",
+          "requirement": "Pending results are returned without waiting for a final transfer.",
+          "acceptance": "When a mock provider withholds its final result, the accepted operation is observable as the appropriate PENDING lifecycle with a query reference; no synchronous screen/API response falsely reports final success.",
+          "verification": "Withhold funding/release/refund completion and inspect the response plus subsequent query.",
+          "useCases": [
+            "B3",
+            "P1",
+            "P2",
+            "P3",
+            "U4.API"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Operational",
+      "requirements": [
+        {
+          "id": "NFR-O01",
+          "requirement": "Recoverable pending operations.",
+          "acceptance": "After an interruption/restart between provider submission and result processing, every accepted pending operation retains its escrow, immutable decision, provider/attempt reference, amount, destination, policy snapshot, proposal and dispute state. Reconciliation can recover the provider outcome without a duplicate transfer.",
+          "verification": "Interrupt each of funding/release/refund after submission; restart, query and reconcile with the mock provider.",
+          "useCases": [
+            "A5",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        },
+        {
+          "id": "NFR-O02",
+          "requirement": "Unknown outcomes and failed attempts remain distinguishable.",
+          "acceptance": "For all three money operations, unknown outcomes offer query-only reconciliation. A retry is available only after explicit provider confirmation of failure with no money moved. Payout retry preserves direction and beneficiary; no manual-success control exists.",
+          "verification": "Inspect pending detail and exercise unknown, confirmed-failed and confirmed-success mock responses.",
+          "useCases": [
+            "A5",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        },
+        {
+          "id": "NFR-O03",
+          "requirement": "Traceable and internally consistent demo records.",
+          "acceptance": "Every accepted state-changing money action and reconciliation has an attributable audit event and correlation reference; dashboard counts/amounts agree with the underlying records at the stated observation time.",
+          "verification": "Replay the acceptance scenarios and reconcile state, held/pending/final totals and audit events.",
+          "useCases": [
+            "A3",
+            "A4",
+            "A5"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Security",
+      "requirements": [
+        {
+          "id": "NFR-S01",
+          "requirement": "User MFA and session invalidation.",
+          "acceptance": "No active Buyer, Seller or Admin session is issued when either password or second-factor verification fails; logout makes the previous session unusable on the next protected request.",
+          "verification": "Exercise wrong password, absent/wrong second factor, successful MFA and logout/reuse cases.",
+          "useCases": [
+            "U1",
+            "U2",
+            "U3"
+          ]
+        },
+        {
+          "id": "NFR-S02",
+          "requirement": "Authorisation on every protected operation.",
+          "acceptance": "All protected use cases reject unauthenticated or wrong-role/wrong-escrow callers with no protected data or state changes. Merchant create/query is restricted to the authenticated client's ownership and bound Seller; Merchant cannot invoke participant/Admin actions.",
+          "verification": "Run each protected action as its owner, other participant where relevant, outsider, Merchant and non-Admin.",
+          "useCases": [
+            "U4",
+            "U5",
+            "U6",
+            "U7",
+            "U8",
+            "B1",
+            "B2",
+            "B3",
+            "B4",
+            "S1",
+            "S2",
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "B1.API",
+            "U4.API"
+          ]
+        },
+        {
+          "id": "NFR-S03",
+          "requirement": "Authenticated protected channels and provider confirmations.",
+          "acceptance": "Use TLS for deployed HTTP channels; authenticate Merchant OAuth clients and provider confirmations. Tampered identity, amount, currency, operation, provider or attempt reference cannot establish HELD/RELEASED/REFUNDED.",
+          "verification": "Inspect channel configuration and submit unsigned, wrongly authenticated and mismatched mock callbacks.",
+          "useCases": [
+            "B1.API",
+            "U4.API",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        },
+        {
+          "id": "NFR-S04",
+          "requirement": "Secret-free read-only audit access.",
+          "acceptance": "Audit access is read-only for Admin. Logs and audit views contain no passwords, MFA seeds/codes, access tokens or full client secrets; application users cannot edit/delete audit events.",
+          "verification": "Inspect representative authentication, API, provider and Admin audit records and attempt unauthorised mutations.",
+          "useCases": [
+            "A4",
+            "U2",
+            "B1.API",
+            "U4.API"
+          ]
+        },
+        {
+          "id": "NFR-S05",
+          "requirement": "Atomic and idempotent money decisions.",
+          "acceptance": "In every specified duplicate/concurrency scenario, at most one full funding success and one terminal payout direction are accepted for an escrow; no duplicate provider transfer is submitted because of a repeated user request or callback.",
+          "verification": "Run concurrent release/refund/dispute and repeated callback/request scenarios using recorded provider operations.",
+          "useCases": [
+            "B3",
+            "B4",
+            "U5",
+            "U8",
+            "A1",
+            "A5",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Cultural and Political",
+      "requirements": [
+        {
+          "id": "NFR-C01",
+          "requirement": "Consistent VND and comprehensible terms.",
+          "acceptance": "All agreement, confirmation, provider and analytics amounts identify VND and use whole-VND values consistently. Before acceptance/funding, users can read the delivery/work, acceptance and evidence conditions applicable to that escrow.",
+          "verification": "Inspect GOODS and SERVICES scenarios through create, accept, fund, delivery and result views.",
+          "useCases": [
+            "B1",
+            "B1.API",
+            "S1",
+            "B3",
+            "U4",
+            "A3"
+          ]
+        },
+        {
+          "id": "NFR-C02",
+          "requirement": "Privacy and simulation transparency.",
+          "acceptance": "The demo uses synthetic participant/payment data, labels funds and providers as simulated, and restricts personal and dispute evidence data to authorised participants/Admin. No output claims real-money custody or verified regulatory compliance.",
+          "verification": "Review demo data, participant/outsider access and wording throughout the Analysis and demonstration.",
+          "useCases": [
+            "U4",
+            "U6",
+            "A1",
+            "A3",
+            "A4"
+          ]
+        },
+        {
+          "id": "NFR-C03",
+          "requirement": "Planning legal claims are not treated as verified compliance.",
+          "acceptance": "Any legal/regulatory statements inherited from Planning are marked as unverified for real deployment. This Analysis makes no current-law conclusion; real-money rollout requires a separately sourced legal/regulatory review outside the MVP.",
+          "verification": "Review the chapter and alignment notes for unsupported legal assertions; do not treat a document review as a compliance certification.",
+          "useCases": []
+        }
+      ]
+    }
+  ],
+  "acceptanceScenarios": [
+    {
+      "id": "AT01",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "BANK",
+      "outcome": "BUYER_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "Seller records delivery information (evidence optional under the default policy); verify DELIVERED with no automatic payout.",
+        "Buyer explicitly accepts delivery and requests full release; verify RELEASE_PENDING.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "S2",
+        "B4",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT02",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "BANK",
+      "outcome": "CONSENSUAL_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant proposes full refund; verify the counterpart approves it, proposal APPROVED and lifecycle REFUND_PENDING.",
+        "Authenticate and match the final original BANK refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original BANK funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U7",
+        "U8",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT03",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "BANK",
+      "outcome": "ADMIN_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full RELEASE; verify dispute RESOLVED and lifecycle RELEASE_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT04",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "BANK",
+      "outcome": "ADMIN_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full REFUND; verify dispute RESOLVED and lifecycle REFUND_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final original BANK refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original BANK funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT05",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "GATEWAY",
+      "outcome": "BUYER_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "Seller records delivery information (evidence optional under the default policy); verify DELIVERED with no automatic payout.",
+        "Buyer explicitly accepts delivery and requests full release; verify RELEASE_PENDING.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "S2",
+        "B4",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT06",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "GATEWAY",
+      "outcome": "CONSENSUAL_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant proposes full refund; verify the counterpart approves it, proposal APPROVED and lifecycle REFUND_PENDING.",
+        "Authenticate and match the final original GATEWAY refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original GATEWAY funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U7",
+        "U8",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT07",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "GATEWAY",
+      "outcome": "ADMIN_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full RELEASE; verify dispute RESOLVED and lifecycle RELEASE_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT08",
+      "kind": "basic_matrix",
+      "transactionType": "GOODS",
+      "fundingMethod": "GATEWAY",
+      "outcome": "ADMIN_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full REFUND; verify dispute RESOLVED and lifecycle REFUND_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final original GATEWAY refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original GATEWAY funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT09",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "BANK",
+      "outcome": "BUYER_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "Seller records the service work product with required evidence; verify DELIVERED with no automatic payout.",
+        "Buyer explicitly accepts delivery and requests full release; verify RELEASE_PENDING.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "S2",
+        "B4",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT10",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "BANK",
+      "outcome": "CONSENSUAL_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant proposes full refund; verify the counterpart approves it, proposal APPROVED and lifecycle REFUND_PENDING.",
+        "Authenticate and match the final original BANK refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original BANK funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U7",
+        "U8",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT11",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "BANK",
+      "outcome": "ADMIN_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full RELEASE; verify dispute RESOLVED and lifecycle RELEASE_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT12",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "BANK",
+      "outcome": "ADMIN_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full BANK mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full REFUND; verify dispute RESOLVED and lifecycle REFUND_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final original BANK refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original BANK funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT13",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "GATEWAY",
+      "outcome": "BUYER_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "Seller records the service work product with required evidence; verify DELIVERED with no automatic payout.",
+        "Buyer explicitly accepts delivery and requests full release; verify RELEASE_PENDING.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "S2",
+        "B4",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT14",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "GATEWAY",
+      "outcome": "CONSENSUAL_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant proposes full refund; verify the counterpart approves it, proposal APPROVED and lifecycle REFUND_PENDING.",
+        "Authenticate and match the final original GATEWAY refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original GATEWAY funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U7",
+        "U8",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT15",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "GATEWAY",
+      "outcome": "ADMIN_RELEASE",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full RELEASE; verify dispute RESOLVED and lifecycle RELEASE_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final Partner Bank release confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle RELEASED; exactly one terminal money outcome.",
+        "The full amount reaches the locked Seller destination through Partner Bank in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P2",
+        "U4"
+      ]
+    },
+    {
+      "id": "AT16",
+      "kind": "basic_matrix",
+      "transactionType": "SERVICES",
+      "fundingMethod": "GATEWAY",
+      "outcome": "ADMIN_REFUND",
+      "preconditions": "Two distinct registered users with valid MFA sessions; pre-provisioned Admin for dispute branches; mock providers configured; default evidence policy captured at creation.",
+      "steps": [
+        "Create a valid escrow for two distinct users and capture the default evidence policy.",
+        "Seller accepts the immutable terms.",
+        "Buyer initiates full GATEWAY mock funding; verify FUNDING_PENDING until a matched success confirmation establishes HELD.",
+        "One participant opens the single dispute; both participants submit evidence while OPEN.",
+        "Admin reviews evidence, records a reason and decides full REFUND; verify dispute RESOLVED and lifecycle REFUND_PENDING without requiring Buyer acceptance.",
+        "Authenticate and match the final original GATEWAY refund confirmation for the full amount."
+      ],
+      "expected": [
+        "Final lifecycle REFUNDED; exactly one terminal money outcome.",
+        "The full amount reaches the original GATEWAY funding source in the mock ledger; no remaining simulated held balance.",
+        "State, attempt, provider operation and audit records agree; duplicate final confirmation does not move money again."
+      ],
+      "useCases": [
+        "B1",
+        "S1",
+        "B3",
+        "P1",
+        "U5",
+        "U6",
+        "A1",
+        "P3",
+        "U4"
+      ]
+    },
+    {
+      "id": "NEG01",
+      "kind": "negative_or_concurrency",
+      "title": "Seller rejects or Buyer safely cancels",
+      "setupAndAction": "Reject at AWAITING_SELLER; separately cancel at AWAITING_SELLER and AWAITING_FUNDING with no active/unknown funding.",
+      "expected": "CANCELLED; no provider funding/payout call; later accept/fund actions are rejected.",
+      "rules": [
+        "BR05",
+        "BR23"
+      ]
+    },
+    {
+      "id": "NEG02",
+      "kind": "negative_or_concurrency",
+      "title": "Funding before Seller acceptance",
+      "setupAndAction": "Buyer attempts funding at AWAITING_SELLER.",
+      "expected": "Rejected with unchanged state and no provider call.",
+      "rules": [
+        "BR05",
+        "BR07"
+      ]
+    },
+    {
+      "id": "NEG03",
+      "kind": "negative_or_concurrency",
+      "title": "Confirmed failed funding and safe retry/cancellation",
+      "setupAndAction": "Start funding; provider confirms failure with no money received; retry in one case and cancel in another.",
+      "expected": "Return to AWAITING_FUNDING. A new attempt is allowed, or cancellation yields CANCELLED; failed attempt is retained in audit.",
+      "rules": [
+        "BR19",
+        "BR23"
+      ]
+    },
+    {
+      "id": "NEG04",
+      "kind": "negative_or_concurrency",
+      "title": "Unknown funding outcome",
+      "setupAndAction": "Withhold funding result, time out, then request another funding attempt and cancellation.",
+      "expected": "Keep FUNDING_PENDING; both requests rejected; A5 queries the existing attempt. A later matched success establishes HELD once.",
+      "rules": [
+        "BR07",
+        "BR18",
+        "BR23"
+      ]
+    },
+    {
+      "id": "NEG05",
+      "kind": "negative_or_concurrency",
+      "title": "Mismatched or unauthenticated callback",
+      "setupAndAction": "Submit wrong provider authentication and mismatched operation/attempt/amount/currency messages.",
+      "expected": "No money-state transition; record rejection/correlation for investigation; only a correct matched current receipt can establish success.",
+      "rules": [
+        "BR08",
+        "BR21"
+      ]
+    },
+    {
+      "id": "NEG06",
+      "kind": "negative_or_concurrency",
+      "title": "Duplicate user request and callback",
+      "setupAndAction": "Repeat funding/payout initiation and success callback, including concurrent delivery of exact duplicates.",
+      "expected": "A repeated accepted action returns its recorded outcome and creates no extra transfer; receipt processed once; one terminal money outcome.",
+      "rules": [
+        "BR17",
+        "BR20",
+        "BR21"
+      ]
+    },
+    {
+      "id": "NEG07",
+      "kind": "negative_or_concurrency",
+      "title": "Late/stale callback after retry",
+      "setupAndAction": "Confirm an attempt failed with no money moved, start an allowed retry, then replay an old-attempt message.",
+      "expected": "Old message cannot overwrite the retry or terminal state; consistent duplicates are ignored. Contradictory old-attempt results are flagged for reconciliation, not used to create a second money outcome.",
+      "rules": [
+        "BR19",
+        "BR21"
+      ]
+    },
+    {
+      "id": "NEG08",
+      "kind": "negative_or_concurrency",
+      "title": "Delivery and policy checks",
+      "setupAndAction": "Record Seller completion without required evidence; attempt Buyer release before delivery; attempt Seller-triggered automatic payout.",
+      "expected": "Invalid completion/release is rejected and no payout occurs. Valid Seller completion creates DELIVERED only; explicit Buyer acceptance is still required.",
+      "rules": [
+        "BR06",
+        "BR10",
+        "BR11"
+      ]
+    },
+    {
+      "id": "NEG09",
+      "kind": "negative_or_concurrency",
+      "title": "Refund freeze, rejection and withdrawal",
+      "setupAndAction": "In a HELD escrow, propose refund and attempt Seller delivery recording; reject/withdraw the proposal and retry delivery. In a separate DELIVERED escrow, propose refund and attempt Buyer release; reject/withdraw the proposal and retry release. Race delivery recording against a new proposal in an additional HELD case.",
+      "expected": "While PENDING, both new Seller delivery recording and ordinary Buyer release are blocked. REJECTED/WITHDRAWN restores otherwise eligible actions, retaining HELD/DELIVERED and any existing delivery record. In the delivery/proposal race, the atomic order is respected: proposal first blocks delivery; delivery first records DELIVERED, after which an eligible proposal may still freeze release. No automatic payout occurs.",
+      "rules": [
+        "BR10",
+        "BR12",
+        "BR13"
+      ]
+    },
+    {
+      "id": "NEG10",
+      "kind": "negative_or_concurrency",
+      "title": "Wrong person responds to refund",
+      "setupAndAction": "Proposer attempts self-approval/self-rejection; counterpart attempts withdrawal; outsider attempts any response.",
+      "expected": "All invalid responses are rejected; pending proposal and money state are unchanged.",
+      "rules": [
+        "BR13",
+        "BR24"
+      ]
+    },
+    {
+      "id": "NEG11",
+      "kind": "negative_or_concurrency",
+      "title": "Dispute invalidates pending refund",
+      "setupAndAction": "Create a pending refund proposal, open a dispute, then submit a stale approval.",
+      "expected": "Proposal becomes INVALIDATED and dispute OPEN atomically; stale approval is rejected, no refund payout is started.",
+      "rules": [
+        "BR14",
+        "BR17"
+      ]
+    },
+    {
+      "id": "NEG12",
+      "kind": "negative_or_concurrency",
+      "title": "Concurrent Buyer release versus refund proposal",
+      "setupAndAction": "Issue Buyer acceptance/release and a refund proposal against DELIVERED concurrently.",
+      "expected": "Only one valid atomic gate wins. If proposal wins, release is blocked; if release wins, proposal is rejected and RELEASE_PENDING persists.",
+      "rules": [
+        "BR11",
+        "BR12",
+        "BR17"
+      ]
+    },
+    {
+      "id": "NEG13",
+      "kind": "negative_or_concurrency",
+      "title": "Concurrent release, refund approval and dispute",
+      "setupAndAction": "Create the valid starting condition for each pair: release/dispute without a proposal; refund-approval/dispute with a pending proposal; release/refund-approval with a pending proposal.",
+      "expected": "For release/dispute and refund-approval/dispute, exactly one eligible transition commits. With an existing pending proposal, ordinary release is already ineligible. No run accepts opposite payouts or opens a dispute after payout acceptance.",
+      "rules": [
+        "BR11",
+        "BR13",
+        "BR14",
+        "BR17"
+      ]
+    },
+    {
+      "id": "NEG14",
+      "kind": "negative_or_concurrency",
+      "title": "Conflicting Admin decisions",
+      "setupAndAction": "Two Admin requests concurrently resolve the same OPEN dispute in opposite directions.",
+      "expected": "Exactly one reasoned decision is recorded and one pending direction is accepted; stale opposite request is rejected.",
+      "rules": [
+        "BR16",
+        "BR17",
+        "BR20"
+      ]
+    },
+    {
+      "id": "NEG15",
+      "kind": "negative_or_concurrency",
+      "title": "Unknown payout result and controlled failed retry",
+      "setupAndAction": "For both payout directions, time out then request retry; separately obtain explicit failed/no-money confirmation and retry through A5.",
+      "expected": "Unknown result stays pending and is query-only. Confirmed failed attempt enables one controlled same-direction retry; original beneficiary, amount and decision remain fixed. Admin cannot mark success or switch payout direction.",
+      "rules": [
+        "BR18",
+        "BR19",
+        "BR20",
+        "BR22"
+      ]
+    },
+    {
+      "id": "NEG16",
+      "kind": "negative_or_concurrency",
+      "title": "Terminal and accepted-payout protection",
+      "setupAndAction": "At each pending/terminal payout state, attempt a new dispute, opposite payout, cancellation or refund proposal.",
+      "expected": "All such requests are rejected; the saved payout direction and final result cannot be reversed.",
+      "rules": [
+        "BR20",
+        "BR23"
+      ]
+    },
+    {
+      "id": "NEG17",
+      "kind": "negative_or_concurrency",
+      "title": "Merchant ownership and role separation",
+      "setupAndAction": "Use a valid Merchant client to create for an unbound Seller, query another Merchant's escrow, set owner fields or invoke participant/Admin actions.",
+      "expected": "Reject all out-of-scope calls without protected data/state changes; valid create/query for owned bound-Seller escrows remains available.",
+      "rules": [
+        "BR03",
+        "BR04",
+        "BR24"
+      ]
+    },
+    {
+      "id": "NEG18",
+      "kind": "negative_or_concurrency",
+      "title": "MFA failure and logout reuse",
+      "setupAndAction": "Try wrong/missing factors for user/Admin login, then reuse a session after logout.",
+      "expected": "No session on factor failure; post-logout protected request is rejected; no authentication secrets appear in logs.",
+      "rules": [
+        "BR03",
+        "BR25"
+      ]
+    },
+    {
+      "id": "NEG19",
+      "kind": "negative_or_concurrency",
+      "title": "Outsider and wrong participant access",
+      "setupAndAction": "Attempt view, funding, Seller acceptance/completion, evidence, refund response and Admin resolution using unauthorised identities.",
+      "expected": "Every action is checked against the required role and escrow ownership; no protected data or state mutation is exposed.",
+      "rules": [
+        "BR02",
+        "BR24",
+        "BR25"
+      ]
+    },
+    {
+      "id": "NEG20",
+      "kind": "negative_or_concurrency",
+      "title": "Policy change after creation",
+      "setupAndAction": "Create one GOODS and SERVICES escrow, change evidence settings as Admin, then create new escrows and execute the old/new delivery paths.",
+      "expected": "Old policy snapshots remain unchanged; only new escrows use changed evidence settings. No config value enables automatic release.",
+      "rules": [
+        "BR06",
+        "BR10",
+        "BR11"
+      ]
+    },
+    {
+      "id": "NEG21",
+      "kind": "negative_or_concurrency",
+      "title": "Evidence after resolution or second dispute",
+      "setupAndAction": "Resolve a dispute, then submit evidence or open another dispute; also attempt a decision without a reason.",
+      "expected": "All are rejected; resolved evidence/decision is retained and no second payout occurs.",
+      "rules": [
+        "BR14",
+        "BR15",
+        "BR16"
+      ]
+    },
+    {
+      "id": "NEG22",
+      "kind": "negative_or_concurrency",
+      "title": "Restart during provider wait",
+      "setupAndAction": "Interrupt each pending operation after provider submission and before local result handling; recover and reconcile.",
+      "expected": "State, provider reference, amount/destination, accepted decision and orthogonal records persist; reconciliation resolves without duplicate money movement.",
+      "rules": [
+        "BR18",
+        "BR19",
+        "BR21"
+      ]
+    },
+    {
+      "id": "NEG23",
+      "kind": "negative_or_concurrency",
+      "title": "Agreement self-trade and invalid amount",
+      "setupAndAction": "Create with same Buyer/Seller, zero/negative/fractional amount or non-VND currency; edit accepted terms.",
+      "expected": "Reject invalid create/edit; valid accepted agreement remains immutable.",
+      "rules": [
+        "BR01",
+        "BR02",
+        "BR04",
+        "BR05"
+      ]
+    },
+    {
+      "id": "NEG24",
+      "kind": "negative_or_concurrency",
+      "title": "Audit and analytics consistency",
+      "setupAndAction": "Inspect state transitions and dashboard after mixed pending/success/failure scenarios; attempt Admin audit edit/delete.",
+      "expected": "Dashboard matches observed mock records, pending differs from completed, audit is read-only and secret-free.",
+      "rules": [
+        "BR25",
+        "BR26"
+      ]
+    }
+  ],
+  "planningAlignmentNotes": [
+    {
+      "id": "ALIGN01",
+      "language": "vi",
+      "topic": "Tên hệ thống",
+      "note": "Chuẩn hóa toàn bộ chương Analysis thành Escrow Payment System (EPS). Nếu Introduction/Planning dùng IPS hoặc tên khác, ghi đây là điểm cần đồng bộ khi nhóm chỉnh sửa bản nguồn; không tự sửa hai chương PDF đã có."
+    },
+    {
+      "id": "ALIGN02",
+      "language": "vi",
+      "topic": "Vision và MVP",
+      "note": "Phân biệt tầm nhìn trong Introduction/Planning với phạm vi học phần tại 2.4.1. Chương Analysis chỉ đặc tả escrow giả lập VND, một buyer/một seller và thanh toán toàn phần một lần. Tiền thật, cross-border, đa tiền tệ, milestone, chia tiền, provider thật và tính phí được ghi là hướng phát triển; không âm thầm đưa vào MVP."
+    },
+    {
+      "id": "ALIGN03",
+      "language": "vi",
+      "topic": "Các phát biểu pháp lý",
+      "note": "Các phát biểu pháp lý/quy định trong Planning chưa được xác minh bằng nguồn pháp lý hiện hành trong công việc này. Không dùng chúng để khẳng định MVP đã tuân thủ pháp luật hoặc đủ điều kiện vận hành tiền thật; nếu triển khai thực tế cần một đợt rà soát pháp lý riêng có nguồn."
+    },
+    {
+      "id": "ALIGN04",
+      "language": "vi",
+      "topic": "21 tuần và công việc song song",
+      "note": "Timeline nguồn tại trang PDF 9–10 (trang in 12–13) nêu Analysis 2 tuần; System/UI 3 tuần; Backend 7 tuần; Frontend 5 tuần và ghi rõ song song Backend; Dispute Workflow Integration 2 tuần; Testing/Security/Deployment 2 tuần, đồng thời kết luận tổng 21 tuần. Cộng các số theo tuần tự được 21, nhưng frontend song song backend khiến 21 tuần chưa được chứng minh là thời gian đường găng. Nhóm cần làm rõ phụ thuộc và mức độ chồng lấn; không tự tính lại một thời lượng cuối cùng khi chưa có phụ thuộc, và không sửa PDF gốc."
+    },
+    {
+      "id": "ALIGN05",
+      "language": "vi",
+      "topic": "Giới hạn kết cấu và bằng chứng",
+      "note": "Giữ đúng 3.1→3.5 và cùng 22 mã use case trong đặc tả, activity, sequence; hai biến thể API dùng lại B1/U4. Tài liệu này là đặc tả phân tích và kịch bản nghiệm thu, không phải bằng chứng hệ thống đã được xây dựng hoặc kiểm thử. NFR p95 ≤ 2 giây là mục tiêu đề xuất, chưa phải số đo."
+    }
+  ],
+  "validationSummary": {
+    "basicMatrixCount": 16,
+    "negativeOrConcurrencyCount": 24,
+    "requirementsCount": 12,
+    "businessRulesCount": 27,
+    "canonicalLifecycleCount": 10,
+    "nfrGroups": [
+      "Performance",
+      "Operational",
+      "Security",
+      "Cultural and Political"
+    ],
+    "testStatus": "Specification reviewed for internal consistency; acceptance scenarios are designed, not executed against an implemented system."
+  }
+}
+

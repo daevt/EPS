@@ -1,0 +1,32 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[margin=25mm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{graphicx,pdfpages,longtable,array,booktabs,enumitem,pdflscape,fancyhdr}
+\usepackage{hyperref}
+\definecolor{epsblue}{HTML}{1764A0}
+\hypersetup{colorlinks=true,linkcolor=epsblue,urlcolor=epsblue,pdftitle={EPS Report - Analysis MVP},pdfauthor={Group 1}}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{4pt}
+\setlength{\headheight}{15pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.18}
+\setlist[itemize]{nosep,leftmargin=*}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Systems Analysis and Design - IT3120E}
+\fancyhead[R]{EPS Final Report}
+\fancyfoot[C]{\thepage}
+\newcommand{\epsfigure}[3]{\clearpage\begin{figure}[p]\centering\includegraphics[width=\textwidth,height=0.87\textheight,keepaspectratio,clip]{#1}\caption{#2}\label{#3}\end{figure}\clearpage}
+\newlength{\epsavailable}
+\newcommand{\epsfirstfigure}[3]{\par\setlength{\epsavailable}{\dimexpr\textheight-\pagetotal-70pt\relax}\ifdim\epsavailable<0.48\textheight\clearpage\setlength{\epsavailable}{0.87\textheight}\fi\ifdim\epsavailable>0.87\textheight\setlength{\epsavailable}{0.87\textheight}\fi\begin{figure}[!ht]\centering\includegraphics[width=\textwidth,height=\epsavailable,keepaspectratio,clip]{#1}\caption{#2}\label{#3}\end{figure}\clearpage}
+\begin{document}
+\ifdefined\AnalysisOnly\else
+\includepdf[pages=-,pagecommand={},fitpaper=true]{source/Introduction_Planning.pdf}
+\fi
+\setcounter{page}{15}
+\setcounter{chapter}{2}
+\input{sections/analysis.tex}
+\end{document}

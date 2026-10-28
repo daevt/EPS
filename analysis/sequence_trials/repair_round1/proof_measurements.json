@@ -1,0 +1,292 @@
+{
+  "source": "pdfplumber 0.11.9 character extraction cross-checked against pdf.js text spans from pdflatex inclusion PDFs",
+  "threshold_pt": 9,
+  "excluded_chrome": [
+    "page title",
+    "subtitle",
+    "two legend lines"
+  ],
+  "proofs": {
+    "portrait": {
+      "pdf": "analysis\\sequence_trials\\repair_round1\\proof_portrait.pdf",
+      "page_size_pt": [
+        595.28,
+        841.89
+      ],
+      "figure_box_pt": [
+        510,
+        757
+      ],
+      "records": [
+        {
+          "id": "B3",
+          "page": 1,
+          "business_and_participant_guard_ref_note_min_pt": 9.103,
+          "business_and_participant_guard_ref_note_max_pt": 10.403,
+          "pdfplumber_character_size_pt_counts": {
+            "7.735": 209,
+            "8.438": 84,
+            "9.844": 656,
+            "11.25": 19
+          },
+          "passes_9pt": true,
+          "actual_integration_box_pt": [
+            510,
+            700
+          ]
+        },
+        {
+          "id": "A5",
+          "page": 2,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 740,
+            "9.264": 71
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U4.API",
+          "page": 3,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 644,
+            "9.264": 53
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U3",
+          "page": 4,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 581,
+            "9.264": 14
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U4",
+          "page": 5,
+          "business_and_participant_guard_ref_note_min_pt": 8.479,
+          "business_and_participant_guard_ref_note_max_pt": 9.69,
+          "pdfplumber_character_size_pt_counts": {
+            "6.662": 209,
+            "7.267": 84,
+            "8.479": 703,
+            "9.69": 26
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U6",
+          "page": 6,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 772,
+            "9.264": 31
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "B2",
+          "page": 7,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 628,
+            "9.264": 30
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "S2",
+          "page": 8,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 766,
+            "9.264": 42
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U8",
+          "page": 9,
+          "business_and_participant_guard_ref_note_min_pt": 8.106,
+          "business_and_participant_guard_ref_note_max_pt": 9.264,
+          "pdfplumber_character_size_pt_counts": {
+            "6.369": 209,
+            "6.948": 84,
+            "8.106": 743,
+            "9.264": 37
+          },
+          "passes_9pt": false
+        }
+      ]
+    },
+    "landscape": {
+      "pdf": "analysis\\sequence_trials\\repair_round1\\proof_landscape.pdf",
+      "page_size_pt": [
+        841.89,
+        595.28
+      ],
+      "figure_box_pt": [
+        755,
+        510
+      ],
+      "records": [
+        {
+          "id": "B3",
+          "page": 1,
+          "business_and_participant_guard_ref_note_min_pt": 6.632,
+          "business_and_participant_guard_ref_note_max_pt": 7.579,
+          "pdfplumber_character_size_pt_counts": {
+            "5.211": 209,
+            "5.685": 84,
+            "6.632": 656,
+            "7.579": 19
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "A5",
+          "page": 2,
+          "business_and_participant_guard_ref_note_min_pt": 6.699,
+          "business_and_participant_guard_ref_note_max_pt": 7.656,
+          "pdfplumber_character_size_pt_counts": {
+            "5.264": 209,
+            "5.742": 84,
+            "6.699": 740,
+            "7.656": 71
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U4.API",
+          "page": 3,
+          "business_and_participant_guard_ref_note_min_pt": 7.903,
+          "business_and_participant_guard_ref_note_max_pt": 9.032,
+          "pdfplumber_character_size_pt_counts": {
+            "6.21": 209,
+            "6.774": 84,
+            "7.903": 644,
+            "9.032": 53
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U3",
+          "page": 4,
+          "business_and_participant_guard_ref_note_min_pt": 5.766,
+          "business_and_participant_guard_ref_note_max_pt": 6.589,
+          "pdfplumber_character_size_pt_counts": {
+            "4.53": 209,
+            "4.942": 84,
+            "5.766": 581,
+            "6.589": 14
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U4",
+          "page": 5,
+          "business_and_participant_guard_ref_note_min_pt": 5.712,
+          "business_and_participant_guard_ref_note_max_pt": 6.528,
+          "pdfplumber_character_size_pt_counts": {
+            "4.488": 209,
+            "4.896": 84,
+            "5.712": 703,
+            "6.528": 26
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U6",
+          "page": 6,
+          "business_and_participant_guard_ref_note_min_pt": 5.816,
+          "business_and_participant_guard_ref_note_max_pt": 6.647,
+          "pdfplumber_character_size_pt_counts": {
+            "4.57": 209,
+            "4.985": 84,
+            "5.816": 772,
+            "6.647": 31
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "B2",
+          "page": 7,
+          "business_and_participant_guard_ref_note_min_pt": 5.816,
+          "business_and_participant_guard_ref_note_max_pt": 6.647,
+          "pdfplumber_character_size_pt_counts": {
+            "4.57": 209,
+            "4.985": 84,
+            "5.816": 628,
+            "6.647": 30
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "S2",
+          "page": 8,
+          "business_and_participant_guard_ref_note_min_pt": 5.816,
+          "business_and_participant_guard_ref_note_max_pt": 6.647,
+          "pdfplumber_character_size_pt_counts": {
+            "4.57": 209,
+            "4.985": 84,
+            "5.816": 766,
+            "6.647": 42
+          },
+          "passes_9pt": false
+        },
+        {
+          "id": "U8",
+          "page": 9,
+          "business_and_participant_guard_ref_note_min_pt": 6.025,
+          "business_and_participant_guard_ref_note_max_pt": 6.886,
+          "pdfplumber_character_size_pt_counts": {
+            "4.734": 209,
+            "5.164": 84,
+            "6.025": 743,
+            "6.886": 37
+          },
+          "passes_9pt": false
+        }
+      ]
+    }
+  },
+  "actual_report_page_proof": {
+    "pdf": "analysis/sequence_trials/repair_round1/report_page_B3.pdf",
+    "tex": "analysis/sequence_trials/repair_round1/report_page_B3.tex",
+    "figure_box_pt": [
+      510,
+      700
+    ],
+    "page_size_pt": [
+      595.276,
+      841.89
+    ],
+    "accepted_B3_min_body_glyph_pt": 9.103,
+    "caption": "Figure 1: B3: Fund Escrow",
+    "page_count": 1,
+    "overfull_warnings": 0,
+    "note": "Actual report-style page with Times, fancy header/footer, caption, clipping enabled. Replaces the 510x757 inclusion-only B3 portrait size as the acceptance proof."
+  }
+}

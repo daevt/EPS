@@ -1,0 +1,114 @@
+{
+  "diagrams": [
+    {
+      "id": "UC_Account",
+      "title": "3.1a - Account access",
+      "file": "diagrams/overview/UC_Account.drawio",
+      "use_cases": [
+        "U1",
+        "U2",
+        "U3"
+      ],
+      "notes": "U1 creates ordinary human accounts with MFA enrollment. Admin is pre-provisioned. Merchant clients use separate client authentication, not human login/MFA.",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    },
+    {
+      "id": "UC_SharedParty",
+      "title": "3.1b - Shared escrow-party actions",
+      "file": "diagrams/overview/UC_SharedParty.drawio",
+      "use_cases": [
+        "U4",
+        "U5",
+        "U6",
+        "U7",
+        "U8"
+      ],
+      "notes": "Merchant uses U4.API for its own client escrows only. U8 accepted refund invokes P3; an open dispute invalidates a pending refund proposal. No merchant refund/dispute authority.",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    },
+    {
+      "id": "UC_Buyer",
+      "title": "3.1c - Buyer journey",
+      "file": "diagrams/overview/UC_Buyer.drawio",
+      "use_cases": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "notes": "B1.API reuses B1 with seller-bound client authorization. P2 is a referenced reusable payment use case. B4 always invokes P2 after its state guard accepts the release decision.",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    },
+    {
+      "id": "UC_Seller",
+      "title": "3.1d - Seller journey",
+      "file": "diagrams/overview/UC_Seller.drawio",
+      "use_cases": [
+        "S1",
+        "S2"
+      ],
+      "notes": "Seller accepts terms before funding. S2 records goods delivery or service completion and required evidence; it never proves payment completion or automatically releases funds.",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    },
+    {
+      "id": "UC_Admin",
+      "title": "3.1e - Administration",
+      "file": "diagrams/overview/UC_Admin.drawio",
+      "use_cases": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "notes": "A1 accepts one reasoned full-release or full-refund decision and invokes P2 or P3. A5 queries unknown outcomes and retries only confirmed failures; it cannot manually mark a transfer successful.",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    },
+    {
+      "id": "UC_Payment",
+      "title": "3.1f - Payment integration",
+      "file": "diagrams/overview/UC_Payment.drawio",
+      "use_cases": [
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "notes": "P1 confirms actual mock receipt. P2 releases via Bank mock. P3 refunds through the original funding provider/source. Buyer/Admin decisions initiate P2/P3 indirectly; no internal EPS actor is invented.",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    },
+    {
+      "id": "UC_Overview",
+      "title": "3.1 - EPS use-case module map",
+      "file": "diagrams/overview/UC_Overview.drawio",
+      "use_cases": [
+        "U1",
+        "U2",
+        "U3",
+        "U4",
+        "U5",
+        "U6",
+        "U7",
+        "U8",
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "S1",
+        "S2",
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "notes": "Navigation to six focused UML views",
+      "provenance": "Newly authored from approved MVP plan; no old diagram input"
+    }
+  ],
+  "unique_use_case_count": 22,
+  "unique_actor_count": 7,
+  "origin": "Fresh generation from approved plan; no old diagram source"
+}

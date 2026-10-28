@@ -1,0 +1,331 @@
+[
+  {
+    "id": "S1",
+    "name": "Accept/Reject Escrow Terms",
+    "group": "Seller",
+    "actors": ["Seller"],
+    "usage": "Allow the named seller to accept or reject the complete proposed agreement before the buyer can fund it.",
+    "activation": "The seller opens an escrow awaiting the seller's response and selects Accept or Reject.",
+    "preconditions": [
+      "The seller has an authenticated session established through MFA and is the named seller of this escrow.",
+      "The escrow is AWAITING_SELLER, no funding has begun, and the buyer and seller are different users.",
+      "The agreement identifies the buyer, seller, transaction type, full positive VND amount, deliverable, acceptance criteria, and evidence-policy snapshot."
+    ],
+    "flow": [
+      {"index": "1", "by": "Seller", "action": "Open the proposed escrow and review every agreement term and its evidence requirements."},
+      {"index": "2", "by": "EPS", "action": "Verify the seller's identity, escrow membership, current agreement revision, and that the escrow is still AWAITING_SELLER."},
+      {"index": "3", "by": "Seller", "action": "Choose Accept or Reject. A rejection may include a reason."},
+      {"index": "4", "by": "EPS", "action": "Atomically record the response. Acceptance freezes the agreement and sets AWAITING_FUNDING; rejection sets CANCELLED with reason SELLER_REJECTED."},
+      {"index": "5", "by": "EPS", "action": "Record an audit event and show the resulting status to the parties."},
+      {"index": "2a", "by": "EPS", "action": "If the requester is not the named seller, deny the operation without exposing another user's escrow details."},
+      {"index": "4a", "by": "EPS", "action": "If the buyer has already cancelled or the agreement is no longer awaiting acceptance, reject the stale response and return the current authorized status."},
+      {"index": "4b", "by": "EPS", "action": "For a repeated identical acceptance or rejection, return the previously recorded result without a second transition. An opposite response after a recorded response is rejected."},
+      {"index": "4c", "by": "EPS", "action": "If persistence fails, do not report acceptance. Return an unresolved response that can be checked through View/Track Escrows; no funding is allowed until the saved acceptance is confirmed."}
+    ],
+    "postconditions": [
+      "Accepted terms are immutable and AWAITING_FUNDING permits funding, or CANCELLED with reason SELLER_REJECTED disables funding.",
+      "An accepted agreement may only be replaced by cancelling under the unfunded-cancellation rules and creating another escrow.",
+      "No simulated money is moved by this use case."
+    ],
+    "related_rules": ["Seller acceptance precedes funding", "Accepted terms are immutable", "Policy is snapshotted at creation", "Role and escrow membership authorization", "Atomic state transition and duplicate handling"],
+    "requirements": ["FR02", "FR10"]
+  },
+  {
+    "id": "S2",
+    "name": "Record Delivery/Service Completion",
+    "group": "Seller",
+    "actors": ["Seller"],
+    "usage": "Record full delivery of the goods or completion of the service so that the buyer can inspect the result against the agreed acceptance criteria.",
+    "activation": "The seller selects Record Delivery or Record Service Completion on a funded escrow.",
+    "preconditions": [
+      "The seller has an authenticated MFA session and is the named seller.",
+      "The full agreed amount has been authoritatively confirmed and the escrow is HELD.",
+      "No delivery has already been recorded, and no active refund proposal, dispute, or reserved release/refund outcome prevents delivery recording.",
+      "The accepted terms and their evidence-policy snapshot are available."
+    ],
+    "flow": [
+      {"index": "1", "by": "Seller", "action": "Open the escrow and provide a completion statement linked to the agreed deliverable and acceptance criteria."},
+      {"index": "2", "by": "Seller", "action": "For goods, provide delivery information and any required proof; for services, provide the completed work or a reference to the delivered work and any required evidence."},
+      {"index": "3", "by": "EPS", "action": "Validate the seller's permission, the current held-money state, the transaction type, and the evidence requirements snapshotted when the escrow was created."},
+      {"index": "4", "by": "EPS", "action": "Atomically save the completion record, set DELIVERED, and retain the full amount in escrow."},
+      {"index": "5", "by": "EPS", "action": "Record an audit event and make the completion and permitted evidence available to the buyer for acceptance or dispute."},
+      {"index": "3a", "by": "EPS", "action": "If required evidence is missing or invalid, display the validation errors and keep the escrow funded without recording completion. Defaults are optional evidence for goods and required evidence for services unless the saved policy states otherwise."},
+      {"index": "3b", "by": "EPS", "action": "If a refund proposal, dispute, or payout reservation has appeared since the seller opened the form, reject the stale operation and show the current status."},
+      {"index": "4a", "by": "EPS", "action": "A repeated identical submission returns the existing completion record without producing a second delivery or a payment request."},
+      {"index": "4b", "by": "EPS", "action": "If the record cannot be saved, leave the completion status unchanged and allow the seller to check and safely repeat the request."}
+    ],
+    "postconditions": [
+      "The escrow is DELIVERED, contains the recorded full completion, and is available for buyer review.",
+      "Funds remain held; seller completion does not authorize automatic release.",
+      "No milestone, partial delivery payout, or provider call is created."
+    ],
+    "related_rules": ["Full goods/service completion", "Policy is snapshotted at creation", "Buyer acceptance is required for normal release", "Refund proposal blocks normal release", "Atomic state transition and duplicate handling"],
+    "requirements": ["FR02", "FR04", "FR05", "FR10"]
+  },
+  {
+    "id": "A1",
+    "name": "Review and Resolve Dispute",
+    "group": "Admin",
+    "actors": ["Admin"],
+    "usage": "Review the parties' evidence and issue one reasoned final decision to release the full amount to the seller or refund the full amount to the buyer's original funding source.",
+    "activation": "An authorized Admin opens an unresolved escrow dispute and selects a resolution.",
+    "preconditions": [
+      "The Admin has a pre-provisioned administrator account, an authenticated MFA session, and dispute-resolution permission.",
+      "The escrow has dispute status OPEN, a main state of HELD or DELIVERED, confirmed held funds, and no previously reserved release/refund outcome.",
+      "The accepted terms, relevant audit history, and all evidence submitted before the decision are available."
+    ],
+    "flow": [
+      {"index": "1", "by": "Admin", "action": "Open the dispute and inspect the agreement, completion information, both parties' submitted evidence, and relevant escrow history."},
+      {"index": "2", "by": "EPS", "action": "Display the full disputed VND amount, the two eligible full-amount outcomes, and the most recent evidence set."},
+      {"index": "3", "by": "Admin", "action": "Choose Release to Seller or Refund to Original Funding Source and enter the supporting decision rationale."},
+      {"index": "4", "by": "EPS", "action": "Validate authorization, a non-empty rationale, the latest dispute/evidence revision, and that the full funds remain available without a competing payout reservation."},
+      {"index": "5", "by": "EPS", "action": "Atomically save the final dispute decision and rationale, set dispute status RESOLVED, close evidence submission, reserve the full amount for that decision's direction, and set RELEASE_PENDING or REFUND_PENDING. Record the decision audit event before dispatch."},
+      {"index": "6", "by": "EPS", "action": "Invoke P2 Execute and Confirm Release or P3 Execute and Confirm Refund with the saved authorized decision; show payment pending until the provider confirms the outcome."},
+      {"index": "7", "by": "EPS", "action": "Expose the decision, rationale, and separate payment status to the parties. Provider-confirmed success subsequently produces RELEASED or REFUNDED."},
+      {"index": "4a", "by": "EPS", "action": "If new evidence arrived after the Admin's review, return the updated evidence for review before allowing a decision to be resubmitted."},
+      {"index": "4b", "by": "EPS", "action": "Reject an unauthorized Admin, missing rationale, resolved dispute, or competing reserved outcome; no payment request is made."},
+      {"index": "5a", "by": "EPS", "action": "If two Admin decisions race, accept only the first valid atomic decision. A duplicate matching request returns the existing decision; an opposite decision cannot replace it."},
+      {"index": "6a", "by": "EPS", "action": "On provider timeout or unknown result, retain the decision and reservation and use A5 for query-only reconciliation. On authoritative confirmed failure without money moved, retain the same direction for an authorized retry through A5."}
+    ],
+    "postconditions": [
+      "There is at most one final dispute decision with an identifiable Admin and rationale.",
+      "The full amount is reserved for the decided direction; the dispute decision itself is not evidence of a successful money transfer.",
+      "Evidence submission, a new dispute, an opposite payout, split outcomes, and appeals are unavailable after the final decision.",
+      "RELEASED or REFUNDED is recorded only after authoritative confirmation in P2 or P3."
+    ],
+    "related_rules": ["One dispute per escrow", "Evidence accepted until final Admin decision", "Full release or full refund only", "Atomic outcome reservation", "Pending is not success", "Retry only confirmed failure in same direction"],
+    "requirements": ["FR04", "FR05", "FR06", "FR07", "FR10", "FR11"]
+  },
+  {
+    "id": "A2",
+    "name": "Configure Escrow Policy Parameters",
+    "group": "Admin",
+    "actors": ["Admin"],
+    "usage": "Configure whether delivery evidence is required for each supported transaction type on escrows created after the change.",
+    "activation": "An authorized Admin opens the escrow policy configuration and saves changed evidence requirements.",
+    "preconditions": [
+      "The Admin has an authenticated MFA session and policy-configuration permission.",
+      "The current versioned policy is available; supported transaction types are Goods and Services.",
+      "The only editable MVP policy parameter is evidence-required for each transaction type."
+    ],
+    "flow": [
+      {"index": "1", "by": "EPS", "action": "Show the current policy version and evidence-required setting for Goods and Services, with a notice that changes affect future escrow creation only."},
+      {"index": "2", "by": "Admin", "action": "Set the evidence-required boolean for one or both transaction types and provide a change reason."},
+      {"index": "3", "by": "EPS", "action": "Validate Admin permission, supported boolean values, the change reason, and that the displayed policy version is still current."},
+      {"index": "4", "by": "EPS", "action": "Atomically publish a new policy version with actor, time, reason, and before/after settings; record the change in the audit trail."},
+      {"index": "5", "by": "EPS", "action": "Use this policy version for subsequently created escrows. Existing escrows retain their saved evidence requirements even if they have not yet been accepted or funded."},
+      {"index": "3a", "by": "EPS", "action": "Reject requests to change currency, fees, automatic release, buyer acceptance, payout splitting, or other unsupported policy fields."},
+      {"index": "3b", "by": "EPS", "action": "If another Admin changed the policy, display the new version and require a fresh review rather than silently overwriting it."},
+      {"index": "4a", "by": "EPS", "action": "A request that makes no setting change returns the current policy without a new active version. If saving fails, retain the previous active policy."}
+    ],
+    "postconditions": [
+      "A valid changed policy is published for future escrow creation with a traceable version, or the prior policy remains active.",
+      "Defaults are optional evidence for Goods and required evidence for Services.",
+      "Normal release still requires explicit buyer acceptance; Admin dispute resolution remains a separate authorized branch.",
+      "No existing escrow agreement or evidence-policy snapshot is modified."
+    ],
+    "related_rules": ["Evidence-required boolean is the only configurable MVP policy", "Policy is snapshotted at creation", "Buyer acceptance is required for normal release", "Audit captures privileged changes"],
+    "requirements": ["FR08", "FR10"]
+  },
+  {
+    "id": "A3",
+    "name": "View Basic Analytics",
+    "group": "Admin",
+    "actors": ["Admin"],
+    "usage": "Provide a basic read-only view of escrow counts and simulated VND amounts so that Admin can monitor the academic demo and identify unresolved transactions.",
+    "activation": "An authorized Admin opens or refreshes the analytics dashboard.",
+    "preconditions": [
+      "The Admin has an authenticated MFA session and analytics-view permission.",
+      "The dashboard reads recorded escrow, dispute, and payment-attempt states without changing them."
+    ],
+    "flow": [
+      {"index": "1", "by": "Admin", "action": "Open the dashboard and optionally choose a creation-date interval and transaction-type filter."},
+      {"index": "2", "by": "EPS", "action": "Validate access and filter values and identify the authorized dataset."},
+      {"index": "3", "by": "EPS", "action": "Aggregate escrow counts by lifecycle state, open-dispute count, unresolved funding/payout attempt count, and VND amounts currently held, successfully released, and successfully refunded."},
+      {"index": "4", "by": "EPS", "action": "Show the filter interval, refresh time, and mock-data label together with the results. Include pending/failed-reserved payout amounts within held funds exactly once and do not count unconfirmed funding attempts as held money."},
+      {"index": "5", "by": "Admin", "action": "Open an authorized escrow or A5 reconciliation view to investigate an unresolved item."},
+      {"index": "2a", "by": "EPS", "action": "Reject invalid date intervals or unsupported filter values without substituting misleading results."},
+      {"index": "3a", "by": "EPS", "action": "For no matching records, show zero totals and an empty-data message with the selected filters."},
+      {"index": "3b", "by": "EPS", "action": "If aggregation is unavailable, display that the dashboard could not be refreshed. Any retained earlier view is clearly marked with its earlier refresh time, never presented as current."},
+      {"index": "4a", "by": "EPS", "action": "Unauthorized access returns no analytics or underlying escrow data."}
+    ],
+    "postconditions": [
+      "The Admin receives an explicitly timestamped, read-only overview or a clear unavailable result.",
+      "No escrow, dispute, payment outcome, or policy is changed.",
+      "The dashboard does not claim to be a financial statement or evidence of real-money operations."
+    ],
+    "related_rules": ["Mock VND academic scope", "Pending is not success", "One final money outcome per escrow", "Analytics read access is privileged"],
+    "requirements": ["FR09"]
+  },
+  {
+    "id": "A4",
+    "name": "View Audit Trail",
+    "group": "Admin",
+    "actors": ["Admin"],
+    "usage": "Inspect the chronological history of escrow and administrative actions without changing recorded audit evidence.",
+    "activation": "An authorized Admin opens the audit view for an escrow, payment reference, or administrative event interval.",
+    "preconditions": [
+      "The Admin has an authenticated MFA session and audit-view permission.",
+      "EPS retains audit events for agreement decisions, funds-state changes, refund proposals, disputes, policy changes, and reconciliation actions."
+    ],
+    "flow": [
+      {"index": "1", "by": "Admin", "action": "Choose an escrow/reference or a time interval and optional event-type filter."},
+      {"index": "2", "by": "EPS", "action": "Validate authorization and filter values and retrieve permitted events in chronological order."},
+      {"index": "3", "by": "EPS", "action": "Display each event's time, actor or provider identity, action, affected escrow/attempt or policy reference, relevant before/after status, result, and reason where applicable."},
+      {"index": "4", "by": "Admin", "action": "Inspect related authorized escrow or reconciliation details through the event references."},
+      {"index": "2a", "by": "EPS", "action": "If no event matches, show an empty result for the chosen filters. A missing event is not synthesized and does not imply payment success."},
+      {"index": "2b", "by": "EPS", "action": "Reject invalid filters or unauthorized access. If retrieval fails, show an unavailable result and preserve stored events."},
+      {"index": "3a", "by": "EPS", "action": "Mask sensitive personal fields and exclude passwords, MFA codes, session tokens, merchant secrets, provider authentication material, and secret-bearing callback payloads."},
+      {"index": "3b", "by": "EPS", "action": "Provide no edit or delete action for existing events; attempted audit mutation is denied and cannot be used to change an escrow or payment result."}
+    ],
+    "postconditions": [
+      "The Admin sees permitted historical evidence and its correlation references, or an explicit empty/unavailable result.",
+      "The audit trail is unchanged by viewing and remains read-only to the Admin.",
+      "Viewing a payment audit event does not replace authoritative provider confirmation."
+    ],
+    "related_rules": ["Audit is read-only to Admin", "Sensitive authentication data excluded from logs", "Role-based administrative access", "Provider confirmation determines money outcome"],
+    "requirements": ["FR10"]
+  },
+  {
+    "id": "A5",
+    "name": "Reconcile Pending Transactions/Retry Confirmed-Failed Transfers",
+    "group": "Admin",
+    "actors": ["Admin", "Partner Bank", "Payment Gateway"],
+    "usage": "Resolve uncertain provider results by querying the original attempt, and safely retry only a definitively failed payout for the same previously approved direction.",
+    "activation": "An authorized Admin selects an unresolved funding/release/refund attempt, or selects Retry for a payout whose provider-confirmed failure explicitly establishes that no money moved.",
+    "preconditions": [
+      "The Admin has an authenticated MFA session and reconciliation permission.",
+      "A recorded attempt identifies the escrow, operation, full amount, VND currency, responsible provider, and stable operation/attempt reference.",
+      "A release/refund attempt is linked to a valid immutable buyer, mutual-refund, or Admin-resolution authorization.",
+      "An uncertain attempt has no newer competing attempt; a retry requires authoritative final failure with no money moved."
+    ],
+    "flow": [
+      {"index": "1", "by": "Admin", "action": "Open the unresolved or confirmed-failed attempt and inspect its current status, last provider response, and approved direction where applicable."},
+      {"index": "2", "by": "EPS", "action": "Validate permission and query the responsible mock provider for the original recorded reference; do not create another money movement to discover its status."},
+      {"index": "3", "by": "Partner Bank / Payment Gateway", "action": "Return an authoritative SUCCEEDED, FAILED with no money moved, PENDING, or UNKNOWN result for that same attempt and operation."},
+      {"index": "4", "by": "EPS", "action": "Authenticate and correlate the response using the same validation rules as P1, P2, or P3. Apply a confirmed success exactly once, or retain the pending status if the response is still inconclusive."},
+      {"index": "5", "by": "EPS", "action": "For confirmed failed funding with no receipt, mark the attempt FAILED, return the escrow to AWAITING_FUNDING, and retain the attempt record. A later funding attempt must be initiated by the buyer through B3, not by Admin."},
+      {"index": "6", "by": "Admin", "action": "For a confirmed-failed release/refund with no money moved, explicitly choose Retry in the already authorized direction."},
+      {"index": "7", "by": "EPS", "action": "Atomically verify the prior failure proof, no active attempt, unchanged full-amount reservation, and the same approved recipient/source and direction. Create one new linked attempt, keep the original decision, and invoke P2 or P3."},
+      {"index": "8", "by": "EPS", "action": "Audit the query, authoritative result, retry actor, old/new attempt references, and resulting business status; return the current status to Admin."},
+      {"index": "3a", "by": "EPS", "action": "On query timeout, unavailable provider, unmatched response, or Pending/Unknown, keep the original attempt unresolved, retain the money reservation, and disable Retry. A later query may be performed safely."},
+      {"index": "4a", "by": "EPS", "action": "A delayed callback racing with the query uses the same atomic confirmation path; the first matching success is applied once and the other becomes an acknowledged duplicate."},
+      {"index": "4b", "by": "EPS", "action": "A contradictory provider result or a second purported money movement is flagged for investigation; it cannot overwrite a final outcome, release a reservation, or authorize another transfer."},
+      {"index": "7a", "by": "EPS", "action": "Repeated Retry clicks return the one active new attempt. Reject retry while any result is unknown, after success, without proof of no movement, or with a changed direction, amount, recipient, or funding source."},
+      {"index": "8a", "by": "EPS", "action": "Deny any attempt to manually mark funding, release, or refund successful. Only verified provider results may make that transition."}
+    ],
+    "postconditions": [
+      "The attempt is authoritatively confirmed, remains pending/unknown, or is recorded as final failure without money moved.",
+      "A payout retry, if accepted, preserves the full amount and original approved direction and has a traceable link to the failed attempt.",
+      "Failure or ambiguity never returns reserved payout funds to a state where the opposite outcome or a new dispute can be selected.",
+      "Admin cannot initiate buyer funding or manufacture a successful money result."
+    ],
+    "related_rules": ["Unknown results are query-only", "Retry only confirmed failure in same direction", "Atomic outcome reservation", "Authoritative confirmation and duplicate handling", "Admin cannot manually mark success"],
+    "requirements": ["FR03", "FR04", "FR05", "FR06", "FR10", "FR11"]
+  },
+  {
+    "id": "P1",
+    "name": "Confirm Funding",
+    "group": "Payment Integration",
+    "actors": ["Partner Bank", "Payment Gateway"],
+    "usage": "Recognize the full simulated escrow receipt only when the selected funding provider gives a verified, correlated success result.",
+    "activation": "The funding provider sends a result for an attempt created by B3, or A5 obtains an authoritative status-query result for that attempt.",
+    "preconditions": [
+      "B3 has created a persistent funding attempt for an accepted agreement using exactly one selected mock provider.",
+      "The attempt records the escrow, expected full VND amount, buyer's original funding-source reference, provider identity, and stable attempt/operation reference.",
+      "EPS can authenticate the mock provider result and correlate it to the recorded attempt."
+    ],
+    "flow": [
+      {"index": "1", "by": "Partner Bank / Payment Gateway", "action": "Send a funding result containing the provider and attempt references, escrow reference, Funding operation, amount, currency, and final/pending result, or return these through a status query."},
+      {"index": "2", "by": "EPS", "action": "Authenticate the sender and validate every correlation field, the expected full amount, VND, the known attempt, and the agreement's funding eligibility."},
+      {"index": "3", "by": "EPS", "action": "For a verified success that confirms actual mock receipt, atomically mark the attempt SUCCEEDED, set HELD, and record one full held-money position, preserving the original provider and source for any later refund."},
+      {"index": "4", "by": "EPS", "action": "Audit the confirmation, acknowledge receipt, and expose HELD to the parties; seller delivery recording is now eligible."},
+      {"index": "2a", "by": "EPS", "action": "Reject or quarantine an unauthenticated result, unknown reference, wrong operation/provider, mismatched amount/currency, or invalid escrow relationship. Do not treat it as held money; record a safe audit/security event without secrets."},
+      {"index": "3a", "by": "EPS", "action": "For a verified final failure that confirms no receipt, mark the attempt FAILED and set AWAITING_FUNDING. Buyer may retry B3 or cancel B2 only after this certainty is saved."},
+      {"index": "3b", "by": "EPS", "action": "For a pending provider result, retain FUNDING_PENDING with attempt PENDING. For timeout, unavailable result, or unknown receipt, retain FUNDING_PENDING with attempt UNKNOWN. Block another funding attempt, cancellation, seller delivery, and payout; A5 can query the same attempt."},
+      {"index": "3c", "by": "EPS", "action": "For a duplicate success for the already applied attempt, acknowledge the stored result without another held-money credit. A duplicate failure or stale pending response cannot regress an already successful attempt."},
+      {"index": "3d", "by": "EPS", "action": "A valid late success after an unresolved pending interval is applied once if the same attempt remains eligible. A contradiction after authoritative final failure, cancellation, or another confirmed receipt is flagged for reconciliation and cannot reopen a closed escrow or credit it twice."},
+      {"index": "4a", "by": "EPS", "action": "If confirmation cannot be persisted, do not acknowledge a saved success. Preserve the unresolved attempt; repeated provider delivery or A5 reconciliation applies it through the same duplicate-safe path."}
+    ],
+    "postconditions": [
+      "HELD exists only after a verified provider-confirmed full receipt, never from a button click, redirect, or untrusted browser response.",
+      "The original funding provider/source is retained for a full refund.",
+      "The attempt is successful once, final-failed with no receipt, pending/unknown, or quarantined for investigation; no payout is performed by this use case."
+    ],
+    "related_rules": ["Seller acceptance precedes funding", "Verified full receipt precedes HELD", "Original funding source retained for refund", "Pending is not success", "Authoritative confirmation and duplicate handling"],
+    "requirements": ["FR03", "FR04", "FR10", "FR11"]
+  },
+  {
+    "id": "P2",
+    "name": "Execute and Confirm Release",
+    "group": "Payment Integration",
+    "actors": ["Partner Bank"],
+    "usage": "Execute one full simulated seller payout authorized by buyer acceptance or a final Admin dispute decision, and confirm it only from the Partner Bank's verified result.",
+    "activation": "B4 or A1 saves an authorized release and its atomic payout reservation, or A5 authorizes a retry of a confirmed-failed release with no money moved.",
+    "preconditions": [
+      "The full VND amount was confirmed held and is now reserved exclusively for Release.",
+      "The original release is authorized by the named buyer's acceptance after recorded completion with no active refund/dispute, or by a final Admin decision on the open dispute.",
+      "A persistent attempt identifies the escrow, full amount, VND, approved seller destination, Release operation, and stable bank reference; no other attempt remains active.",
+      "A retry retains the same approved outcome and follows an authoritative final failure proving that the previous attempt moved no money."
+    ],
+    "flow": [
+      {"index": "1", "by": "EPS", "action": "Read the saved release authorization and reserved amount. Validate that the current attempt belongs to this outcome and that the seller destination and full VND amount match the accepted agreement."},
+      {"index": "2", "by": "EPS", "action": "Send the stored full-amount Release instruction and stable operation/attempt reference to the Partner Bank mock. Keep RELEASE_PENDING and the exclusive reservation while awaiting a final result."},
+      {"index": "3", "by": "Partner Bank", "action": "Return or asynchronously notify SUCCEEDED, FAILED with no money moved, PENDING, or UNKNOWN for the same release reference."},
+      {"index": "4", "by": "EPS", "action": "Authenticate and match the provider, escrow, operation, attempt, destination, full amount, and currency before applying any result."},
+      {"index": "5", "by": "EPS", "action": "On authoritative success, atomically mark the attempt SUCCEEDED, consume the reserved held amount once, record RELEASED as the escrow's final money outcome, and append an audit event."},
+      {"index": "6", "by": "EPS", "action": "Make the final result visible to buyer, seller, Admin, and an authorized merchant query without exposing provider credentials."},
+      {"index": "1a", "by": "EPS", "action": "Reject an unauthorized release, wrong amount/recipient, missing reservation, an opposite approved outcome, or a second concurrent attempt before contacting the bank."},
+      {"index": "2a", "by": "EPS", "action": "If dispatch fails or the response times out, treat the result as unknown. Query the original attempt through A5; do not create a replacement transfer or infer failure from elapsed time."},
+      {"index": "4a", "by": "EPS", "action": "For an unauthenticated or mismatched result, keep the attempt unresolved and flag it for investigation; no final outcome is recorded."},
+      {"index": "5a", "by": "EPS", "action": "For verified final failure proving no money moved, mark the attempt FAILED, retain RELEASE_PENDING, and keep the full amount reserved for Release. A5 may authorize another attempt in this same direction."},
+      {"index": "5b", "by": "EPS", "action": "For a nonfinal or uncertain result, retain RELEASE_PENDING with attempt PENDING or UNKNOWN respectively and block a new dispute, refund decision, cancellation, or retry until authoritative status is known."},
+      {"index": "5c", "by": "EPS", "action": "A delayed matching success after pending is applied once. A duplicate success is acknowledged without paying again; a stale pending/failure cannot regress RELEASED. Contradictory final results are flagged and never authorize an opposite payout."},
+      {"index": "5d", "by": "EPS", "action": "If saving the result fails, preserve the attempt for reconciliation. The same reference is checked again; the application does not issue another transfer to compensate for its own missing acknowledgement."}
+    ],
+    "postconditions": [
+      "The escrow is RELEASED only after a verified bank-confirmed full seller payout; otherwise the release remains pending or confirmed-failed with the amount reserved for Release.",
+      "A released escrow cannot later become REFUNDED, open a new dispute, or initiate another money movement.",
+      "Both initial funding methods use the Partner Bank mock for the seller payout; no gateway fee or partial payout is introduced."
+    ],
+    "related_rules": ["Buyer acceptance or final Admin resolution authorizes release", "Atomic outcome reservation", "Full release or full refund only", "Unknown results are query-only", "Retry only confirmed failure in same direction", "One final money outcome per escrow"],
+    "requirements": ["FR04", "FR05", "FR10", "FR11"]
+  },
+  {
+    "id": "P3",
+    "name": "Execute and Confirm Refund",
+    "group": "Payment Integration",
+    "actors": ["Partner Bank", "Payment Gateway"],
+    "usage": "Return the full held VND amount to the original buyer funding source after mutual agreement or a final Admin dispute decision, with the original provider confirming the outcome.",
+    "activation": "U8 or A1 saves an authorized refund and its atomic payout reservation, or A5 authorizes a retry of a confirmed-failed refund with no money moved.",
+    "preconditions": [
+      "The full VND amount was confirmed held and is now reserved exclusively for Refund.",
+      "The refund is authorized by the counterparty's acceptance of the active full-refund proposal or by a final Admin refund decision.",
+      "The successful funding attempt supplies the original provider and buyer source reference; the refund cannot be redirected.",
+      "A persistent refund attempt identifies the escrow, full amount, VND, original funding/source reference, Refund operation, and stable provider reference, with no other active attempt.",
+      "A retry follows authoritative final failure proving no money moved and keeps the same approved full refund."
+    ],
+    "flow": [
+      {"index": "1", "by": "EPS", "action": "Read the saved refund authorization and reservation, validate the full amount, and resolve the provider and source from the successful funding attempt."},
+      {"index": "2", "by": "EPS", "action": "Send the full Refund instruction, original funding reference, source reference, and stable operation/attempt reference to the original Partner Bank or Payment Gateway mock. Keep REFUND_PENDING."},
+      {"index": "3", "by": "Partner Bank / Payment Gateway", "action": "Return or asynchronously notify SUCCEEDED, FAILED with no money moved, PENDING, or UNKNOWN for that same refund reference."},
+      {"index": "4", "by": "EPS", "action": "Authenticate and match the provider, escrow, operation, attempt, original funding/source references, full amount, and currency before applying a result."},
+      {"index": "5", "by": "EPS", "action": "On authoritative success, atomically mark the attempt SUCCEEDED, consume the reserved held amount once, record REFUNDED as the escrow's final money outcome, and append an audit event."},
+      {"index": "6", "by": "EPS", "action": "Expose the authorized refund status to the parties, Admin, and an authorized merchant query, preserving provider/source confidentiality."},
+      {"index": "1a", "by": "EPS", "action": "Reject a missing consent/decision, unsupported partial amount, changed refund source, absent reservation, opposite approved outcome, or competing active attempt before calling the provider."},
+      {"index": "2a", "by": "EPS", "action": "On dispatch error, timeout, or uncertain result, retain the original refund reference and query it through A5. Never route an uncertain refund through the other provider or an alternative destination."},
+      {"index": "4a", "by": "EPS", "action": "An unauthenticated, mismatched, or uncorrelated callback does not change the money state; flag the discrepancy and retain the unresolved attempt."},
+      {"index": "5a", "by": "EPS", "action": "For verified final failure proving no money moved, set attempt FAILED, retain REFUND_PENDING, and keep the full amount reserved for the same Refund outcome. A5 may authorize a linked retry through the same original provider and source."},
+      {"index": "5b", "by": "EPS", "action": "For a nonfinal or uncertain result, retain REFUND_PENDING with attempt PENDING or UNKNOWN respectively and block release, a new dispute, cancellation, or another refund attempt until authoritative status is known."},
+      {"index": "5c", "by": "EPS", "action": "A matching late success after pending is applied once. Duplicate success is acknowledged without another refund; stale pending/failure cannot regress REFUNDED. Contradictory final results are flagged without changing the chosen outcome."},
+      {"index": "5d", "by": "EPS", "action": "If a confirmed result cannot be saved, preserve the attempt for later callback processing or A5 query using the same reference; do not issue a compensating second refund."}
+    ],
+    "postconditions": [
+      "The escrow is REFUNDED only after verified confirmation of the full return to its original funding source; otherwise the refund remains pending or confirmed-failed with the amount reserved for Refund.",
+      "A refunded escrow cannot later become RELEASED, open a new dispute, or initiate another money movement.",
+      "There are no partial refunds, substitute destinations, merchant-initiated refunds, or manual-success overrides."
+    ],
+    "related_rules": ["Mutual consent or final Admin resolution authorizes refund", "Refund returns to original funding source", "Atomic outcome reservation", "Unknown results are query-only", "Retry only confirmed failure in same direction", "One final money outcome per escrow"],
+    "requirements": ["FR04", "FR06", "FR10", "FR11"]
+  }
+]

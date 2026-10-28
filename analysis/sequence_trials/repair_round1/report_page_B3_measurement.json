@@ -1,0 +1,63 @@
+{
+  "source_pdf": "report_page_B3.pdf",
+  "compiled_tex": "report_page_B3.tex",
+  "page_size_pt": [
+    595.276,
+    841.89
+  ],
+  "figure_box_pt": [
+    510,
+    700
+  ],
+  "caption": "Figure 1: B3: Fund Escrow",
+  "header": [
+    "Systems Analysis and Design - IT3120E",
+    "EPS Final Report"
+  ],
+  "footer": "page number",
+  "body_glyph_min_pt": 9.103,
+  "body_glyph_size_counts_pt": {
+    "7.152": 209,
+    "7.802": 84,
+    "9.103": 656,
+    "10.403": 19,
+    "11.955": 68
+  },
+  "caption_single_line": true,
+  "tex_pages": 1,
+  "overfull_vbox_or_hbox_warnings": 0,
+  "proof": "Report class, Times, fancy header/footer, figure-only 15 mm margins, clip enabled.",
+  "excluded_text_spans_pt": {
+    "subtitle": 7.802,
+    "legend_lines": [
+      7.152,
+      7.152
+    ]
+  },
+  "diagram_non_chrome_text_min_pt": 9.103,
+  "diagram_non_chrome_text_sizes_pt": [
+    9.103,
+    10.403
+  ],
+  "body_measurement_basis": "All embedded diagram glyphs below 9pt are the subtitle (7.802pt) and two legend lines (7.152pt); every participant/message/guard/ref/frame/business-note glyph is at least 9.103pt.",
+  "final_local_geometry_correction": {
+    "reference_frame_height": 50,
+    "reference_label_height": 30,
+    "frame_bottom_y": 496,
+    "next_separator_y": 501,
+    "separator_clearance_px": 5,
+    "label_cell_bbox": [
+      110,
+      461,
+      525,
+      30
+    ],
+    "actual_text_bbox": [
+      167,
+      467.5,
+      411,
+      17
+    ]
+  },
+  "layout_review_fix_round": "2/2, targeted manual geometry correction; no font, position, width, style, text, or global geometry changes"
+}

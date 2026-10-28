@@ -1,0 +1,185 @@
+{
+  "analysis_physical_pages": 97,
+  "full_report_physical_pages": 108,
+  "original_physical_pages": 11,
+  "original_pages_render_comparison": [
+    {
+      "physical_page": 1,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 2,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 3,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 4,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 5,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 6,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 7,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 8,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 9,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 10,
+      "render_pixels_unchanged": true
+    },
+    {
+      "physical_page": 11,
+      "render_pixels_unchanged": true
+    }
+  ],
+  "expected_total_page_relation": true,
+  "figure_labels": 85,
+  "expected_figures": 85,
+  "sequence_physical_pages": 57,
+  "shared_sequence_source": true,
+  "visual_review": {
+    "EPS_Report": {
+      "b3_physical_page": 78,
+      "b3_diagram_body_min_font_pt": 9.103,
+      "native_14px_body_glyph_count": 656,
+      "accepted_proof_glyph_counts_match": true,
+      "b3_outside_page_chars": 0
+    },
+    "EPS_Analysis": {
+      "b3_physical_page": 67,
+      "b3_diagram_body_min_font_pt": 9.103,
+      "native_14px_body_glyph_count": 656,
+      "accepted_proof_glyph_counts_match": true,
+      "b3_outside_page_chars": 0
+    },
+    "EPS_Sequence_Diagrams": {
+      "b3_physical_page": 28,
+      "b3_diagram_body_min_font_pt": 9.103,
+      "native_14px_body_glyph_count": 656,
+      "accepted_proof_glyph_counts_match": true,
+      "b3_outside_page_chars": 0
+    }
+  },
+  "eight_field_uc_specs": 22,
+  "unresolved_latex_references": false,
+  "overfull_boxes": 0,
+  "missing_glyphs": 0,
+  "blank_analysis_pages": [],
+  "navigation": {
+    "EPS_Analysis.pdf": {
+      "internal_link_count": 0,
+      "invalid_targets": []
+    },
+    "EPS_Report.pdf": {
+      "internal_link_count": 0,
+      "invalid_targets": []
+    }
+  },
+  "pdf_hashes": {
+    "EPS_Report.pdf": "0ba93fb71278fc1802f63889502f46d4c40c297191327ee86022d0645125d791",
+    "EPS_Analysis.pdf": "460af46a93f5dc26a3e7b36caf265a7f721b6f6deb7f5055f31059623e6a3f73",
+    "EPS_Sequence_Diagrams.pdf": "82769d5a52986d165d526fdbd9eace91927c2ea47595b5c45316bee76668b1a6"
+  },
+  "source_pdf_sha256": "1cf077ae8e1794a04857f9e48fe70f965f5d57c56b2384854cf8e112d74b7435",
+  "sequence_figure_labels": {
+    "fig:sequence-u1": "3.29",
+    "fig:sequence-u1-enrollment": "3.30",
+    "fig:sequence-u2": "3.31",
+    "fig:sequence-u2-mfa": "3.32",
+    "fig:sequence-u3": "3.33",
+    "fig:sequence-u3-authorized-flow": "3.34",
+    "fig:sequence-u4": "3.35",
+    "fig:sequence-u4-outcomes": "3.36",
+    "fig:sequence-u4-tracking": "3.37",
+    "fig:sequence-u4-api": "3.38",
+    "fig:sequence-u4-api-authorized-request": "3.39",
+    "fig:sequence-u4-api-outcomes": "3.40",
+    "fig:sequence-u5": "3.41",
+    "fig:sequence-u5-outcomes": "3.42",
+    "fig:sequence-u6": "3.43",
+    "fig:sequence-u6-outcomes": "3.44",
+    "fig:sequence-u7": "3.45",
+    "fig:sequence-u7-outcomes": "3.46",
+    "fig:sequence-u8": "3.47",
+    "fig:sequence-u8-outcomes": "3.48",
+    "fig:sequence-u8-accept-refund": "3.49",
+    "fig:sequence-b1": "3.50",
+    "fig:sequence-b1-outcomes": "3.51",
+    "fig:sequence-b1-api": "3.52",
+    "fig:sequence-b1-api-authorized-request": "3.53",
+    "fig:sequence-b2": "3.54",
+    "fig:sequence-b2-outcomes": "3.55",
+    "fig:sequence-b3": "3.56",
+    "fig:sequence-b3-funding": "3.57",
+    "fig:sequence-b4": "3.58",
+    "fig:sequence-b4-outcomes": "3.59",
+    "fig:sequence-s1": "3.60",
+    "fig:sequence-s1-outcomes": "3.61",
+    "fig:sequence-s2": "3.62",
+    "fig:sequence-s2-outcomes": "3.63",
+    "fig:sequence-a1": "3.64",
+    "fig:sequence-a1-decision": "3.65",
+    "fig:sequence-a1-outcomes": "3.66",
+    "fig:sequence-a2": "3.67",
+    "fig:sequence-a2-outcomes": "3.68",
+    "fig:sequence-a3": "3.69",
+    "fig:sequence-a3-outcomes": "3.70",
+    "fig:sequence-a4": "3.71",
+    "fig:sequence-a4-outcomes": "3.72",
+    "fig:sequence-a5": "3.73",
+    "fig:sequence-a5-reconciliation": "3.74",
+    "fig:sequence-a5-outcomes": "3.75",
+    "fig:sequence-a5-retry": "3.76",
+    "fig:sequence-p1": "3.77",
+    "fig:sequence-p1-outcomes": "3.78",
+    "fig:sequence-p1-confirmed-receipt": "3.79",
+    "fig:sequence-p2": "3.80",
+    "fig:sequence-p2-settlement": "3.81",
+    "fig:sequence-p2-outcomes": "3.82",
+    "fig:sequence-p3": "3.83",
+    "fig:sequence-p3-settlement": "3.84",
+    "fig:sequence-p3-outcomes": "3.85"
+  },
+  "sequence_caption_maps_match": true,
+  "standalone_starts_at_section_3_4": true,
+  "build_log_warnings": {
+    "EPS_Report": {
+      "unresolved": false,
+      "overfull": 0,
+      "missing_glyphs": 0
+    },
+    "EPS_Analysis": {
+      "unresolved": false,
+      "overfull": 0,
+      "missing_glyphs": 0
+    },
+    "EPS_Sequence_Diagrams": {
+      "unresolved": false,
+      "overfull": 0,
+      "missing_glyphs": 0
+    }
+  },
+  "review_note": "Contact sheets and selected full pages saved for human visual inspection. Artifact checks are not EPS software tests.",
+  "portable_package": {
+    "entries": 744,
+    "crc_pass": true,
+    "user_report_copy_excluded": true,
+    "extracted_project_three_pdf_compile": "PASS, two passes each"
+  }
+}

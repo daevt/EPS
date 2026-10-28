@@ -1,0 +1,40 @@
+<mxfile host="app.diagrams.net" version="26.0.0">
+  <diagram id="EPS-SD-P1_confirmed_receipt" name="SD P1_confirmed_receipt - Confirm Funding — Verified SUCCEEDED; eligible PENDING/UNKNOWN attempt">
+    <mxGraphModel dx="960" dy="692" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="960" pageHeight="692" math="0" shadow="0" background="#ffffff" data-model-id="P1_confirmed_receipt" data-source="content_seller_admin_payment.json">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="«boundary»&lt;br&gt;Payment Boundary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=80;fontFamily=Helvetica;fontSize=14;fontColor=#243447;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="140" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="ctrl" value="«control»&lt;br&gt;Payment Control" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=80;fontFamily=Helvetica;fontSize=14;fontColor=#243447;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="320" y="100" width="140" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="record" value="«entity»&lt;br&gt;Escrow + Attempt" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=80;fontFamily=Helvetica;fontSize=14;fontColor=#243447;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="540" y="100" width="140" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="audit" value="«entity»&lt;br&gt;Audit Trail" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=80;fontFamily=Helvetica;fontSize=14;fontColor=#243447;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="760" y="100" width="140" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="act0" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;fillColor=#ffffff;fontFamily=Helvetica;fontSize=14;fontColor=#243447;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="record">
+          <mxGeometry x="65" y="130" width="10" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="act1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;fillColor=#ffffff;fontFamily=Helvetica;fontSize=14;fontColor=#243447;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="audit">
+          <mxGeometry x="65" y="290" width="10" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="m0" value="Atomic attempt SUCCEEDED +&lt;br&gt;HELD once" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.5;exitY=0.2766;entryX=0;entryY=0.0;fontFamily=Helvetica;fontSize=14;fontColor=#243447;whiteSpace=wrap;labelWidth=210;labelBackgroundColor=#ffffff;endSize=8;spacing=2;" edge="1" parent="1" source="ctrl" target="act0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" value="Retain original funding&lt;br&gt;provider/source" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.5;exitY=0.4468;entryX=0;entryY=0.25;fontFamily=Helvetica;fontSize=14;fontColor=#243447;whiteSpace=wrap;labelWidth=210;labelBackgroundColor=#ffffff;endSize=8;spacing=2;" edge="1" parent="1" source="ctrl" target="act0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m2" value="Record full confirmed mock&lt;br&gt;receipt" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.5;exitY=0.617;entryX=0;entryY=0.0;fontFamily=Helvetica;fontSize=14;fontColor=#243447;whiteSpace=wrap;labelWidth=210;labelBackgroundColor=#ffffff;endSize=8;spacing=2;" edge="1" parent="1" source="ctrl" target="act1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m3" value="Confirmation applied once" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;curved=0;rounded=0;strokeColor=#999999;fontColor=#999999;exitX=0.5;exitY=0.7872;entryX=0.5;entryY=0.7872;fontFamily=Helvetica;fontSize=14;fontColor=#243447;whiteSpace=wrap;labelWidth=210;labelBackgroundColor=#ffffff;endSize=8;spacing=2;" edge="1" parent="1" source="ctrl" target="boundary">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      <mxCell id="page_title" value="SD P1_confirmed_receipt — Confirm Funding — Verified SUCCEEDED; eligible PENDING/UNKNOWN attempt" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontStyle=1;fontColor=#243447;" vertex="1" parent="1"><mxGeometry x="30" y="10" width="900" height="42" as="geometry" /></mxCell><mxCell id="page_subtitle" value="Continuation of SD P1 | Entry: Verified SUCCEEDED; eligible PENDING/UNKNOWN attempt" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;fontFamily=Helvetica;fontSize=12;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="30" y="58" width="900" height="30" as="geometry" /></mxCell><mxCell id="context_reference" value="Context and business constraints: SD P1. This view is one complete guarded continuation." style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;fontFamily=Helvetica;fontSize=12;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="30" y="580" width="870" height="30" as="geometry" /></mxCell><mxCell id="legend_colors" value="Blue: EPS boundary/control. Gray: actor/entity/external mock." style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;fontFamily=Helvetica;fontSize=11;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="30" y="616" width="870" height="24" as="geometry" /></mxCell><mxCell id="legend_arrows" value="Solid filled arrow = request; dashed open arrow = async event or gray return. Frames show guarded alternatives/options." style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;fontFamily=Helvetica;fontSize=11;fontColor=#666666;" vertex="1" parent="1"><mxGeometry x="30" y="641" width="870" height="28" as="geometry" /></mxCell></root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

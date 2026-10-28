@@ -1,0 +1,1050 @@
+{
+  "status": "PASS",
+  "current_native_view_count": 86,
+  "overview_pages": 7,
+  "activity_diagrams": 22,
+  "logical_sequence_count": 24,
+  "sequence_views": 57,
+  "report_figure_count": 85,
+  "overview_map_in_report": false,
+  "validation": [
+    "86 native sources checked; draw.io validator returned zero structural errors for each",
+    "DOM fingerprints match native sources; PNG/SVG/vector PDF exports present and project copies byte-identical",
+    "all figure PDFs one-page and selectable",
+    "current LaTeX build validated separately in PDF_Validation.json"
+  ],
+  "views": [
+    {
+      "id": "UC_Account",
+      "source": "diagrams/overview/UC_Account.drawio",
+      "source_sha256": "59fdf569d461abb55bb7dd027da0d32836b5082e54b0bfe39a52842db126cad4",
+      "vertices": 11,
+      "edges": 8,
+      "export_sha256": {
+        ".png": "e04ba62dcdfcdc3e9e3e9f7f970ef536fd8c6c69539bc4637f6e7e74b9f5f661",
+        ".svg": "367c126beaa53afbd0977d0f8d879a1bc3dcd05e964f82aaa9573f5c4cb476d9",
+        ".pdf": "846b4bd3f777f03e0dd891cfb6e29029607492001f13b8a73293e585bfb3e1b8"
+      }
+    },
+    {
+      "id": "UC_SharedParty",
+      "source": "diagrams/overview/UC_SharedParty.drawio",
+      "source_sha256": "ebfdcf216f2042c16e5357785568e097fc77682c632d631f63a16c843532b849",
+      "vertices": 12,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "f8b3adbe8dcee02518a62f636ed65031b64da42106a705043201265e91d40af5",
+        ".svg": "ecc39eaa83df0a2878bf2eb63145ced11b866385ab4aa4d46963d5765920aecf",
+        ".pdf": "456408356154d085a074ce5702d25729d7d858b0b7f723be1bf9052f5fc0c550"
+      }
+    },
+    {
+      "id": "UC_Buyer",
+      "source": "diagrams/overview/UC_Buyer.drawio",
+      "source_sha256": "c6833019c9c80117f3d497c6129568c50ce48d1159b83437a5a3e9994278c9a8",
+      "vertices": 13,
+      "edges": 8,
+      "export_sha256": {
+        ".png": "797dbeae7b82f75314073e80e8c4ab0e2cd451f4120fbecdeaa630cced67a2a5",
+        ".svg": "61ceeaf7962a8b94c458bae7b3902ada9b43a60cfc5dbd824095ea19e5af5a55",
+        ".pdf": "29a470c799e45b3cec90f409afc52e51518024e72d4d50a4c5dad4fdc6726b22"
+      }
+    },
+    {
+      "id": "UC_Seller",
+      "source": "diagrams/overview/UC_Seller.drawio",
+      "source_sha256": "5b21369b2dc84d62d3fc1876dd45678bec67a8ae93e89f3592f6bcf479404b09",
+      "vertices": 7,
+      "edges": 2,
+      "export_sha256": {
+        ".png": "35c111e1704e374e3c036fe9b4c9bd1984c99ddbe10d9dd2ab7d3ffda5d7a603",
+        ".svg": "9e673e78a713de91c41935e5988ffc7892d1a4d03902334b21e28510c866864d",
+        ".pdf": "1266d3d035f3a97e7b65ee8a0abf25b02142c95c631d3a2dc101047dddd0624a"
+      }
+    },
+    {
+      "id": "UC_Admin",
+      "source": "diagrams/overview/UC_Admin.drawio",
+      "source_sha256": "c3ea5296d856ce4d59aefa905368aadad663a0c118804f0aee996b3904984590",
+      "vertices": 12,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "1327cb94d3b6f25a1bc9b0e8bdacb401be5112b6309771e4471e12b029ee570a",
+        ".svg": "8afe09afb47cfd4680259dfbff9b0f63290521e82aec211d560e40669b1421be",
+        ".pdf": "ca36cc8960a8b93068482b2381555805d30ef453f279fc91542cb6377bd9ebae"
+      }
+    },
+    {
+      "id": "UC_Payment",
+      "source": "diagrams/overview/UC_Payment.drawio",
+      "source_sha256": "70750bcfc882a0660b5a6a7b52ee9e969af3f5d3f629128cab7f4c17e84b28b5",
+      "vertices": 9,
+      "edges": 5,
+      "export_sha256": {
+        ".png": "5acb9ae9e0b5ce9337bd2ed17e8eb00c076ff0e881b36264ab69250a4b537baf",
+        ".svg": "0ce021ae163976d66368b8e90c94f1f43294fd60257cc7df13f707f9c68b551d",
+        ".pdf": "9346ad66c302cb97b352c70bbeb5f239c37f857a34e06caac7c6d5f5b943e7bf"
+      }
+    },
+    {
+      "id": "UC_Overview",
+      "source": "diagrams/overview/UC_Overview.drawio",
+      "source_sha256": "b730ad1636c491765e13aaeb43040a87164bd7b18edadec72e60b58d0dcd7e15",
+      "vertices": 8,
+      "edges": 0,
+      "export_sha256": {
+        ".png": "75ab82a880fa5b54589f7dfeb820482b07ab4a010ca38976946ac3646e36750b",
+        ".svg": "b16f25ab7009085905a8bda59521d74a956205d6af1392d23b662ea6e67e6677",
+        ".pdf": "8d62c528fd108485ae223581b66b69e4bb6cfdebcc5cee4eaea3f1a5412c60aa"
+      }
+    },
+    {
+      "id": "AD-U1",
+      "source": "diagrams/activity/AD_U1.drawio",
+      "source_sha256": "7ed95cc63a82d117bab00505d5bfb25d572d3268f0721810bc4bfa72a3889028",
+      "vertices": 27,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "862d632faf33d331dc8417d9d06299de1d41b35ed2ebcc64aeefccde36158bca",
+        ".svg": "f02d469ce616fa41098c01b2a217faead894f3b11797cbc24957df920287b0d9",
+        ".pdf": "dc6879b6206b5f300b9c225d1dd2c9b67e1df068f0ada11000289b8d27b21cae"
+      }
+    },
+    {
+      "id": "AD-U2",
+      "source": "diagrams/activity/AD_U2.drawio",
+      "source_sha256": "ec30d758e0de50018c7606d75a04751ad558e35760b9a77ed855260a080a425d",
+      "vertices": 27,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "d54e0b3bae717122a2e0f900988d2160cbec3e3e36b16a0de3df810f0c9298e3",
+        ".svg": "acd8bb8801bca93159853e08ff0ed52111e87a27bc89be8e65e59b2a6b62a486",
+        ".pdf": "f2fec5ace3122538dfc9d47204f68d9e86d72c8347af9137c95fadb648ad57da"
+      }
+    },
+    {
+      "id": "AD-U3",
+      "source": "diagrams/activity/AD_U3.drawio",
+      "source_sha256": "0d255a2f874e4d9aecf9ad6777cc868da6138a32781a6584f008388cbc343a53",
+      "vertices": 22,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "c124342b748664f57b6376db7d0b5020a3a77015fa646e530471d1b6e2f8487b",
+        ".svg": "fe2d6dc79f9e6cc337c7ee78bf4d50544eefb9659a5f22b81785c7ab32b3996b",
+        ".pdf": "88a6cb1e7bf6d05ef7ea050e6e518d45e223e7c8c9a6265a0971968ba37bf8dc"
+      }
+    },
+    {
+      "id": "AD-U4",
+      "source": "diagrams/activity/AD_U4.drawio",
+      "source_sha256": "31f696d02e2af0419295f38e1f060e1bdbf317020ad7d885a5f7a6e5ef65850e",
+      "vertices": 26,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "fbe003b7aa9f10f73fd426eaeaf55266c501947fc375e9a6b7eeb4f14fe1cb90",
+        ".svg": "69675186569b4aee511945f2e409dbe836a0a6145cad6fb40aa284f2235a96e0",
+        ".pdf": "28006af394ef369e41ea4a14d372e1dabf2b5ed2d04cd5970356bf1ffd0fd5d2"
+      }
+    },
+    {
+      "id": "AD-U5",
+      "source": "diagrams/activity/AD_U5.drawio",
+      "source_sha256": "4d6c343348b739a43846bfc7d7c35d765ca1d456503f5d399a46ac4fa1374d91",
+      "vertices": 22,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "8244f7d809853f7f111389b6925f9d361b2118c107ed5b979e1067937e1c7b52",
+        ".svg": "9540c035a79d8378eb0e8b9a0c9952809a87d580c25dc56d313fde4dd08cf97b",
+        ".pdf": "6828d196b2999d64d7fb673923a4fecdd15a7225f7950109556fb15a14033b24"
+      }
+    },
+    {
+      "id": "AD-U6",
+      "source": "diagrams/activity/AD_U6.drawio",
+      "source_sha256": "3d3becb78e568c6447963ca8f90c30b81ddb77762c60137cbaa440114836a7e9",
+      "vertices": 22,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "87a086f4ee0df398191e960e0b57a1c800c0346cc1308a710635182995759175",
+        ".svg": "acb0ee9b67fd8323be34651ccebaffa18923e51e902c13e52b3f77d9963c7a2e",
+        ".pdf": "6a7a83087eb082bac4820d265f294515df2dc7e5c4606b5d3a42b8a18e2a73c4"
+      }
+    },
+    {
+      "id": "AD-U7",
+      "source": "diagrams/activity/AD_U7.drawio",
+      "source_sha256": "10147f28a77894f6c072a929f97251de6651f350a39a7961d96b34c420f9de73",
+      "vertices": 25,
+      "edges": 9,
+      "export_sha256": {
+        ".png": "1d59a329028cb59a576df6d26c973d95d1c1ae8290cb503e64a5cea1faf15a7d",
+        ".svg": "371fb31e9833b62e734886ab72b346742fd493b0b53db0b3475349e9cdc381e8",
+        ".pdf": "72d7a0f1e74d5ddc336e1b7484fad13356913491ed54f422cd3e19e9c9814a7e"
+      }
+    },
+    {
+      "id": "AD-U8",
+      "source": "diagrams/activity/AD_U8.drawio",
+      "source_sha256": "5184617de5274459f4cbb6ffe9d2a91acc629b1cb9b4e150a2d43c8d81ca2c3c",
+      "vertices": 35,
+      "edges": 16,
+      "export_sha256": {
+        ".png": "9cb85d629dab7b3b2b304879fd876d75e9b8876050ebd603b830764d4493e73b",
+        ".svg": "16cb96d646cafb7780a2167217d0150f6fbc461f51d182079ca0302bc086f472",
+        ".pdf": "f9276d9fbcb6c530418e745aeba7be0b3734caed2b70e1c2c1a4d7b3d5f32f03"
+      }
+    },
+    {
+      "id": "AD-B1",
+      "source": "diagrams/activity/AD_B1.drawio",
+      "source_sha256": "1952ff513381850b281e270558c3922d73277a972d1d810014942101eb397036",
+      "vertices": 26,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "f797ead591734e00f8337416fc346688e365ba520064aa93c31e9552d5d7b6fc",
+        ".svg": "2e8aa50f8cb17db95c2c23a982b6fa9ce4e1803675c70ebc140f13a36db4e5ad",
+        ".pdf": "3cfd90e0079fac90f0ee6938855846d0952a04bd8d546983b5fe7af3b5d6e1f1"
+      }
+    },
+    {
+      "id": "AD-B2",
+      "source": "diagrams/activity/AD_B2.drawio",
+      "source_sha256": "20e07395f73cf915cf0b3e100b9ce4780867fb0b2f4c691c34ad0da960c37d88",
+      "vertices": 22,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "1994fa629da5dab26b14cfa026b301f7903e861969061fba1ba7fca21492c7be",
+        ".svg": "18995f099b956aa275ccfa05ae1ffd4219cd3e6a83923b68e44e0c0c456ee93f",
+        ".pdf": "ecdec5e1f51b9199a75bf88a34d246340ab081cba59de176a3ec0ac379dc83a6"
+      }
+    },
+    {
+      "id": "AD-B3",
+      "source": "diagrams/activity/AD_B3.drawio",
+      "source_sha256": "9d7dcce22cf510ef4958ce333b42355ef37e7611331e79a4f13b8f9a4e8daaf3",
+      "vertices": 32,
+      "edges": 14,
+      "export_sha256": {
+        ".png": "2314dcec4f8310cedb8e7cf24e84a629aabeb9c51ea32e13b9c1b64295be2483",
+        ".svg": "a4a1060a9112af767a0d0d60aac3ed8a826465e59eb31beb300e8bbd78d25378",
+        ".pdf": "96b379837dd0f256beacf6bb387b62754f0ae7900397369867184c9cca42831d"
+      }
+    },
+    {
+      "id": "AD-B4",
+      "source": "diagrams/activity/AD_B4.drawio",
+      "source_sha256": "f277ae4572415fb4208036142cce97a3ecc3c9f648a48c9ca0f46a99761143ab",
+      "vertices": 31,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "0628d823df87671ce417deebc71eb674a32d9bce67619e0e07fdafd1752db9f1",
+        ".svg": "0e1ac475a5970b54fcb328b9e0ac16b674b0e6871302a6098d3004205eb93eb7",
+        ".pdf": "a0a09956bde06e012af3c8a1d765069be0a7f0199881340597b189265e07d657"
+      }
+    },
+    {
+      "id": "AD-S1",
+      "source": "diagrams/activity/AD_S1.drawio",
+      "source_sha256": "e8f9ff16657ee4f4a82292b8951f1517ed2d551eb478a04566291d4bef4d1c5f",
+      "vertices": 25,
+      "edges": 9,
+      "export_sha256": {
+        ".png": "f80b08c21d6131dc1e6679b44f4c9b29764f75a3d4e3b7b59e3a9ef1b6e33551",
+        ".svg": "365003dfd37657b5a4b8b2622663b653c71085a5925bd40b079a15d0b6390c98",
+        ".pdf": "d6b5d3cd91c4a3b6768ce0a857fd22ec72cfd06f798c2f096ba0b70204398ef4"
+      }
+    },
+    {
+      "id": "AD-S2",
+      "source": "diagrams/activity/AD_S2.drawio",
+      "source_sha256": "3204640e2dec7770477c968403bfde803c51371c505345446034b4f3cdb382d6",
+      "vertices": 22,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "4fb6da2873f2d33c4cfaf0bab823e6208838c11cff747ad893355680353942bf",
+        ".svg": "f62173f46949abe4cb48f8785cea3e203d0c2cb3df4b82b59a780b460ef387f1",
+        ".pdf": "ece63cf983f6270c594a93865f0babbbb5d67f006d8a41cb9a89c7620c7af123"
+      }
+    },
+    {
+      "id": "AD-A1",
+      "source": "diagrams/activity/AD_A1.drawio",
+      "source_sha256": "b10c20056f4014c82b85f9b0d1bd33938f5c0b4f29c7f88856944e901366a9c6",
+      "vertices": 28,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "c714d0febb34260df1a12d6179222e01ed79e432fafa5428cbd04121505369a3",
+        ".svg": "9b691852d3ad7725c1fcf3ab66af070d9ff1cdded0c2974328d834c17e0e2f9f",
+        ".pdf": "ceaca95189527ffce29db2e90522ad43aeb9354621abddeddfe05054836b3881"
+      }
+    },
+    {
+      "id": "AD-A2",
+      "source": "diagrams/activity/AD_A2.drawio",
+      "source_sha256": "f7c3bf79f8bfb249da1c28135358069b4d6d08ac063318590f6e3033a3abf1ce",
+      "vertices": 27,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "a47360952d3357dc67b8e648cc7bbf781b0921754a6d7f67cd3dc27ea82d0c2e",
+        ".svg": "7d283b4e762359029a2f2dc14aa08ba1e6889234265133e384caf79cc1755c87",
+        ".pdf": "093f3e51c747a79a13bb45fde8f387e82598e2ca0acf388603fcc851873e8ea0"
+      }
+    },
+    {
+      "id": "AD-A3",
+      "source": "diagrams/activity/AD_A3.drawio",
+      "source_sha256": "9f6d9fc1ca2d04a5351a75c82371fbcf6f779df674adbaf28d39d77607d904e7",
+      "vertices": 26,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "0aaab13f8e5b934a84ea7219690ce8c8a48d6099a8e6579e579a0994aa5139df",
+        ".svg": "1e42b8c1f528b63ebc592eb10764ac9d258275ef4bc9bd27017a0c622ccf1715",
+        ".pdf": "81728d5d93a0a3a953358ba1ae27cff9b1afa8e7d6e055386da900f6f8ad9dc6"
+      }
+    },
+    {
+      "id": "AD-A4",
+      "source": "diagrams/activity/AD_A4.drawio",
+      "source_sha256": "1cf43291dd7cccc1d421715910f545a5709d0aa116ed8fea1e3b4d9990d890e9",
+      "vertices": 26,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "37ed6121ec76e438422a0ea2efcc479ca1b1b77a1fce91d78951e8ec1029f53a",
+        ".svg": "3a177a076df2593e3c6094585f5293bc24ea617d1bf63d353254c3b095c9db1e",
+        ".pdf": "718e79f9d570be187c419a6c34bc757cfd009ee9d787133303dc29f7aecb0f97"
+      }
+    },
+    {
+      "id": "AD-A5",
+      "source": "diagrams/activity/AD_A5.drawio",
+      "source_sha256": "3123bef7601fd32022f2b3161b55e7fefb4f29b89d0952035470c2ad639b078d",
+      "vertices": 40,
+      "edges": 20,
+      "export_sha256": {
+        ".png": "63ecb6b9df54777c9729482fe7b3b2cb7b87f8a95f87af68fd749e2a9f9bf9c2",
+        ".svg": "4711976d212150924db5ba6d07382df95cffb9d3a8724965f4f51b1be8fca4a1",
+        ".pdf": "c1edf656c4ad99c77c1e631a606347505f039c107716697c0f47e1b809fef02e"
+      }
+    },
+    {
+      "id": "AD-P1",
+      "source": "diagrams/activity/AD_P1.drawio",
+      "source_sha256": "fb309ea84b75d2735c55634c3a07cb862d22adf145baaa7c0a71cde4b6aa58d1",
+      "vertices": 33,
+      "edges": 16,
+      "export_sha256": {
+        ".png": "82ef72de79ec1f209505486935ed9d084b525156788a2225ca85386669e83335",
+        ".svg": "dcfff11570733ea1a195f3a7d414b89fda60a100f32f4efbec67bc1c49a0bd5b",
+        ".pdf": "195f6df063300fdef917a0fc2c787f98bce2013f31424e2a7988d8a5830edc34"
+      }
+    },
+    {
+      "id": "AD-P2",
+      "source": "diagrams/activity/AD_P2.drawio",
+      "source_sha256": "09d1ed693aa3b98ec81f398d38161f299c1a04918066bccd7f104ebf29b394be",
+      "vertices": 34,
+      "edges": 16,
+      "export_sha256": {
+        ".png": "7fe3fd857a3dfb6cd71412e813685be5c004101733db4ee66b1e51bde733ae66",
+        ".svg": "2c6261bcdaaa9179fcf427569806a1f5072fd1c7493b762900843f88611474bb",
+        ".pdf": "dc617d509bc23d2de20724c9fd44dda64a5433281c85c1f9fed4f482c6e226f0"
+      }
+    },
+    {
+      "id": "AD-P3",
+      "source": "diagrams/activity/AD_P3.drawio",
+      "source_sha256": "635a9c336fbb78b5f3265ab67837a5c425961230acf884b8accdc9eca64c5d80",
+      "vertices": 34,
+      "edges": 16,
+      "export_sha256": {
+        ".png": "7d0a1cf66c8c396250b3c03989f8b7cbfa99e43c69741640021782e83e61eecd",
+        ".svg": "a52066d535a777900c7666e7ca27d9a647d4af70635c7b8bdab82afe957a8cf3",
+        ".pdf": "6474e116eb55fbdbc731ce0e77f02ad883fc5ddeb89744bf0cc4987e83fcb8ad"
+      }
+    },
+    {
+      "id": "SD_U1",
+      "source": "diagrams/sequence/SD_U1.drawio",
+      "source_sha256": "4c44995fbf81a51cc615604757c9ce6fb77d55f6939ced3416cfaff780b3cac7",
+      "vertices": 17,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "0f50136ab11e25b61740bd575888c324d2328b5f44a36e84dd8ffb68bf275e8f",
+        ".svg": "8559f719b4c1fb41b0d029cb072b88a7ae596497f7083f72ac15adbf4b366daf",
+        ".pdf": "d7c025976aac20a783138c3e5d0074b78f9241e3b90d1eda97b3e223c995d393"
+      }
+    },
+    {
+      "id": "SD_U2",
+      "source": "diagrams/sequence/SD_U2.drawio",
+      "source_sha256": "d167ba2c2c177bd4f1adb344434fa9b7d184a32cc075b7bac8cbe9790a126344",
+      "vertices": 17,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "a990cd25a553ba8ed62a6623ebc9426f974ac3fa6e41320b39a6bee27b09511d",
+        ".svg": "af99bd975fed3303cce97a34e842f88f4bc8483753b334ef9ece8f8fdbfbca3e",
+        ".pdf": "678ebab96b1c9f049af2a529e960eb8188f17a7dfff34d9fd176444610a7aff1"
+      }
+    },
+    {
+      "id": "SD_U3",
+      "source": "diagrams/sequence/SD_U3.drawio",
+      "source_sha256": "490f0fd08897758ad7319ad2e83b294d7edd25de7765cb83cf5b82072c606634",
+      "vertices": 20,
+      "edges": 8,
+      "export_sha256": {
+        ".png": "37e1bf807e3c7c05185bf785a2532d3199d8926dd16c4fac333588d3cedbcb4f",
+        ".svg": "de981c207aa49c52e5c6c217e7e5eeda4f70286f47894aca933d41a6d465b2b8",
+        ".pdf": "4b5a579f2e3205b2be30d2d0306d37ce2064e678e301c6ac3633f6c47350cc4a"
+      }
+    },
+    {
+      "id": "SD_U4",
+      "source": "diagrams/sequence/SD_U4.drawio",
+      "source_sha256": "b8b5bcf79a0f1aa58b3b018ed6eb6b2272538277dc826c6053f9690415062eed",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "e01a6f61b19d9976291e7756ee5989c7d998e27828ecdee9c37359d70032b836",
+        ".svg": "47b2cc1c3a0e48efeab3621e5bdbab91ef0f2295b8d3062c4232d6b4e4d14418",
+        ".pdf": "86aa3324b3c3f6e76de40b84e818e14a21216aea0d7ef7bc78bcb79210a4cf56"
+      }
+    },
+    {
+      "id": "SD_U5",
+      "source": "diagrams/sequence/SD_U5.drawio",
+      "source_sha256": "9f9ed9b6e0b7926229429354c27de8c79030cdf5a766e18e5dedceb35e56d753",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "83f864f3d40c4426455683b10f699abaf6b096d54ba427b9199f079cc65344c0",
+        ".svg": "c0028afefa79bf65e3d5c34ed12e839b191cbb527c0b685c166831cb89ee3462",
+        ".pdf": "7c52918639857d2f36202658d33097dfa808fadf79ec080c3e900cfa5bf7cdbb"
+      }
+    },
+    {
+      "id": "SD_U6",
+      "source": "diagrams/sequence/SD_U6.drawio",
+      "source_sha256": "46102cbfcaafb3078e78ece311bbe6a423b00fd8d68eb0d6647861c8ea27a414",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "a75d2aeccc3705759b50ffd8ab4ee84701f2a6001b3f057bd05e1ea218fe885a",
+        ".svg": "807b662d6b20260f4ffa7f25ba732dac604ce0202d6bd9b56d8b82c3b28b653d",
+        ".pdf": "4b0ec949c1eebc3aaac2bd4b0b0933d042821184feb100feda046c47c9d4b577"
+      }
+    },
+    {
+      "id": "SD_U7",
+      "source": "diagrams/sequence/SD_U7.drawio",
+      "source_sha256": "abf522be3f1a78c5d8efc06ff54ab6dec66be5c9833a46e813cd002bebf833a7",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "c743422792a4c460fb55a9046bb01cb9fd7924bf9fa6fb3d0fe935d8b553a46a",
+        ".svg": "09f84f56f080a54586c6526519ac39e1bfba97955027fe9a46240781533c38a3",
+        ".pdf": "6eb07730bdb9d17afe791dd3e1164ebc2b7de60172c13d3393403fda88c626de"
+      }
+    },
+    {
+      "id": "SD_U8",
+      "source": "diagrams/sequence/SD_U8.drawio",
+      "source_sha256": "a2aeaf4ef5dcdef786912a5b9656d8ae830979b5252af8a790438c70d118c078",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "f949f9805c147b00763516addf868bd9b5f1613a24e4822da40be2c53736c9ee",
+        ".svg": "38538320d1e3b4222f3005e6d79ec881d5148b6b9edc355eb5e1131e6ad74294",
+        ".pdf": "91df0f5d221e068953c0a4b3adbdd77f877737693679d913ebd59b76bb5d54f5"
+      }
+    },
+    {
+      "id": "SD_B1",
+      "source": "diagrams/sequence/SD_B1.drawio",
+      "source_sha256": "e4ebceec22a0a8c8f80f94d03f5517f50d3dc3b335fcb635baa932fa0ba8c2f1",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "3decdf8fdb193a6a1afef1113b1003f084c47fc827728f24fe227ecd48fc6526",
+        ".svg": "e83e5d3370387af7db8affe34220a7b9a75f19f020d04e13b897d18f48d9d38a",
+        ".pdf": "8c504b2224307d479b30be1d6709898251ed690d33439ec493327d246c97bd08"
+      }
+    },
+    {
+      "id": "SD_B2",
+      "source": "diagrams/sequence/SD_B2.drawio",
+      "source_sha256": "e50ae4d3055330ec473dd31b6d3ddc28bfea7fd4de3e4780388b36b3c460f46d",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "a82729510a6d59f0db7517afb06b0f45e4ead9f80208e2d21859dc43bfd410c4",
+        ".svg": "8363d51f29a5c610f6711892689ca0c061ea4472c03d7587ca6c741db93c295b",
+        ".pdf": "896ccecee6ff2dc4fbe9f767a3f89bc4a0452580d883b5394be94d7c229f6cac"
+      }
+    },
+    {
+      "id": "SD_B3",
+      "source": "diagrams/sequence/SD_B3.drawio",
+      "source_sha256": "dd35367ddececcb0e92b5ec4a1fa713df70c12c3ff83940b39e1d3fb41a43ab3",
+      "vertices": 18,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "df25ba774aa3252f208211ebae95cfc9a81b69e95a7e08d152bee0ae1fc044c8",
+        ".svg": "8f064f133841bddc817e13f8653131297c16d7e84ebfd9cee79ff16afc73706a",
+        ".pdf": "e74379d0a90e7bde8c808e2a6cf3450b1b40bbe348d7835a2adc6bda47a4538b"
+      }
+    },
+    {
+      "id": "SD_B4",
+      "source": "diagrams/sequence/SD_B4.drawio",
+      "source_sha256": "2760339c07a762391c156441b400e54ef085cf36bd17aa19e6f2d4750c68de75",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "a20bc2ba3b0b5ededa3d98352e3e96acc9521cf79a1522bdf5b0b9501d26d377",
+        ".svg": "5b78b4cc0c830c81ace709d3aaede7f08ddab9eba72b8c85265f627f4fe4a351",
+        ".pdf": "bd90a4884d36c1c97b538295240a4e465dda6befd63da76f11e28945624f121b"
+      }
+    },
+    {
+      "id": "SD_S1",
+      "source": "diagrams/sequence/SD_S1.drawio",
+      "source_sha256": "5c93dd9ed2f3ec08aae4c1812438eacd8675edb436294f39ac12aee4fdb4fefc",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "f0048f7c13b92e00f4644bf70fc18992c80e8224c193a66cfb3f027307fcabb7",
+        ".svg": "24283a27d11ce6f2b6338cd9d12561b8ee46590dd443b42056f8580311806126",
+        ".pdf": "611c310960a9ae0c7f2520874f4d108365c8037e3a8e5adcef66340d6cd7639e"
+      }
+    },
+    {
+      "id": "SD_S2",
+      "source": "diagrams/sequence/SD_S2.drawio",
+      "source_sha256": "ed93faa75c6f4dcf9651b047b2fcbf640800efb03f23db5962f5c326fd6e14fc",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "edf287e8ca7f0de2388cf333a1a277beb46bed4a1c905ed85dcc9ba446021c07",
+        ".svg": "c2660c78f1905d1348241b7197e4501863e274741d9c38915455b6615c2b6307",
+        ".pdf": "cdff8f23df9da5051e6829f1d9bd6ddaba7a02cc87e57646e4eee6dd1871d0c1"
+      }
+    },
+    {
+      "id": "SD_A1",
+      "source": "diagrams/sequence/SD_A1.drawio",
+      "source_sha256": "b94b7ace14e79581ba8142c4502bf1b746ea4125af4643fa2ee28bb1464e1cf1",
+      "vertices": 15,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "bf0a1f303c20cac530ed9bb3f761a20d56591cd1d396f11ddc3a1c132302b2d5",
+        ".svg": "840135e0c03d50238dc9ec8522bb5fb4965d48a5b09cbd44b8730c4d35a0ffc2",
+        ".pdf": "18ae3ab3879dd662c8f8a8b64ea1647d6c3517a277c5528a7a00526aa2d04892"
+      }
+    },
+    {
+      "id": "SD_A2",
+      "source": "diagrams/sequence/SD_A2.drawio",
+      "source_sha256": "490ed8b8a2d17585862def8087994e707519a55291b99c40804ce0e33dfc9d0e",
+      "vertices": 15,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "24438765556e262e3cc854bb62ed9dbcc22a55ac5fb1bf17f57b9af76c8adf96",
+        ".svg": "86380c02dbde43fca9f182737c3bbcd651a716d278b37e607afce1478816982f",
+        ".pdf": "e2a0a29b7377011c212a1acc63b39d1668a8596e82b20b0c03ea0fe081cd7e1e"
+      }
+    },
+    {
+      "id": "SD_A3",
+      "source": "diagrams/sequence/SD_A3.drawio",
+      "source_sha256": "af01e0b7914b06d25c8fc7a60c22bc362e9f2cedd2e6c4e8faf8ae4a97e13171",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "1424cbb1d4cf496b426fc71c9b2625529321b4f593790f83567e63995a1a2495",
+        ".svg": "285070509bb61fc73382effc5b4b565b0172248ebc81422d19d703a052f535c1",
+        ".pdf": "d75e7b62755f2bb53eab2646664d22c3d08d709371fa038751aedf09bde6ba73"
+      }
+    },
+    {
+      "id": "SD_A4",
+      "source": "diagrams/sequence/SD_A4.drawio",
+      "source_sha256": "14243b2b52228a1bae96307080b9b59ba6f72638d8145c9c789fada271088a24",
+      "vertices": 14,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "ad6e35b505d1184788896e78bfc963bb08183952ce4715713aeaeaff7f18bd0d",
+        ".svg": "b444fff74b0b49815e96cf412ec4ac7ca8046c0756bb86142d6d5d029d5dcb5a",
+        ".pdf": "7bc6917acc8d0647f0d518692498b033b085cefa9cb37293d0eb1086a71e7fe5"
+      }
+    },
+    {
+      "id": "SD_A5",
+      "source": "diagrams/sequence/SD_A5.drawio",
+      "source_sha256": "f01f3bf614ae3ab6ae0573d4ced8a974c773a4a063682225d4cb4b3ddee2fdb8",
+      "vertices": 17,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "6d36e234ba405a029a434a3e071b3141d90eb184025a9b0254e666b3638b3a31",
+        ".svg": "eb9b3bdecfb65106d6b09f695fdd1693d64cd7bef9ad0b37f752ec4220810d3c",
+        ".pdf": "457358c0bc87eaa4e41717acb7e91c58c960099e3c4d7b873dd56047caae8e25"
+      }
+    },
+    {
+      "id": "SD_P1",
+      "source": "diagrams/sequence/SD_P1.drawio",
+      "source_sha256": "f627fac0483ac260f9a3cc75720f71c2450f1d7f6cf8a5fb3e266735a4ec3870",
+      "vertices": 13,
+      "edges": 5,
+      "export_sha256": {
+        ".png": "d454e33c49dcfe1cb25c5fa06e9862b4e70adc042bb092fbca43e1a209b2742f",
+        ".svg": "2628c516508084106bb03f9b8be80bef8e1640ae11c58ea3fda262c07dffb51d",
+        ".pdf": "c486eb8489064d691f35a3a17c1dbe0700ea41cbdff3189ff0e836b8ba67b97b"
+      }
+    },
+    {
+      "id": "SD_P2",
+      "source": "diagrams/sequence/SD_P2.drawio",
+      "source_sha256": "9c2330e98fef92976914c8fbdc97f123a2440a6d530c95a612842b3922a16818",
+      "vertices": 19,
+      "edges": 8,
+      "export_sha256": {
+        ".png": "3a51ebcabf01e181fd919fdc6d17bd91328cec2a38d96713184c16aeadaccb3d",
+        ".svg": "c034d9b9b820908c87c22a1ddb224e4e342328dff018d20679fd0ae34b340eed",
+        ".pdf": "4c3a8f153ab3e133b9b8ef17e084ed3278629d1b59e19c0870f1e5d2b57b85a5"
+      }
+    },
+    {
+      "id": "SD_P2_settlement",
+      "source": "diagrams/sequence/SD_P2_settlement.drawio",
+      "source_sha256": "bde0c92b33ea926bdff53f02f2ebbe315ebc23ca6622d6a6e78d5a093c142e61",
+      "vertices": 13,
+      "edges": 6,
+      "export_sha256": {
+        ".png": "7c3a27e420d277976115f1fa5d32ae8160e0d3d5dfea15cc1237cea8a85316cc",
+        ".svg": "217ecd175fef45dd76a0b59edf3c89590dbaaef83f8de98a5ebb771ac984e0b5",
+        ".pdf": "ac4c1ef81e8aad3480d1648ad2a422969a087352f0f2fbd698d6145482cd44e0"
+      }
+    },
+    {
+      "id": "SD_P3",
+      "source": "diagrams/sequence/SD_P3.drawio",
+      "source_sha256": "805dae7c241b430095e1ca7dcc2eb87804a1452db3b67d3141841ce43664a73d",
+      "vertices": 19,
+      "edges": 8,
+      "export_sha256": {
+        ".png": "775d6fe435175cc334554673d4e5b9da79ea858e438bf8f49afaa162200d44b6",
+        ".svg": "3dcd90256fa60f4e16d6d04ce135fcbe5b1922b148c77b29633d0acf0bda288d",
+        ".pdf": "a72bc1768aa2a9f1945d58960dd456179f4b39791f26e693c60b6cc65f5226d0"
+      }
+    },
+    {
+      "id": "SD_P3_settlement",
+      "source": "diagrams/sequence/SD_P3_settlement.drawio",
+      "source_sha256": "5b7726004a9f7505d2b52d1221834f61e8e6c124b43d9212a1366c95488f9c55",
+      "vertices": 13,
+      "edges": 6,
+      "export_sha256": {
+        ".png": "3ea53d94ecce4170e6ae4cbd272d5b411ba86702f2890f13b468b7f9c8e029bc",
+        ".svg": "a7bd2c0735275b2a2c92c1cee24b3b7026632c698496f0031ad6b596283038e7",
+        ".pdf": "74d4046d932ba92169c5b8159072a755ba47196c1ff62789412b331d1f316f43"
+      }
+    },
+    {
+      "id": "SD_B1.API",
+      "source": "diagrams/sequence/SD_B1.API.drawio",
+      "source_sha256": "d22f8861bc30ea6ca61d9e73ab12c3a787bd50173ab218e32fbb4d450c9fd116",
+      "vertices": 15,
+      "edges": 6,
+      "export_sha256": {
+        ".png": "393119d9a2a40c8456b6d09be0d59cf012b6f58b8ddbaffcac72765331b4e9e9",
+        ".svg": "7b3d424545cbc69adf51adaca859ec383e87b9859cce708741b088319a731a57",
+        ".pdf": "f7c94c272055dd30e42e8818b6d0ee9fef81aec02450b6c0677cdcc871730fd6"
+      }
+    },
+    {
+      "id": "SD_U4.API",
+      "source": "diagrams/sequence/SD_U4.API.drawio",
+      "source_sha256": "8a903a43d78a2ad3625a630c4d85d6744644dd1fa256c673717e533d8945da30",
+      "vertices": 15,
+      "edges": 5,
+      "export_sha256": {
+        ".png": "6da118966eb641352772357c5de66320ee2eaa92b26581d4c67d1d88aebf7b57",
+        ".svg": "48ab969f7030952c339306454a3008a7e4a5524f1a14e99628514a76568edf63",
+        ".pdf": "e8b49f8602f309c13aecac3cbe540259a9d11b2c73f50cd95454b310ebd7e86b"
+      }
+    },
+    {
+      "id": "SD_A1_decision",
+      "source": "diagrams/sequence/SD_A1_decision.drawio",
+      "source_sha256": "c0733a45c082700a909cca530ca375daa6830007752cae2f03d1d2f330691c70",
+      "vertices": 12,
+      "edges": 2,
+      "export_sha256": {
+        ".png": "078b73b8889fcfb5db5ee6e9f9709b639ec54fc11b6fe6676c5cbb86c747fc05",
+        ".svg": "d809aab5cce0ef74bb80e51f37a8f439a427b72d1157909191d4a1e71fd80dee",
+        ".pdf": "8a37211451c35ca91d05de60d7fe1e741d87d0c5155e0f1f5dd9c9abfb2d88e5"
+      }
+    },
+    {
+      "id": "SD_U1_enrollment",
+      "source": "diagrams/sequence/SD_U1_enrollment.drawio",
+      "source_sha256": "78caef9ebb5a699f609622d0b49ebec979abaef24b419b9bfbfd79e375fa3a0d",
+      "vertices": 17,
+      "edges": 12,
+      "export_sha256": {
+        ".png": "d11321eaecba7a9aa6717fe454cd1de5ab4acd24daf7f53ffdc0215aab813a17",
+        ".svg": "14080fe1af5bd4ada6ab5134d7c1dbcba3bccc490b9274d9e77cd2f668a69c70",
+        ".pdf": "d13d8e965c32bf089366df0c5c7bb859278cb5c09ab53743eb4b60923d401568"
+      }
+    },
+    {
+      "id": "SD_U2_mfa",
+      "source": "diagrams/sequence/SD_U2_mfa.drawio",
+      "source_sha256": "25f8a3328b41957894f780c461262999837b7477442b95690c42b0022c9ccb5f",
+      "vertices": 17,
+      "edges": 12,
+      "export_sha256": {
+        ".png": "c00049f2f9c9f68cc65e0b305746165df0190bd218c3f3bbe8dff272e781396b",
+        ".svg": "b9fc15d3f22364bfed482246d83bcf3e15a6a66df9de02dd261d46596d980487",
+        ".pdf": "eff7bcdc5f92b9beefb7d5910840b66ffd32e58d424ea98f92bab23d3288e639"
+      }
+    },
+    {
+      "id": "SD_U3_authorized_flow",
+      "source": "diagrams/sequence/SD_U3_authorized_flow.drawio",
+      "source_sha256": "a4900cbebc4e934261571128894e908aff9764615a00e83708cf903a48b4ddc3",
+      "vertices": 13,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "0abc45ea9e11a4f56fbfd69bd1add3f3ad4bedf6ca2c076d0c8bcbedc177f941",
+        ".svg": "6fa5f02bcbb4191cbad1e16b0c5b938e4731f24b534a5e14902b8f957ca6bbb7",
+        ".pdf": "f5af04570780209d2aa93e0ace12e4ccd30c9d199f91629b66735e4d0b8decb6"
+      }
+    },
+    {
+      "id": "SD_U4_outcomes",
+      "source": "diagrams/sequence/SD_U4_outcomes.drawio",
+      "source_sha256": "0bd88fd769f62b022089d1e0c7a577eb41ffcb146f4e13abd3e5df8a4fad064c",
+      "vertices": 15,
+      "edges": 9,
+      "export_sha256": {
+        ".png": "056a6eafb0c03f85329cf139fc9ae76a463b1d1382268fdbea093931f63f293c",
+        ".svg": "0afa6fddfd3f9ccc6e6a86510f0259e5cb9e2a2c50921cee8801ba932f999c91",
+        ".pdf": "78034ddb10a715c8808c2ece947b21ddfd4bc2dce14e6181ab8f27cbf900758c"
+      }
+    },
+    {
+      "id": "SD_U5_outcomes",
+      "source": "diagrams/sequence/SD_U5_outcomes.drawio",
+      "source_sha256": "e044740f5fbfec76670bb00c177b3fb31759f1bae3a4b968714599f82e722ba4",
+      "vertices": 16,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "031c7bea90568c0c364f70ad5d40aa403668fe3a6a21099379c02c34f9ad886e",
+        ".svg": "ee93265ca17f788ecb4fe5ff297f57edb1cb020d34a8456d3f98ed3048a5b2ad",
+        ".pdf": "dfa5cfe73be11a5c08bc218e16d48a36d1d817fc0f4b34e6497b082e652d1d6a"
+      }
+    },
+    {
+      "id": "SD_U6_outcomes",
+      "source": "diagrams/sequence/SD_U6_outcomes.drawio",
+      "source_sha256": "a7b8921085641d6ba2bc9d95b1a52122174c3230c9c6c0d6d03c54c67472f8d9",
+      "vertices": 16,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "aa1926c5d392b28ce79dc1f2ad4d3950a2ea92d15854835683d6ceb70eeac204",
+        ".svg": "5a6c79c1ffb0c21ec9898991c2d1ca4ba50395bdbb7150538dc4953d8e512549",
+        ".pdf": "1e8b2527d8207d5b9e26d848bf846ebb8971b20b920476314ab6b95ebdb65435"
+      }
+    },
+    {
+      "id": "SD_U7_outcomes",
+      "source": "diagrams/sequence/SD_U7_outcomes.drawio",
+      "source_sha256": "c2f68fd5514eda7bbe5c2ca1ba4019b917bfd1547ec0b2e11384c5033651c21e",
+      "vertices": 17,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "b0fe51f5071c06b3f7ad523bdf3262585b6a3c5ebd9524e1b344046ae641251e",
+        ".svg": "2c12c19c3c6e8327d55e35e8ad15818e3c4a8db6b3fc38b4e619261e46a2aef1",
+        ".pdf": "dfa47da039171c40a223402e781e1600a368891b6acc9ee6043cab35c9c39c0e"
+      }
+    },
+    {
+      "id": "SD_U8_outcomes",
+      "source": "diagrams/sequence/SD_U8_outcomes.drawio",
+      "source_sha256": "7e5e5f306e4202f8ca332dc5e6ea926e023af5f272cb21695d7d63fd11df192b",
+      "vertices": 18,
+      "edges": 8,
+      "export_sha256": {
+        ".png": "4be60df2b5abc3016629124e4928eda422bb0702da450e876bb5a7be1fc8557f",
+        ".svg": "46986304f963f9d0c5e2341020a10386e40c9fed48c218fd0d5810a58c60d0b6",
+        ".pdf": "cacd663f2622eb0be39886f03d893b5e3b82909fb4531022a805b923fff7f8fb"
+      }
+    },
+    {
+      "id": "SD_B1_outcomes",
+      "source": "diagrams/sequence/SD_B1_outcomes.drawio",
+      "source_sha256": "9aeb4d95e6411ca2ec78f498e48506e9786eb471d6bd37756ff08fe074c831f4",
+      "vertices": 16,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "4dc289936799830347323a31962c1d8d901ac11e05c965bf73df00581836c0d6",
+        ".svg": "16413da7b56f168a73f6587f9d95c6721fb221bb4b8208df3755fe701edfa489",
+        ".pdf": "60c62deed0a10ede1d2d918632c4eac414b93d7c25ad230aee023f2422c2560b"
+      }
+    },
+    {
+      "id": "SD_B2_outcomes",
+      "source": "diagrams/sequence/SD_B2_outcomes.drawio",
+      "source_sha256": "05dedf879c0d03c0e577dbea2d45777a5171999a38abf21a06f41d03c756dac6",
+      "vertices": 16,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "3b0a4e91ecb73d8da9c2ccde52f753f95cfb38ad1252de6e46deeda7bf6f8e77",
+        ".svg": "4cb8a22b5459921776ab14994d8624fa2eb8213b3791155b8971ed551fae408d",
+        ".pdf": "aceffcfc21ca5d86348f601e50c7d99bf2419b9234efb1c0680de111f07f00b0"
+      }
+    },
+    {
+      "id": "SD_B4_outcomes",
+      "source": "diagrams/sequence/SD_B4_outcomes.drawio",
+      "source_sha256": "ffe19764194ad14f0f2ce4c7594e3162dbc39796fb7227baab5e0a52a36b8fa5",
+      "vertices": 18,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "149aa5ebb06d3d15ac4a21cf26a993892d6c426d5fd8451c8f8392e557c8d182",
+        ".svg": "a1d98fa3be21684aef6652c339a2d6372fa540b816ef77fcd3cad722a46d49e6",
+        ".pdf": "666c70b994cf037f0313815dcc4de95528a541c8295e9ce8554686fb44d726a9"
+      }
+    },
+    {
+      "id": "SD_S1_outcomes",
+      "source": "diagrams/sequence/SD_S1_outcomes.drawio",
+      "source_sha256": "46bbabd9fcb6b0d2c9d90dad8dbd59e2f263dc97b6965aa84f64aeee9962e12d",
+      "vertices": 16,
+      "edges": 12,
+      "export_sha256": {
+        ".png": "90f66b311d6b712cc50395ad2ded024a3feb5998ddc91b65cf84e37fbe6fcb7b",
+        ".svg": "d292a4c48342137ccac3f72523d558f0329a026fbfafcbed203e98037c8d867c",
+        ".pdf": "aefd91465ab5da803db0d8606c9461d03e07048766db4ed7df85728d75e80268"
+      }
+    },
+    {
+      "id": "SD_S2_outcomes",
+      "source": "diagrams/sequence/SD_S2_outcomes.drawio",
+      "source_sha256": "344df0897bd86cedc654a13df86b5baeb864ec27d96f96d3bfee4ede9241d1df",
+      "vertices": 16,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "96e30b6da2baed31527f07ab85420a2be733e68599df38fd126900f3542bc911",
+        ".svg": "f100369a03031439d9e9b38e866f7a5da801087689df718a4678fdfe7ed375c5",
+        ".pdf": "de412505726b9646730bdda9474b6bac02a7ffe826d668ed6ab602b29d061961"
+      }
+    },
+    {
+      "id": "SD_A2_outcomes",
+      "source": "diagrams/sequence/SD_A2_outcomes.drawio",
+      "source_sha256": "54b135daa27aad7089ebbb93c32d524a3199940f9bc7844b3693af9a333381ab",
+      "vertices": 17,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "149acfff6655458cf37b0ae377ee2413f8508713a29a3c691262505d4bb265f1",
+        ".svg": "b777ff850886dc1f03ad0c1363b229b75e55b95f03a64120524a60bd5ac17232",
+        ".pdf": "cbe3130a084cbf1cc705adefb75d36f14da52623c6f622001e4ba5ee2bc3874a"
+      }
+    },
+    {
+      "id": "SD_A3_outcomes",
+      "source": "diagrams/sequence/SD_A3_outcomes.drawio",
+      "source_sha256": "cac8735bc13fd59f9e95fd933c0707a51b4268e64d15561126bae46f648d801f",
+      "vertices": 15,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "4ceaefe5d32b83f717ea56a4298575d08cf0d5d2ea51db874e6b20c1dba588fa",
+        ".svg": "98eae2c7c36f9e0c5d97887a374911ac476f92c1d6ff92fd73262034c36dfd0f",
+        ".pdf": "4a652b2e47e799c1e8e28a164112f42bde4f38ed2dd55538342cc5f8e0019f10"
+      }
+    },
+    {
+      "id": "SD_A4_outcomes",
+      "source": "diagrams/sequence/SD_A4_outcomes.drawio",
+      "source_sha256": "ed6e184666ee88f6314e7bd6701226229f2eda0003362bcd217b94d4c2679641",
+      "vertices": 15,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "105e3a8746a0c1d770d00e400732b2c1635fd762cdf6b79f3fe7abd7ee5d3f90",
+        ".svg": "6952fa826dc731d61d305fe52db7018d4bb2202c8b62f236b986a97c3fe1d62a",
+        ".pdf": "0e328ad0ee2cd71038b845f530b924d0dda0c20c7a02a07a11389f161d0e8e55"
+      }
+    },
+    {
+      "id": "SD_A5_reconciliation",
+      "source": "diagrams/sequence/SD_A5_reconciliation.drawio",
+      "source_sha256": "7392496ab8441fd3217f4b547e03165e1a8cab3b147a069631b691c3976ac5f6",
+      "vertices": 12,
+      "edges": 3,
+      "export_sha256": {
+        ".png": "0cf73ddf7750b2c9020c76e18296cb8ffc52ea62adca92c47b6db69ed4de5192",
+        ".svg": "cb6301cf77a19099cf11b975cb7213daf9640e143183a6e8eae6dd7fe1d64ed7",
+        ".pdf": "dcc3a5d15bcf0278f39f3871509c1f40e7179605c3d14a462907843e7f6b46f6"
+      }
+    },
+    {
+      "id": "SD_P1_outcomes",
+      "source": "diagrams/sequence/SD_P1_outcomes.drawio",
+      "source_sha256": "c388b6a3d11f3923d4dc55551642700efc9386e8c4be05135828ff9f23b9b594",
+      "vertices": 19,
+      "edges": 12,
+      "export_sha256": {
+        ".png": "cbf6ff0601db9f26aadcd9469cbfd6f4bc5dac78f1014caea0c81c4a783c04bb",
+        ".svg": "d226bcf1775d057044193801e9b2ae208d498bdc20428e6fb66c7fac685007bd",
+        ".pdf": "57c29b0d931ff3b6f6994984f2c433b57da910a4fc878242147fc242098ee45f"
+      }
+    },
+    {
+      "id": "SD_P2_outcomes",
+      "source": "diagrams/sequence/SD_P2_outcomes.drawio",
+      "source_sha256": "fc264898d7825f1237b0bd0d1e581483bb41929f41beb79b6c32816d0f7c2a02",
+      "vertices": 17,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "c1ef07116dc189228f42d9778779b960d42b2533b00804fcc53f05fb4a583abd",
+        ".svg": "07d5679d0b7ca28443dc5ce80d8ff2e704ca4491567919dfb2d447dde3d2727f",
+        ".pdf": "67802acb8d13850bc391fd90797b6d9b1f7610ee4385f14ff69147ab223c3780"
+      }
+    },
+    {
+      "id": "SD_P3_outcomes",
+      "source": "diagrams/sequence/SD_P3_outcomes.drawio",
+      "source_sha256": "36ee85ac753373907810df5381be07a1f1fce1ac0b89037704af3e7f2c2cbfcb",
+      "vertices": 17,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "75cb160902777da5a25f3c3ce4017356c8eebb6a4cf7d39135d8ab70c56a5a31",
+        ".svg": "18caac296d4955defaa12300906d4c0eb03e4f4b4d3b955a8f0330b9f2385033",
+        ".pdf": "c66290a9700c955e3adefa153a93597a308f2003d8075822e336e3f1d125b731"
+      }
+    },
+    {
+      "id": "SD_B1.API_authorized_request",
+      "source": "diagrams/sequence/SD_B1.API_authorized_request.drawio",
+      "source_sha256": "fd0346e59e6aaf783ce3417f1f9779d4ef89edf2481236e8b9fce29c1e723b5a",
+      "vertices": 16,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "ca3eecf9d56c094da089553b0836a36f0ca752feb047fed29b2a18548bc8f9f5",
+        ".svg": "a2d54f19a0c9795b8432ddcd92e2cd30d31e6053c0cce8c0ab9587372b51fb3f",
+        ".pdf": "3fdb4d2942b5c69c4306d77dc958de7afcf8ff0c1b6063d5f47986e9795d657d"
+      }
+    },
+    {
+      "id": "SD_U4.API_authorized_request",
+      "source": "diagrams/sequence/SD_U4.API_authorized_request.drawio",
+      "source_sha256": "c3fba337b526e3cf66b01be7e47545e7806dfb8088c0e3177f4cf1d839bf3347",
+      "vertices": 12,
+      "edges": 2,
+      "export_sha256": {
+        ".png": "9e4861035ae9c398e6b1f27bc5bac5d3c7b061657aaf95fdb7d7437643197b42",
+        ".svg": "1e91805186745564daa16c5d85e8391331b91bbd00ce557c2889fe6500eef70c",
+        ".pdf": "9f9c7b49e771062f7c1633fef9889624cc2ebf3e0114efe516bce8fb6058e237"
+      }
+    },
+    {
+      "id": "SD_A1_outcomes",
+      "source": "diagrams/sequence/SD_A1_outcomes.drawio",
+      "source_sha256": "f21d09366c90f31c90436b067187d87ac33bba915fab9fa9f7d2a3b6a219d9a9",
+      "vertices": 18,
+      "edges": 13,
+      "export_sha256": {
+        ".png": "e5bbcfe5844cc51501d42aeaa7a1d1c82755e7e58036ae42ce52c3b939214212",
+        ".svg": "0d6e6660a3e7edb1f3987cd9e63d083da320c5506c8a2d6650e3fff2d4b9d64d",
+        ".pdf": "b77ce5894b8da7f779f13a2bdf667e5985feeb134530976ffd1e6e4fa0c37266"
+      }
+    },
+    {
+      "id": "SD_U4_tracking",
+      "source": "diagrams/sequence/SD_U4_tracking.drawio",
+      "source_sha256": "d1bf7208b551323509332d72bc26f22b7a34e4f01beb5529541152e16889bcf7",
+      "vertices": 14,
+      "edges": 6,
+      "export_sha256": {
+        ".png": "d9522f167b3e6efb6d54309bc5c6c30c0fe86efdc967bdcb4ff6d655b49d4d5c",
+        ".svg": "cb9c285956b4fd3745411497508bfba56848638390ffe066527aadffca0530fc",
+        ".pdf": "b894f1dc6eceb96bcde832c04fdda1cd87a899d7c9aedae0717c61ad00609ed2"
+      }
+    },
+    {
+      "id": "SD_U8_accept_refund",
+      "source": "diagrams/sequence/SD_U8_accept_refund.drawio",
+      "source_sha256": "3f93356ec2cff27998f07a4e42933c14664f05085b94fdb959ce0757ac0630de",
+      "vertices": 14,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "b8872d4c7780d77722c49947ac11dcdb61a297fba77e0540eb361ac68c766bca",
+        ".svg": "e1f33406c6c6bf6a15fc841de418fd4688d1cdcb7f815c754dd89f88df60c521",
+        ".pdf": "56705363fbfe81bef7e263ac0d6f595bb6c8399df7ba251a6a52d86222054a44"
+      }
+    },
+    {
+      "id": "SD_B3_funding",
+      "source": "diagrams/sequence/SD_B3_funding.drawio",
+      "source_sha256": "c7e13309d660c90443ceeed2b6047aaa3efab27198fae2be5a96eb28677b816c",
+      "vertices": 17,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "67ffc9eaff0f02cfa9e4b285fb58d39a8fda5de01917a68ce3262a3373143207",
+        ".svg": "ee12bb0357e3b36e19c480609e3bc96b66a66b951eddc25b3d4a8270cd5cc671",
+        ".pdf": "b6b5ee978afe1a91a7fd009b38a3d010899d0a75aa0a37073aec83e858d80835"
+      }
+    },
+    {
+      "id": "SD_A5_outcomes",
+      "source": "diagrams/sequence/SD_A5_outcomes.drawio",
+      "source_sha256": "d813d90c7b9b454c611e05ac182acf474fc060715d1abf3b338ded8ca783fb3a",
+      "vertices": 18,
+      "edges": 10,
+      "export_sha256": {
+        ".png": "a592ab896b313dd14de8fe5ba4059300960bd023db6b839e88584b4fcec3d356",
+        ".svg": "66705c50fa36198780bcf4ad01df290331ec431a912733091d5fdaa9027dadf6",
+        ".pdf": "c6c2b300db4a470fe6010e70b832ee529b92ab8daaba5cf4698aa0c84dcfd783"
+      }
+    },
+    {
+      "id": "SD_P1_confirmed_receipt",
+      "source": "diagrams/sequence/SD_P1_confirmed_receipt.drawio",
+      "source_sha256": "07171a64501d1f2fa8456bbf0f4a87a78aef32efb949312ad64d11e18de27ff3",
+      "vertices": 11,
+      "edges": 4,
+      "export_sha256": {
+        ".png": "2422b0baeffe391f9fa58a6996e00b772745daa8c755a27bc2fe9e23635cf392",
+        ".svg": "21c40eae27e137461505ac7e639b57594d986cf14527b1163c2a5640b0e3af50",
+        ".pdf": "7e5706e63f196fab7b89741a13df325f3c9c5aca4298187593c19cf41e50534b"
+      }
+    },
+    {
+      "id": "SD_U4.API_outcomes",
+      "source": "diagrams/sequence/SD_U4.API_outcomes.drawio",
+      "source_sha256": "b483cf8f065c2851d6f97bcad4bbd6e7684dd0061db21d93ce38d39e749ea062",
+      "vertices": 17,
+      "edges": 11,
+      "export_sha256": {
+        ".png": "deda3afc14c5a0d3d3868187fe15209c561ccb85a374c2d977aeba9cdee19094",
+        ".svg": "3c222995d5f3f617f09ff81953363f89bf1e47d023ee1935cac6b7ee8960a159",
+        ".pdf": "a7d0f4fcec903fbd018c0f6e05943558cc99b210281afdc24edd5befb1109a99"
+      }
+    },
+    {
+      "id": "SD_A5_retry",
+      "source": "diagrams/sequence/SD_A5_retry.drawio",
+      "source_sha256": "4a069d8aae4eacd91d3b4b3993913d64a89d569ad735c795dd64258cb911d05d",
+      "vertices": 18,
+      "edges": 7,
+      "export_sha256": {
+        ".png": "32bec0ba5e85f5dcaa17fb2d74578a64e47565e94e4f1f1daabe3e5035f1f13f",
+        ".svg": "b8d30e8f5210eca29f8ddb13865572afb991536324e2781befbf0eb63d941c95",
+        ".pdf": "4959d6896e3a7f8ade2a3b7f691a8f056c99085bad673084a49eff7ae5aa2003"
+      }
+    }
+  ]
+}

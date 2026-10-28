@@ -1,0 +1,283 @@
+{
+  "schema_version": "1.0",
+  "language": "en",
+  "scope": "EPS academic MVP; simulated VND funds, one buyer and one seller per escrow, goods or services, one full release or full refund.",
+  "use_cases": [
+    {
+      "id": "U1",
+      "name": "Register",
+      "group": "User/shared",
+      "actors": ["Guest"],
+      "usage": "Create a human account that can participate as buyer or seller in different escrows. Public registration never grants Admin or Merchant privileges.",
+      "activation": "A guest selects Register and submits account information.",
+      "preconditions": ["The registration interface is available.", "The guest can complete the required MFA enrollment confirmation."],
+      "flow": [
+        {"index": "1", "by": "Guest", "action": "Enter a unique login identifier, display name and password; read the simulation notice and submit registration."},
+        {"index": "2", "by": "EPS", "action": "Validate required fields and credential policy; check identifier uniqueness; assign ordinary user privileges independently of any buyer/seller preference."},
+        {"index": "3", "by": "EPS", "action": "Start MFA enrollment and present the enrollment instructions without exposing an enrolled factor to another account."},
+        {"index": "4", "by": "Guest", "action": "Complete the MFA enrollment challenge."},
+        {"index": "5", "by": "EPS", "action": "Verify the challenge, activate the ordinary account, store protected credentials and factor data, and record the registration event without secrets."},
+        {"index": "6", "by": "EPS", "action": "Display registration success and direct the user to U2; registration alone does not grant an authenticated session."},
+        {"index": "2a", "by": "EPS", "action": "If input is invalid or the identifier is already registered, reject the request and retain no duplicate account."},
+        {"index": "2b", "by": "EPS", "action": "If a submitted role attempts to request Admin or Merchant privileges, reject that privilege request; do not create a privileged account."},
+        {"index": "4a", "by": "EPS", "action": "If the enrollment challenge is invalid, expired or abandoned, leave the account inactive and allow enrollment to be restarted; it cannot enter escrow operations."},
+        {"index": "5a", "by": "EPS", "action": "If simultaneous registrations use the same identifier, activate at most one account; return a clear conflict for the other request."}
+      ],
+      "postconditions": ["Success: one ordinary account with confirmed MFA enrollment exists; it may later be buyer or seller, but never both parties of the same escrow.", "Failure or incomplete enrollment: no usable authenticated account or privileged role is issued.", "No escrow, payment instruction or financial balance is created."],
+      "related_rules": ["Public ordinary-account registration only", "MFA required for human login", "Transaction-specific buyer/seller roles", "No secrets in audit records"],
+      "source_requirement_ids": ["FR01", "FR10"]
+    },
+    {
+      "id": "U2",
+      "name": "Login with MFA",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller", "Admin"],
+      "usage": "Authenticate a human account with its primary credential and enrolled MFA factor before granting role-scoped access. Merchant clients use separate client authentication.",
+      "activation": "A registered human user opens the login interface and submits credentials.",
+      "preconditions": ["The human account is active and MFA enrollment is complete.", "Admin accounts are provisioned in advance and cannot be created through U1."],
+      "flow": [
+        {"index": "1", "by": "Human user", "action": "Submit the login identifier and primary credential."},
+        {"index": "2", "by": "EPS", "action": "Validate the account state and primary credential, then issue a short-lived MFA challenge; do not yet grant access to escrow or administration features."},
+        {"index": "3", "by": "Human user", "action": "Submit the response from the enrolled MFA factor."},
+        {"index": "4", "by": "EPS", "action": "Verify that the challenge is current, belongs to this account and has not already been consumed; create a new authenticated session with the account's existing privileges."},
+        {"index": "5", "by": "EPS", "action": "Record the successful login without credentials and display the appropriate user or Admin starting view."},
+        {"index": "2a", "by": "EPS", "action": "For an unknown, inactive or invalid account/credential combination, return a generic login failure and no MFA-authenticated session."},
+        {"index": "3a", "by": "EPS", "action": "For an invalid, expired, replayed or exhausted challenge, reject the attempt, record the security event and require a valid challenge or a new login attempt."},
+        {"index": "4a", "by": "EPS", "action": "If account state changes before session creation, recheck it and deny login when no longer eligible; never accept a Merchant client credential as a human credential."}
+      ],
+      "postconditions": ["Success: a human session identifies the account and preserves its existing role permissions; no privilege is inferred from a requested screen.", "Failure: no new fully authenticated session is created and protected operations remain unavailable.", "Login creates no escrow state change and reveals no other user's financial data."],
+      "related_rules": ["MFA required for human login", "Separate Merchant authentication", "Least privilege", "No secrets in audit records"],
+      "source_requirement_ids": ["FR01", "FR10", "FR12"]
+    },
+    {
+      "id": "U3",
+      "name": "Logout",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller", "Admin"],
+      "usage": "End the current human session and prevent its reuse for protected operations.",
+      "activation": "A human user selects Logout.",
+      "preconditions": ["A current session or an already-expired session reference is available to the logout interface."],
+      "flow": [
+        {"index": "1", "by": "Human user", "action": "Select Logout from the active user or Admin interface."},
+        {"index": "2", "by": "EPS", "action": "Invalidate the current server-side session and clear the local session reference."},
+        {"index": "3", "by": "EPS", "action": "Record the logout when an active session existed and return to the public login view."},
+        {"index": "4", "by": "EPS", "action": "Require a fresh U2 login with MFA for subsequent protected requests using the invalidated session."},
+        {"index": "2a", "by": "EPS", "action": "If the session is already expired, invalid or previously logged out, treat the operation as completed and clear any local reference; do not create a new session."},
+        {"index": "2b", "by": "EPS", "action": "If server invalidation cannot be confirmed because of an interruption, clear local access, report that confirmation is unavailable and retry invalidation when connectivity returns; do not claim confirmed revocation."}
+      ],
+      "postconditions": ["Confirmed success: the current session can no longer authorize a protected request.", "An interrupted revocation is explicitly unconfirmed; the interface provides no continued local access.", "Logout does not cancel escrows or provider requests already durably accepted; their pending outcomes remain available after a later login."],
+      "related_rules": ["Human session lifecycle", "Durable payment operations survive user-session changes", "No secrets in audit records"],
+      "source_requirement_ids": ["FR01", "FR10", "FR11"]
+    },
+    {
+      "id": "U4",
+      "name": "View/Track Escrows",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller", "Merchant/Marketplace (U4.API variant)"],
+      "usage": "Read authorized escrow terms, lifecycle and payment progress, including explicitly unresolved pending outcomes. A human sees only escrows in which the account is buyer or seller; a Merchant sees only escrows created under its own client scope.",
+      "activation": "A buyer/seller opens their escrow list or selects an escrow; an authenticated Merchant requests its own escrow status.",
+      "preconditions": ["A human session is MFA-authenticated, or the U4.API client has valid separate Merchant authentication.", "The requested escrow is within the caller's permitted participant or Merchant scope."],
+      "flow": [
+        {"index": "1", "by": "Buyer or Seller", "action": "Open the escrow list or request the detail of an escrow identifier."},
+        {"index": "2", "by": "EPS", "action": "Authenticate the session and restrict the list/detail lookup to escrows in which the account is a participant."},
+        {"index": "3", "by": "EPS", "action": "Read a consistent snapshot of immutable terms, policy version, parties, amount in VND, delivery record, dispute/refund status and the latest funding or payout outcome."},
+        {"index": "4", "by": "EPS", "action": "Show the current state and permitted next actions; show the applicable FUNDING_PENDING, RELEASE_PENDING or REFUND_PENDING state with a PENDING/UNKNOWN attempt; do not claim HELD, RELEASED, REFUNDED or confirmed failure."},
+        {"index": "5", "by": "Buyer or Seller", "action": "Refresh the view to obtain later authoritative changes; any subsequent write is checked again against the then-current state."},
+        {"index": "2a", "by": "EPS", "action": "Reject an invalid session, an unknown identifier or a request outside participant scope without revealing the unauthorized escrow's existence or contents."},
+        {"index": "3a", "by": "EPS", "action": "For an authorized empty list, display no escrows; for unavailable data, report a temporary retrieval failure and do not invent a result."},
+        {"index": "4a", "by": "EPS", "action": "If a simultaneous state transition occurs after the snapshot, a later refresh may show a new state; the displayed action is never sufficient authorization for a later write."}
+      ],
+      "postconditions": ["Success: only authorized information is returned and pending uncertainty remains visible.", "No view operation changes escrow, proposal, dispute or money state.", "Failure: no protected escrow information is disclosed."],
+      "api_variants": [
+        {"id": "U4.API", "actor": "Merchant/Marketplace", "authentication": "Separate pre-provisioned Merchant client credential; a human session or a buyer/seller identifier alone is insufficient.", "input": ["Merchant authentication", "Escrow reference or client reference within the Merchant's own creation scope"], "behavior": ["Apply the same status interpretation as U4.", "Authorize the lookup against the immutable originating Merchant association before returning data.", "Return the escrow reference, client reference, transaction type, VND amount, current lifecycle state, funding/payout result and whether reconciliation remains pending.", "Exclude credentials, other Merchants' transactions, participant private evidence and Admin-only audit details.", "Polling may repeat while the operation remains pending; a read never authorizes a funding, delivery, acceptance, refund or dispute action."], "failure": ["Reject missing/invalid client authentication.", "Reject a cross-Merchant or unknown reference without revealing unauthorized details.", "Return a temporary retrieval error if a truthful snapshot is unavailable."], "output": "An authorized status snapshot or a scoped error; no state transition."}
+      ],
+      "related_rules": ["Participant and Merchant scope isolation", "Separate Merchant authentication", "Pending is not success", "Read-only tracking", "Immutable terms and policy snapshot"],
+      "source_requirement_ids": ["FR02", "FR03", "FR04", "FR05", "FR06", "FR07", "FR11", "FR12"]
+    },
+    {
+      "id": "U5",
+      "name": "Open Dispute",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller"],
+      "usage": "Freeze the normal release/refund choice while an Admin reviews a disagreement over a funded escrow. Only one dispute may be created for an escrow.",
+      "activation": "A participant selects Open Dispute and submits a reason while confirmed funds remain held.",
+      "preconditions": ["The caller is an MFA-authenticated buyer or seller of this escrow.", "Funding has been confirmed and the full amount remains held.", "No release/refund instruction has been durably accepted, and no dispute has previously been created for this escrow."],
+      "flow": [
+        {"index": "1", "by": "Buyer or Seller", "action": "Enter a dispute reason and optionally an initial evidence description or permitted attachment."},
+        {"index": "2", "by": "EPS", "action": "Verify participant access and validate the reason/evidence input."},
+        {"index": "3", "by": "EPS", "action": "Atomically recheck confirmed held funds, absence of an accepted payout and absence of any existing dispute; create the single OPEN dispute."},
+        {"index": "4", "by": "EPS", "action": "Invalidate any active mutual-refund proposal, retain its history, and block participant release/refund decisions for this escrow."},
+        {"index": "5", "by": "EPS", "action": "Store the dispute reason and initial evidence under participant/Admin access, record the event and display the dispute reference to both participants and the Admin review queue."},
+        {"index": "2a", "by": "EPS", "action": "Reject a nonparticipant, invalid session, missing reason or invalid attachment without creating a dispute or exposing private details."},
+        {"index": "3a", "by": "EPS", "action": "If funding remains pending, no held funds exist, an existing dispute is present or a payout has already been accepted, reject opening and return the authorized current state."},
+        {"index": "3b", "by": "EPS", "action": "If a release/refund request and dispute compete, accept only the first valid atomic transition; a duplicate dispute request returns the existing permitted dispute reference without creating another."}
+      ],
+      "postconditions": ["Success: one OPEN dispute exists, any active refund proposal is invalidated and all money remains held pending Admin decision.", "Participants may add evidence through U6 until the decision becomes final.", "Failure: no dispute, refund cancellation or money instruction is partially committed.", "A decided dispute cannot be reopened, including while its authorized payout is pending."],
+      "related_rules": ["One dispute per escrow", "Confirmed held funds required", "Dispute invalidates active refund proposal", "First valid transition wins", "Payout intent closes participant decision window"],
+      "source_requirement_ids": ["FR04", "FR06", "FR07", "FR10"]
+    },
+    {
+      "id": "U6",
+      "name": "Submit Dispute Evidence",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller"],
+      "usage": "Add transaction-related explanations and evidence to the escrow's existing OPEN dispute before the Admin commits a final decision.",
+      "activation": "A participant selects the OPEN dispute and submits an evidence item.",
+      "preconditions": ["The caller is an MFA-authenticated participant of the escrow.", "The escrow has an OPEN dispute with no final Admin decision."],
+      "flow": [
+        {"index": "1", "by": "Buyer or Seller", "action": "Enter an evidence description and attach permitted goods-delivery or service-output material where available."},
+        {"index": "2", "by": "EPS", "action": "Authorize participant access and validate that the submission contains an explanation or a permitted, readable evidence item."},
+        {"index": "3", "by": "EPS", "action": "Recheck that the dispute remains OPEN, then append the evidence with submitter, time and escrow/dispute references; do not overwrite another participant's evidence."},
+        {"index": "4", "by": "EPS", "action": "Record the submission event and make the saved item available to both escrow participants and the reviewing Admin."},
+        {"index": "2a", "by": "EPS", "action": "Reject an unauthorized caller, empty submission, unsupported attachment or failed upload; do not present unsaved evidence as received."},
+        {"index": "3a", "by": "EPS", "action": "If the Admin decision commits first, reject the later evidence submission and display that the evidence window is closed; if evidence commits first, include it in the review record that the Admin must see before deciding."},
+        {"index": "3b", "by": "EPS", "action": "Return the existing receipt for a repeated submission carrying the same operation reference; preserve one evidence record for that operation."}
+      ],
+      "postconditions": ["Success: a timestamped evidence item is appended to the OPEN dispute and its history remains attributable.", "Failure: no incomplete or post-decision evidence is represented as accepted.", "Evidence does not itself release, refund, modify immutable terms or reverse an Admin decision."],
+      "related_rules": ["Evidence window closes at final decision", "Participant/Admin evidence access", "Append-only attributable evidence", "First valid transition wins", "No duplicate operations"],
+      "source_requirement_ids": ["FR07", "FR10"]
+    },
+    {
+      "id": "U7",
+      "name": "Propose/Withdraw Full Refund",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller"],
+      "usage": "Allow either participant to propose refunding the full held amount to the original funding source, or withdraw their own proposal before the other participant accepts it.",
+      "activation": "A participant submits a full-refund proposal or the original proposer selects Withdraw.",
+      "preconditions": ["The caller is an MFA-authenticated participant.", "Funds are confirmed held and no payout instruction or dispute has been accepted.", "For creation, no active refund proposal exists. For withdrawal, the active proposal belongs to the caller and is not accepted."],
+      "flow": [
+        {"index": "1", "by": "Buyer or Seller", "action": "Choose Propose Full Refund and provide the reason; the displayed amount is the full escrow amount and the destination is the original funding source."},
+        {"index": "2", "by": "EPS", "action": "Validate participant access and the reason; atomically recheck held funds, no dispute/payout, and no existing active proposal."},
+        {"index": "3", "by": "EPS", "action": "Create a PENDING proposal identifying proposer and counterparty, retain its reason and time, and freeze both seller delivery recording and buyer release while it remains PENDING."},
+        {"index": "4", "by": "EPS", "action": "Record the event and show the counterparty the pending accept/reject choice; proposing alone does not issue a refund."},
+        {"index": "5", "by": "Original proposer", "action": "Optionally select Withdraw on the still-PENDING proposal."},
+        {"index": "6", "by": "EPS", "action": "Atomically confirm that the caller is the original proposer and the proposal remains PENDING; mark it WITHDRAWN, retain history and restore otherwise eligible seller delivery recording and buyer release without rolling back any saved delivery record."},
+        {"index": "2a", "by": "EPS", "action": "Reject unauthorized, invalid, partial-amount or alternative-destination input; reject proposal creation when funds are pending/unheld, a dispute exists, a payout is accepted or another proposal is PENDING."},
+        {"index": "3a", "by": "EPS", "action": "If simultaneous proposals compete, accept only the first; return the existing authorized proposal for a repeat operation without creating a duplicate."},
+        {"index": "6a", "by": "EPS", "action": "If counterparty acceptance, dispute creation or another transition commits first, reject the stale withdrawal. An accepted payout cannot be undone by withdrawing the proposal."}
+      ],
+      "postconditions": ["Creation success: one PENDING full-refund proposal exists, both seller delivery recording and buyer release are frozen, and all funds remain held.", "Withdrawal success: the proposal is historical; otherwise eligible delivery recording and buyer release are restored without rolling back any previously saved delivery record.", "Failure: no proposal or financial instruction is partially committed.", "An OPEN dispute invalidates a PENDING proposal; there is no automatic refund or proposal expiry in the MVP."],
+      "related_rules": ["One active full-refund proposal", "PENDING refund freezes seller delivery recording and buyer release", "Withdrawal/refusal restores otherwise eligible actions without rolling back saved delivery", "Original proposer may withdraw before acceptance", "Original funding source only", "Dispute invalidates active refund proposal", "First valid transition wins"],
+      "source_requirement_ids": ["FR04", "FR06", "FR10"]
+    },
+    {
+      "id": "U8",
+      "name": "Accept/Reject Refund Proposal",
+      "group": "User/shared",
+      "actors": ["Buyer", "Seller"],
+      "usage": "Let the counterparty either approve a full refund to the original source or decline it. The proposer cannot accept their own proposal.",
+      "activation": "The counterparty opens the PENDING refund proposal and selects Accept or Reject.",
+      "preconditions": ["The caller is the MFA-authenticated escrow participant other than the proposer.", "The proposal is PENDING, confirmed funds remain held and no dispute or payout has been accepted."],
+      "flow": [
+        {"index": "1", "by": "Counterparty", "action": "Read the proposer, reason, full VND amount and original funding destination, then submit Accept or Reject."},
+        {"index": "2", "by": "EPS", "action": "Authorize the counterparty and atomically recheck the PENDING proposal, held funds and absence of dispute/payout."},
+        {"index": "3", "by": "EPS", "action": "For Accept, mark the proposal APPROVED and durably reserve the single full-refund intent in the same transition; record both participants' consent and enter REFUND_PENDING."},
+        {"index": "4", "by": "EPS", "action": "Invoke P3 to execute the full refund using the original funding provider; show REFUNDED only after authoritative confirmation."},
+        {"index": "5", "by": "EPS", "action": "For Reject, mark the proposal REJECTED with attributable history, issue no payment instruction and restore otherwise eligible seller delivery recording and buyer release without rolling back any saved delivery record."},
+        {"index": "2a", "by": "EPS", "action": "Reject proposer self-acceptance, an invalid session, nonparticipant access or a stale/withdrawn/invalidated proposal."},
+        {"index": "2b", "by": "EPS", "action": "When acceptance, withdrawal or dispute opening compete, commit only the first valid transition. A repeated acceptance of the already-accepted operation returns the existing refund status and issues no second instruction."},
+        {"index": "4a", "by": "EPS", "action": "If the provider times out or its outcome is unknown, retain REFUND_PENDING and the accepted consent; do not mark REFUNDED or allow release/dispute."},
+        {"index": "4b", "by": "EPS", "action": "If the provider conclusively confirms no transfer and failure, retain the accepted refund direction and expose the failed attempt for A5; retry is allowed only after that confirmation, and cannot change direction."}
+      ],
+      "postconditions": ["Acceptance: exactly one authorized full-refund intent exists; the amount and original source cannot be changed and new participant release/dispute choices are closed.", "Authoritative refund success: the single final money outcome is REFUNDED.", "Rejection: the proposal is historical, held funds remain and no refund is authorized; otherwise eligible seller delivery recording and buyer release are restored without rolling back saved delivery.", "Unknown or confirmed-failed transfer: the final money outcome remains unconfirmed and reconciliation/retry follows A5/P3 without duplicate transfer.", "Failure before acceptance/rejection commits: the proposal and funds remain unchanged."],
+      "related_rules": ["Counterparty consent required", "Full refund to original source", "First valid transition wins", "Payout intent closes participant decision window", "Pending is not success", "No duplicate transfers", "Retry only after confirmed no-transfer failure"],
+      "source_requirement_ids": ["FR04", "FR06", "FR10", "FR11"]
+    },
+    {
+      "id": "B1",
+      "name": "Create Escrow",
+      "group": "Buyer",
+      "actors": ["Buyer", "Merchant/Marketplace (B1.API variant)"],
+      "usage": "Create a proposed escrow agreement for a single buyer and a different single seller, for goods or services, with one positive VND amount and explicit completion/acceptance terms.",
+      "activation": "A buyer submits the creation form; an authenticated Merchant submits a creation request within its own client scope.",
+      "preconditions": ["The buyer is MFA-authenticated, or the B1.API Merchant has separate valid client authentication.", "The referenced buyer and seller are active ordinary accounts and are different accounts.", "An applicable Admin-configured policy version exists for the goods/service transaction type; the initial GOODS policy makes evidence optional and the initial SERVICES policy requires evidence."],
+      "flow": [
+        {"index": "1", "by": "Buyer", "action": "Select seller and goods/service type; enter the positive full VND amount, deliverable description and acceptance criteria, and review the applicable evidence policy."},
+        {"index": "2", "by": "EPS", "action": "Bind the creating buyer to the authenticated account; validate the parties, transaction type, required terms and amount, and reject a currency other than VND or a self-transaction."},
+        {"index": "3", "by": "EPS", "action": "Save a new proposed escrow with immutable party references, the submitted terms and a snapshot of the applicable policy version; no money is reserved or transferred."},
+        {"index": "4", "by": "EPS", "action": "Record creation and present the escrow to the identified seller for S1 acceptance/rejection; show the buyer that funding is unavailable until seller acceptance."},
+        {"index": "5", "by": "EPS", "action": "Return the escrow reference and AWAITING_SELLER state to the caller."},
+        {"index": "2a", "by": "EPS", "action": "Reject an unauthenticated caller, mismatched buyer identity, invalid/inactive counterparty, unsupported currency/type, nonpositive amount, missing deliverable/criteria or self-transaction without creating an escrow."},
+        {"index": "3a", "by": "EPS", "action": "For a repeated create operation with the same operation reference and same content, return the original escrow; reject reuse of that reference for different terms."},
+        {"index": "3b", "by": "EPS", "action": "If the policy changes during creation, commit one complete applicable version with the escrow; never combine parameters from different versions."},
+        {"index": "5a", "by": "EPS", "action": "If delivery of the response is interrupted after creation, retain the escrow; a retry with the same operation reference or authorized tracking retrieves the original result."}
+      ],
+      "postconditions": ["Success: one proposed escrow exists with one buyer, one different seller, one full VND amount, explicit terms and one policy snapshot; seller acceptance is still required.", "No funds are held and no payout is authorized by creation.", "After seller acceptance, terms cannot be edited; correcting them requires permitted unfunded cancellation and a new escrow.", "Failure: no partial or duplicate agreement is presented as created."],
+      "api_variants": [
+        {"id": "B1.API", "actor": "Merchant/Marketplace", "authentication": "Separate pre-provisioned Merchant client authentication; does not impersonate a buyer or seller.", "input": ["Merchant-scoped unique client operation/reference", "Existing buyer and seller account references", "Goods or services type", "Positive full VND amount", "Deliverable description", "Acceptance criteria"], "behavior": ["Verify the seller equals the seller bound to the provisioned Merchant client, the buyer is active and different, and the request belongs to that client scope.", "Reuse the same validation, policy snapshot, AWAITING_SELLER state and duplicate-operation rules as B1.", "Persist the originating Merchant association and client reference so later U4.API access is limited to this Merchant.", "Present the agreement to the actual seller for S1; the actual buyer must perform B3 and B4 with their own human session; B3 records the buyer\u0027s acceptance of the captured terms.", "Do not accept client flags that assert seller consent, successful funding, delivery, acceptance, refund or dispute authority."], "failure": ["Reject invalid authentication, unauthorized party association or invalid shared B1 terms.", "Return the original creation for a repeated client reference with identical content; reject a changed payload under the same reference.", "If the creation response is lost, repeat with the same reference or use U4.API; never blindly create another agreement."], "output": "Escrow reference, Merchant client reference, captured policy version and AWAITING_SELLER status; subsequent payment outcomes are read through U4.API."}
+      ],
+      "related_rules": ["Single buyer/seller and positive VND amount", "Goods and services only", "No self-transaction", "Seller acceptance before funding", "Immutable accepted terms", "Policy version snapshot", "Merchant creation/tracking only", "No duplicate operations"],
+      "source_requirement_ids": ["FR02", "FR08", "FR10", "FR12"]
+    },
+    {
+      "id": "B2",
+      "name": "Cancel Unfunded Escrow",
+      "group": "Buyer",
+      "actors": ["Buyer"],
+      "usage": "Close a proposed or accepted agreement before any confirmed funding, provided there is no unresolved funding attempt and any earlier attempt is conclusively known not to have collected money.",
+      "activation": "The buyer selects Cancel on an eligible unfunded escrow.",
+      "preconditions": ["The caller is the MFA-authenticated buyer of the escrow.", "The escrow is AWAITING_SELLER or AWAITING_FUNDING; seller rejection has already made an escrow CANCELLED.", "Funding has never started, or every prior funding attempt is confirmed failed with no collection; no funding attempt remains pending/unknown."],
+      "flow": [
+        {"index": "1", "by": "Buyer", "action": "Review the unfunded escrow and submit cancellation with an optional reason."},
+        {"index": "2", "by": "EPS", "action": "Authorize the buyer and atomically recheck escrow state and all funding attempts for confirmed absence of collection."},
+        {"index": "3", "by": "EPS", "action": "Mark the agreement CANCELLED, make seller acceptance and funding unavailable, and retain the immutable agreement/attempt history."},
+        {"index": "4", "by": "EPS", "action": "Record cancellation and show the final CANCELLED state to both participants and the originating Merchant's authorized tracking view."},
+        {"index": "2a", "by": "EPS", "action": "Reject unauthorized access, confirmed held funds, an unresolved funding outcome or an existing financial instruction; cancellation must not be used to hide an uncertain debit."},
+        {"index": "2b", "by": "EPS", "action": "If cancellation and funding submission compete, accept only the first valid atomic transition. If funding reserves its attempt first, reject cancellation until a conclusive no-collection failure is established."},
+        {"index": "3a", "by": "EPS", "action": "For an already-cancelled repeated operation, return CANCELLED without changing history or emitting a payment instruction."}
+      ],
+      "postconditions": ["Success: the escrow is terminally CANCELLED with no known or unresolved collection; no provider refund is required.", "Failure: the existing agreement and payment attempt state are retained, and any unresolved result remains in FUNDING_PENDING.", "An accepted agreement requiring changed terms must be replaced by a newly created escrow after eligible cancellation."],
+      "related_rules": ["Cancellation only before funding or confirmed no-collection failure", "Unknown funding blocks cancellation", "First valid transition wins", "Immutable accepted terms", "Read-only Merchant tracking"],
+      "source_requirement_ids": ["FR02", "FR03", "FR10", "FR11"]
+    },
+    {
+      "id": "B3",
+      "name": "Fund Escrow",
+      "group": "Buyer",
+      "actors": ["Buyer", "Partner Bank", "Payment Gateway"],
+      "usage": "Initiate simulated full funding through exactly one selected mock provider after seller acceptance. Only validated provider confirmation in P1 establishes that the funds are held.",
+      "activation": "The buyer chooses Partner Bank or Payment Gateway and submits funding for the accepted agreement.",
+      "preconditions": ["The caller is the MFA-authenticated buyer.", "The seller has accepted the immutable terms and the escrow is AWAITING_FUNDING.", "No funding is already confirmed and no prior attempt remains pending/unknown; a retry is permitted only when the prior attempt is conclusively failed without collection."],
+      "flow": [
+        {"index": "1", "by": "Buyer", "action": "Review the accepted terms and full VND amount, select one of the two mock methods, explicitly accept the captured terms (including Merchant-created terms), and submit funding."},
+        {"index": "2", "by": "EPS", "action": "Authorize the buyer and atomically verify seller acceptance, unchanged terms and funding eligibility; reserve a uniquely referenced full-amount funding attempt and enter FUNDING_PENDING."},
+        {"index": "3", "by": "EPS", "action": "Send the selected mock provider the escrow/attempt references, funding operation, full amount, VND currency and mock source/destination information; do not issue another attempt for a repeated click."},
+        {"index": "4", "by": "Selected mock provider", "action": "Return an acceptance/outcome or deliver a later authenticated confirmation carrying the transaction references and actual funding result."},
+        {"index": "5", "by": "EPS", "action": "Apply P1 validation and recording. On confirmed success, record the full amount as held in the segregated simulated escrow ledger and permit the next eligible participant actions."},
+        {"index": "6", "by": "EPS", "action": "Show HELD only for authoritative confirmed funding; otherwise display the current pending or confirmed-failed attempt and its reference."},
+        {"index": "2a", "by": "EPS", "action": "Reject wrong-party access, unaccepted/rejected/cancelled terms, unsupported method, altered amount/currency, already-funded escrow or another unresolved attempt."},
+        {"index": "2b", "by": "EPS", "action": "If cancellation and funding compete, only one valid transition commits. Return the original pending/result for a repeated operation reference and reject reuse with changed content."},
+        {"index": "4a", "by": "EPS", "action": "On timeout, interruption or an ambiguous result, retain FUNDING_PENDING; do not mark held, failed or cancelled and do not start another attempt. A5 reconciles the existing reference."},
+        {"index": "5a", "by": "EPS", "action": "On authoritative failure explicitly confirming no collection, record the failed attempt and restore AWAITING_FUNDING; the buyer may retry or cancel. A mere browser return or client assertion cannot establish this outcome."},
+        {"index": "5b", "by": "EPS", "action": "Ignore/reject unverified, mismatched, replayed or contradictory provider data according to P1; duplicate success confirmation cannot add held funds twice."}
+      ],
+      "postconditions": ["Confirmed success: the exact full VND amount is held once, the original funding source/provider is retained for any refund, and no seller payout has occurred.", "Unknown result: one durable pending attempt exists and held funds are not asserted; cancellation, duplicate funding and later delivery/release actions remain blocked.", "Confirmed no-collection failure: no funds are represented as held, and a new eligible funding attempt or unfunded cancellation may occur.", "Failure before reservation: no funding instruction or state change is committed.", "The interface and Merchant API cannot manufacture provider confirmation."],
+      "related_rules": ["Seller acceptance before funding", "Single full VND funding", "Two mock payment methods", "Provider confirmation establishes held funds", "Unknown funding blocks duplicate funding/cancellation", "Original source retained for refund", "No duplicate operations or ledger postings", "Retry only after confirmed no-collection failure"],
+      "source_requirement_ids": ["FR02", "FR03", "FR04", "FR10", "FR11"]
+    },
+    {
+      "id": "B4",
+      "name": "Confirm Acceptance and Request Release",
+      "group": "Buyer",
+      "actors": ["Buyer", "Partner Bank"],
+      "usage": "Record the buyer's explicit acceptance of the recorded goods delivery or service completion and authorize one full seller payout. Delivery alone never authorizes release.",
+      "activation": "The buyer reviews the completion record and selects Confirm Acceptance and Release Full Amount.",
+      "preconditions": ["The caller is the MFA-authenticated buyer of the escrow.", "Funding is confirmed held and the seller has recorded completion under S2.", "The escrow is DELIVERED and the captured goods/service evidence policy is satisfied, no PENDING refund proposal or dispute exists, and no payout instruction has already been accepted."],
+      "flow": [
+        {"index": "1", "by": "Buyer", "action": "Review immutable acceptance criteria, seller completion/evidence and the full VND amount; explicitly confirm acceptance and request release to the agreed seller."},
+        {"index": "2", "by": "EPS", "action": "Authorize the buyer and atomically recheck confirmed held funds, required completion/evidence, no PENDING refund proposal, no dispute and no existing payout intent."},
+        {"index": "3", "by": "EPS", "action": "Durably record the buyer's acceptance and reserve one uniquely referenced full-release intent in the same transition; enter RELEASE_PENDING and close the participant decision window."},
+        {"index": "4", "by": "EPS", "action": "Invoke P2 through the Partner Bank mock to transfer the exact full escrow amount to the agreed seller's simulated destination."},
+        {"index": "5", "by": "EPS", "action": "Display RELEASED only after an authenticated, matching provider success is applied; record the final outcome and allow authorized tracking."},
+        {"index": "2a", "by": "EPS", "action": "Reject nonbuyer access, missing completion, unsatisfied required evidence, unheld funds, a PENDING refund proposal, any dispute or an existing payout; do not infer acceptance from delivery or elapsed time."},
+        {"index": "2b", "by": "EPS", "action": "If release, refund proposal/acceptance and dispute opening compete, commit only the first valid transition. A repeated accepted release returns its current operation status without creating another payout."},
+        {"index": "4a", "by": "EPS", "action": "For timeout or unknown outcome, retain RELEASE_PENDING and the durable acceptance; do not mark RELEASED or permit refund/dispute while reconciling."},
+        {"index": "4b", "by": "EPS", "action": "For authoritative confirmed failure with no transfer, retain the authorized release direction and failed attempt; A5 may retry only after that confirmation using the same full amount and seller destination."},
+        {"index": "5a", "by": "EPS", "action": "Reject or ignore invalid, mismatched, duplicate or contradictory confirmations under P2; no duplicate callback or click can transfer money twice or create REFUNDED after RELEASED."}
+      ],
+      "postconditions": ["Accepted request: one full-release intent and attributable buyer acceptance exist; no opposite payout or new dispute may be authorized.", "Confirmed success: RELEASED is the sole final money outcome and the held amount has been consumed exactly once.", "Unknown or confirmed-failed transfer: the intent remains authorized for release, with no claimed final success; A5/P2 handle reconciliation or safe retry.", "Rejected request: no acceptance, payout reservation or money state is partially committed.", "There is no milestone, split payout, timer-based release or Merchant acceptance in this MVP."],
+      "related_rules": ["Explicit buyer acceptance required", "Seller completion and captured evidence policy", "PENDING refund blocks release", "Dispute blocks participant payout", "First valid transition wins", "Payout intent closes participant decision window", "Single terminal money outcome", "Pending is not success", "Retry only after confirmed no-transfer failure"],
+      "source_requirement_ids": ["FR04", "FR05", "FR06", "FR07", "FR08", "FR10", "FR11"]
+    }
+  ]
+}
